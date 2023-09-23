@@ -12,13 +12,16 @@ const GradeComponent: React.FC<Props> = ({ grade }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  const hasValue = !Number.isNaN(grade.value)
+  const displayGrade = hasValue ? grade.value : grade.codeValue;
+
   return (
     <View>
       <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} grade={grade} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
-          <Text style={styles.valueText}>{grade.value}</Text>
-          <Text style={styles.denominatorText}>/ {grade.denominator}</Text>
+          <Text style={[styles.valueText, !grade.significant && {opacity: .6}]}>{displayGrade}</Text>
+          {hasValue && <Text style={[styles.denominatorText, !grade.significant && {opacity: .6}]}>/ {grade.denominator}</Text>}
         </View>
       </TouchableOpacity>
     </View>

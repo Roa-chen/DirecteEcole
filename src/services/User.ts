@@ -14,11 +14,16 @@ class User {
   public lastName: string | undefined
 
   public periods: Period[]
+  public grades: {[id: string]: Grade}
+
+  private subscriptions: (() => void)[]
 
 
 
   constructor() {
     this.periods = [];
+    this.grades = {};
+    this.subscriptions = [];
   }
 
   public async connect(username: string, password: string) {
@@ -102,17 +107,18 @@ class User {
       const numberOfGrade = gradesInfo.data.notes.length;
 
       this.periods = [];
+      this.grades = {};
 
       for (let i=0; i<numberOfPeriod; i++) {
 
         const period = gradesInfo.data.periodes[i];
-        const grades: Grade[] = [];
+        const periodGradeIds = [];
 
         for (let j=0; j<numberOfGrade; j++) {
           const grade = gradesInfo.data.notes[j];
           if (grade.codePeriode !== period.codePeriode) continue;
 
-          grades.push({
+          this.grades[grade.id.toString()] = {
             averageClass: Number(grade.moyenneClasse),
             codeDiscipline: grade.codeMatiere,
             codePeriod: grade.codePeriode,
@@ -120,7 +126,7 @@ class User {
             comment: grade.commentaire,
             date: grade.date,
             denominator: Number(grade.noteSur),
-            id: grade.id,
+            id: grade.id.toString(),
             isPositive: grade.valeurisee,
             maxClass: Number(grade.maxClasse),
             minClass: Number(grade.minClasse),
@@ -129,11 +135,14 @@ class User {
             significant: !grade.nonSignificatif,
             typeTest: grade.typeDevoir,
             value: User.formatStringNumber(grade.valeur),
-          })
+            codeValue: grade.valeur.toString(),
+          }
+
+          periodGradeIds.push(grade.id.toString())
         }
 
         this.periods.push({
-          averageCalculated: User.calculateAverage(grades),
+          averageCalculated: this.calculateAverage(periodGradeIds),
           averageClass: Number(period.ensembleMatieres.moyenneClasse),
           averageOfficial: Number(period.ensembleMatieres.moyenneGenerale),
           beginDate: period.dateDebut,
@@ -144,10 +153,10 @@ class User {
           namePeriod: period.periode,
           disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
-            const disciplineGrades = grades.filter(grade => grade.codeDiscipline === discipline.codeMatiere)
+            const disciplineGradeIds = Object.values(this.grades).filter(grade => grade.codeDiscipline === discipline.codeMatiere).map(grade => grade.id)
 
             return <Discipline>{
-              averageCalculated: User.calculateAverage(disciplineGrades),
+              averageCalculated: this.calculateAverage(disciplineGradeIds),
               averageClass: Number(discipline.moyenneClasse),
               averageOfficial: Number(discipline.moyenne),
               codeDiscipline: discipline.codeMatiere,
@@ -155,14 +164,11 @@ class User {
               maxAverageClass: Number(discipline.moyenneMax),
               minAverageClass: Number(discipline.moyenneMin),
               nameDiscipline: discipline.discipline,
-              grades: disciplineGrades,
+              gradeIds: disciplineGradeIds,
             }
           }),
-          grades: grades,
+          gradeIds: periodGradeIds,
         })
-
-        // console.log(this.periods[i])
-
       }
 
 
@@ -181,7 +187,7 @@ class User {
     return Number(string.replaceAll(',', '.'))
   }
 
-  private static calculateAverage(grades: Grade[]) {
+  private calculateAverage(gradeIds: string[]) {
     let total = 0;
     let coef = 0;
 
@@ -190,8 +196,8 @@ class User {
       coef: number,
     }} = {}
 
-    for (let i=0; i<grades.length; i++) {
-      const grade = grades[i];
+    for (let i=0; i<gradeIds.length; i++) {
+      const grade = this.grades[gradeIds[i]];
 
       if (grade.significant) {
 
@@ -214,9 +220,36 @@ class User {
       total += disciplines[key].total
       coef += disciplines[key].coef
     }
-
     return roundGrade(total / coef);
+  }
 
+  public refreshAverage() {
+    for (let periodIndex=0; periodIndex<this.periods.length; periodIndex++) {
+      const period = this.periods[periodIndex]
+      const grades = period.gradeIds;
+
+      period.averageCalculated = this.calculateAverage(grades);
+
+      for (let disciplineIndex=0; disciplineIndex<period.disciplines.length; disciplineIndex++) {
+        const discipline = period.disciplines[disciplineIndex];
+        discipline.averageCalculated = this.calculateAverage(discipline.gradeIds);
+      }
+    }
+
+  }
+
+  public setSignificant(gradeId: string, significant: boolean) {
+    this.grades[gradeId].significant = significant;
+    this.refreshAverage()
+    this.notify()
+  }
+
+  public subscribe(onChange: () => void) {
+    this.subscriptions.push(onChange)
+  }
+
+  private notify() {
+    this.subscriptions.forEach(onChange => onChange())
   }
 
 }

@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { getUser } from '../services/User';
+import React, {useState} from 'react';
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import { Discipline } from '../assets/constants';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeComponent from './GradeComponent';
+import { getUser } from '../services/User';
+import DisciplineModal from './DisciplineModal';
 
 interface Props {
   discipline: Discipline
@@ -11,19 +12,24 @@ interface Props {
 
 const DisciplineComponent: React.FC<Props> = ({ discipline }) => {
 
+  const user = getUser()
   const averageCalculated = Number.isNaN(discipline.averageCalculated) ? undefined : discipline.averageCalculated;
 
+  // const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>{discipline.nameDiscipline}</Text>
-        <Text style={styles.headerText}>{averageCalculated}</Text>
-      </View>
+      {/* <DisciplineModal visible={modalVisible} onDismiss={() => setModalVisible(false)} discipline={discipline} /> */}
+      {/* <TouchableWithoutFeedback onPress={() => setModalVisible(true)}> */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>{discipline.nameDiscipline}</Text>
+          <Text style={styles.headerText}>{averageCalculated}</Text>
+        </View>
+      {/* </TouchableWithoutFeedback> */}
       <View style={styles.gradeContainer}>
-        {discipline.grades.map(grade => {
+        {discipline.gradeIds.map(gradeId => {
           return (
-            <GradeComponent key={'grade' + grade.id} grade={grade} />
+            <GradeComponent key={'grade' + gradeId} grade={user.grades[gradeId]} />
           )
         })}
       </View>

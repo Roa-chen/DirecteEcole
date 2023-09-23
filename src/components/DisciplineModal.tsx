@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
-import { Grade } from '../assets/constants';
+import { Discipline, Grade } from '../assets/constants';
 import { roundGrade } from '../assets/utils';
 import { getUser } from '../services/User';
 
 interface Props {
   visible: boolean,
   onDismiss: () => void,
-  grade: Grade,
+  discipline: Discipline,
 }
 
-const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
+const DisciplineModal: React.FC<Props> = ({ visible, onDismiss, discipline }) => {
   return (
     <Modal
       visible={visible}
@@ -23,24 +23,17 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
         <View style={styles.overlay}>
           <View style={styles.contentContainer}>
 
-            <Text style={styles.titleText}>{grade.name}:</Text>
+            <Text style={styles.titleText}>{discipline.nameDiscipline}:</Text>
 
-            <Line name={"Matière"} value={grade.nameDiscipline} />
-            <Line name={"Devoir"} value={grade.typeTest} />
-            <Line name={"date"} value={grade.date} />
-            <Line name={"Coefficient"} value={grade.coef.toString()} />
+            <Line name={"Coefficient"} value={discipline.coef.toString()} />
 
             <View style={styles.separationLine} />
 
-            <LineGrade name={''} value={grade.denominator} denominator={grade.denominator} template />
-            <LineGrade name={"Note"} value={roundGrade(grade.value)} denominator={grade.denominator} />
-            <LineGrade name={"Moyenne de classe"} value={grade.averageClass} denominator={grade.denominator} />
-            <LineGrade name={"Note maximum"} value={grade.maxClass} denominator={grade.denominator} />
-            <LineGrade name={"Note minimum"} value={grade.minClass} denominator={grade.denominator} />
-
-            <View style={styles.separationLine} />
-
-            <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => getUser().setSignificant(grade.id, !grade.significant)} />
+            <LineGrade name={"Moyenne Calculée"} value={roundGrade(discipline.averageCalculated)} />
+            <LineGrade name={"Moyenne Officielle"} value={roundGrade(discipline.averageOfficial)} />
+            <LineGrade name={"Moyenne de classe"} value={discipline.averageClass} />
+            <LineGrade name={"Moyenne maximum"} value={discipline.maxAverageClass} />
+            <LineGrade name={"Moyenne minimum"} value={discipline.minAverageClass} />
 
           </View>
         </View>
@@ -84,20 +77,11 @@ const LineSwitch: React.FC<{
 const LineGrade: React.FC<{
   name: string,
   value: number,
-  denominator: number,
-  template?: boolean,
-}> = ({ name, value, denominator, template = false }) => {
+}> = ({ name, value }) => {
   return (
-    <View style={[styles.lineContainer, template && { marginBottom: Spaces.small }]}>
-      <Text style={styles.lineText}>{name}{template ? "" : ":"}</Text>
-      <View style={{
-        width: '35%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-        {<Text style={styles.lineText}>{template ? '/' : ''}{value.toString()}</Text>}
-        {denominator !== 20 && <Text style={styles.lineText}>{template ? '/' : ''}{roundGrade((value / denominator) * 20).toString()}</Text>}
-      </View>
+    <View style={styles.lineContainer}>
+      <Text style={styles.lineText}>{name}:</Text>
+      <Text style={styles.lineText}>{value.toString()}</Text>
     </View>
   )
 }
@@ -145,4 +129,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default GradeModal;
+export default DisciplineModal;

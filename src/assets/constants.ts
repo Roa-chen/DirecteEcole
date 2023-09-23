@@ -9,7 +9,7 @@ export type ConnectionResponse = {
 }
 
 export type Grade = {
-  id: number,
+  id: string,
   name: string,
   codePeriod: string,
   codeDiscipline: string,
@@ -25,6 +25,7 @@ export type Grade = {
   averageClass: number,
   minClass: number,
   maxClass: number,
+  codeValue: string,
 }
 
 export type Discipline = {
@@ -36,7 +37,7 @@ export type Discipline = {
   averageClass: number,
   minAverageClass: number,
   maxAverageClass: number,
-  grades: Grade[],
+  gradeIds: string[],
 }
 
 export type Period = {
@@ -50,5 +51,5 @@ export type Period = {
   minAverageClass: number,
   maxAverageClass: number,
   disciplines: Discipline[],
-  grades: Grade[],
+  gradeIds: string[],
 }

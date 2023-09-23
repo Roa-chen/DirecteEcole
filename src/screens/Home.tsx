@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Button, RefreshControl, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Button, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { getUser } from '../services/User';
 import DisciplineComponent from '../components/DisciplineComponent';
-import { Colors, FontFamily, FontSize, Spaces } from '../GlobalStyles';
+import { Colors, FontFamily, FontSize, Spaces, SubTitleText} from '../GlobalStyles';
 
 interface Props {
   unregister: () => void,
@@ -11,19 +11,20 @@ interface Props {
 const Home: React.FC<Props> = ({ unregister }) => {
 
   const user = getUser()
-  const [average, setAverage] = useState(-1);
+  const [average, setAverage] = useState<number>();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    updateGrades();
+    updateGrades(true);
+    user.subscribe(() => setAverage(user.periods[0].averageCalculated))
   }, [])
 
-  const updateGrades = () => {
-    setRefreshing(true)
+  const updateGrades = (hideRefresh = false) => {
+    !hideRefresh && setRefreshing(true)
     user.getGrades().then(() => {
       setAverage(user.periods[0].averageCalculated)
     }).finally(() => {
-      setRefreshing(false)
+      !hideRefresh && setRefreshing(false)
     })
   }
 
@@ -37,12 +38,16 @@ const Home: React.FC<Props> = ({ unregister }) => {
         refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
       >
 
-        <Text style={{
-          color: Colors.lightText,
-        }}>{user.firstName + ' ' + user.lastName}</Text>
-        <Text style={styles.averageText}>{average}</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.nameText}>{user.firstName + ' ' + user.lastName}</Text>
 
-        <Button title={'unregister'} onPress={() => unregister()} />
+          <TouchableOpacity onPress={() => unregister()} >
+            <Text style={styles.buttonText}>Se déconnecter</Text>
+          </TouchableOpacity>
+        </View>
+
+
+        <Text style={styles.averageText}>{average}</Text>
 
         {user.periods[0]?.disciplines.map(discipline => {
 
@@ -76,7 +81,25 @@ const styles = StyleSheet.create({
     fontSize: FontSize.large * 2,
     fontFamily: FontFamily.interBold,
     fontWeight: 'bold',
-  }
+    marginVertical: Spaces.large,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorisontal: Spaces.small,
+  },
+  nameText: {
+    ...SubTitleText,
+    color: Colors.lightText,
+  },
+  buttonText: {
+    ...SubTitleText,
+    color: Colors.callToAction,
+    marginVertical: Spaces.extra_small,
+    marginLeft: Spaces.small,
+  },
 })
 
 export default Home;
