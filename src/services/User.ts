@@ -1,4 +1,5 @@
 import { ConnectionResponse, Discipline, Grade, Period } from "../assets/constants";
+import { roundGrade } from "../assets/utils";
 
 let instance: User | null = null;
 
@@ -100,8 +101,7 @@ class User {
       const numberOfPeriod = gradesInfo.data.periodes.length - 1;
       const numberOfGrade = gradesInfo.data.notes.length;
 
-
-      //TODO clear periods before
+      this.periods = [];
 
       for (let i=0; i<numberOfPeriod; i++) {
 
@@ -143,8 +143,11 @@ class User {
           minAverageClass: Number(period.moyenneMin),
           namePeriod: period.periode,
           disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
+
+            const disciplineGrades = grades.filter(grade => grade.codeDiscipline === discipline.codeMatiere)
+
             return <Discipline>{
-              averageCalculated: User.calculateAverage(grades.filter(grade => grade.codeDiscipline === discipline.codeMatiere)),
+              averageCalculated: User.calculateAverage(disciplineGrades),
               averageClass: Number(discipline.moyenneClasse),
               averageOfficial: Number(discipline.moyenne),
               codeDiscipline: discipline.codeMatiere,
@@ -152,6 +155,7 @@ class User {
               maxAverageClass: Number(discipline.moyenneMax),
               minAverageClass: Number(discipline.moyenneMin),
               nameDiscipline: discipline.discipline,
+              grades: disciplineGrades,
             }
           }),
           grades: grades,
@@ -211,7 +215,7 @@ class User {
       coef += disciplines[key].coef
     }
 
-    return Math.round((total / coef)*100)/100;
+    return roundGrade(total / coef);
 
   }
 

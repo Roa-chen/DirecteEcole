@@ -36,6 +36,7 @@ export type Discipline = {
   averageClass: number,
   minAverageClass: number,
   maxAverageClass: number,
+  grades: Grade[],
 }
 
 export type Period = {

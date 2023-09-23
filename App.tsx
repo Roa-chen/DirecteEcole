@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 import MainNavigator from './src/navigators/MainNavigator';
+import { Colors } from './src/GlobalStyles';
 
 const App = () => {
 
@@ -19,6 +20,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.background
   },
 });
 
