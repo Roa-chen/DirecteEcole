@@ -1,0 +1,1118 @@
+{
+  "code": 200,
+  "token": "0264fb60-05e6-453e-97ab-83c5476d0fd9",
+  "host": "HTTP11",
+  "data": {
+      "foStat": "22131810019",
+      "periodes": [
+          {
+              "idPeriode": "A001",
+              "codePeriode": "A001",
+              "periode": "1er Trimestre",
+              "annuel": false,
+              "dateDebut": "2023-09-04",
+              "dateFin": "2023-12-01",
+              "examenBlanc": false,
+              "cloture": false,
+              "dateConseil": "2023-12-01",
+              "heureConseil": "17:00",
+              "salleConseil": "D 22",
+              "moyNbreJoursApresConseil": -1,
+              "ensembleMatieres": {
+                  "dateCalcul": "",
+                  "nomPP": "M. DELORT A.¤M. SCHIAVON  .",
+                  "appreciationPP": "",
+                  "nomCE": "",
+                  "decisionDuConseil": "",
+                  "disciplines": [
+                      {
+                          "id": 1306,
+                          "codeMatiere": "PHILO",
+                          "codeSousMatiere": "",
+                          "discipline": "PHILOSOPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 361,
+                                  "nom": "M. DELORT A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1303,
+                          "codeMatiere": "HI-GE",
+                          "codeSousMatiere": "",
+                          "discipline": "HISTOIRE-GEOGRAPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1299,
+                          "codeMatiere": "EMC",
+                          "codeSousMatiere": "",
+                          "discipline": "ENS. MORAL & CIVIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2185,
+                          "codeMatiere": "AGL1",
+                          "codeSousMatiere": "",
+                          "discipline": "ANGLAIS LVA",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 39,
+                                  "nom": "Mme BONJEAN A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2196,
+                          "codeMatiere": "ALL2",
+                          "codeSousMatiere": "",
+                          "discipline": "ALLEMAND LVB",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 35,
+                                  "nom": "Mme SAINT MARTIN M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1302,
+                          "codeMatiere": "G-SCI",
+                          "codeSousMatiere": "",
+                          "discipline": "ENSEIGN.SCIENTIFIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              },
+                              {
+                                  "id": 282,
+                                  "nom": "Mme FLAMAND J."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1310,
+                          "codeMatiere": "SPPC",
+                          "codeSousMatiere": "",
+                          "discipline": "SP PHYSIQUE-CHIMIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1309,
+                          "codeMatiere": "SPMAT",
+                          "codeSousMatiere": "",
+                          "discipline": "SP MATHS",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1899,
+                          "codeMatiere": "MATEX",
+                          "codeSousMatiere": "",
+                          "discipline": "MATHS EXPERTES",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1823,
+                          "codeMatiere": "120",
+                          "codeSousMatiere": "",
+                          "discipline": "TENNIS DE TABLE",
+                          "coef": 0,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 220,
+                                  "nom": "M. STELEA R."
+                              },
+                              {
+                                  "id": 293,
+                                  "nom": "Mme LASNIER M."
+                              }
+                          ],
+                          "appreciations": []
+                      }
+                  ],
+                  "disciplinesSimulation": []
+              }
+          },
+          {
+              "idPeriode": "A002",
+              "codePeriode": "A002",
+              "periode": "2ème Trimestre",
+              "annuel": false,
+              "dateDebut": "2023-12-02",
+              "dateFin": "2024-03-13",
+              "examenBlanc": false,
+              "cloture": false,
+              "dateConseil": "2024-03-14",
+              "heureConseil": "16:45",
+              "salleConseil": "D 22",
+              "moyNbreJoursApresConseil": -1,
+              "ensembleMatieres": {
+                  "dateCalcul": "",
+                  "nomPP": "M. DELORT A.¤M. SCHIAVON  .",
+                  "appreciationPP": "",
+                  "nomCE": "",
+                  "decisionDuConseil": "",
+                  "disciplines": [
+                      {
+                          "id": 1306,
+                          "codeMatiere": "PHILO",
+                          "codeSousMatiere": "",
+                          "discipline": "PHILOSOPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 361,
+                                  "nom": "M. DELORT A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1303,
+                          "codeMatiere": "HI-GE",
+                          "codeSousMatiere": "",
+                          "discipline": "HISTOIRE-GEOGRAPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1299,
+                          "codeMatiere": "EMC",
+                          "codeSousMatiere": "",
+                          "discipline": "ENS. MORAL & CIVIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2185,
+                          "codeMatiere": "AGL1",
+                          "codeSousMatiere": "",
+                          "discipline": "ANGLAIS LVA",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 39,
+                                  "nom": "Mme BONJEAN A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2196,
+                          "codeMatiere": "ALL2",
+                          "codeSousMatiere": "",
+                          "discipline": "ALLEMAND LVB",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 35,
+                                  "nom": "Mme SAINT MARTIN M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1302,
+                          "codeMatiere": "G-SCI",
+                          "codeSousMatiere": "",
+                          "discipline": "ENSEIGN.SCIENTIFIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              },
+                              {
+                                  "id": 282,
+                                  "nom": "Mme FLAMAND J."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1310,
+                          "codeMatiere": "SPPC",
+                          "codeSousMatiere": "",
+                          "discipline": "SP PHYSIQUE-CHIMIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1309,
+                          "codeMatiere": "SPMAT",
+                          "codeSousMatiere": "",
+                          "discipline": "SP MATHS",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1899,
+                          "codeMatiere": "MATEX",
+                          "codeSousMatiere": "",
+                          "discipline": "MATHS EXPERTES",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1823,
+                          "codeMatiere": "120",
+                          "codeSousMatiere": "",
+                          "discipline": "TENNIS DE TABLE",
+                          "coef": 0,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 220,
+                                  "nom": "M. STELEA R."
+                              },
+                              {
+                                  "id": 293,
+                                  "nom": "Mme LASNIER M."
+                              }
+                          ],
+                          "appreciations": []
+                      }
+                  ],
+                  "disciplinesSimulation": []
+              }
+          },
+          {
+              "idPeriode": "A003",
+              "codePeriode": "A003",
+              "periode": "3ème Trimestre",
+              "annuel": false,
+              "dateDebut": "2024-03-14",
+              "dateFin": "2024-05-30",
+              "examenBlanc": false,
+              "cloture": false,
+              "dateConseil": "2024-06-01",
+              "heureConseil": "17:30",
+              "salleConseil": "D 22",
+              "moyNbreJoursApresConseil": -1,
+              "ensembleMatieres": {
+                  "dateCalcul": "",
+                  "nomPP": "M. DELORT A.¤M. SCHIAVON  .",
+                  "appreciationPP": "",
+                  "nomCE": "",
+                  "decisionDuConseil": "",
+                  "disciplines": [
+                      {
+                          "id": 1306,
+                          "codeMatiere": "PHILO",
+                          "codeSousMatiere": "",
+                          "discipline": "PHILOSOPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 361,
+                                  "nom": "M. DELORT A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1303,
+                          "codeMatiere": "HI-GE",
+                          "codeSousMatiere": "",
+                          "discipline": "HISTOIRE-GEOGRAPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1299,
+                          "codeMatiere": "EMC",
+                          "codeSousMatiere": "",
+                          "discipline": "ENS. MORAL & CIVIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2185,
+                          "codeMatiere": "AGL1",
+                          "codeSousMatiere": "",
+                          "discipline": "ANGLAIS LVA",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 39,
+                                  "nom": "Mme BONJEAN A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2196,
+                          "codeMatiere": "ALL2",
+                          "codeSousMatiere": "",
+                          "discipline": "ALLEMAND LVB",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 35,
+                                  "nom": "Mme SAINT MARTIN M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1302,
+                          "codeMatiere": "G-SCI",
+                          "codeSousMatiere": "",
+                          "discipline": "ENSEIGN.SCIENTIFIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              },
+                              {
+                                  "id": 282,
+                                  "nom": "Mme FLAMAND J."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1310,
+                          "codeMatiere": "SPPC",
+                          "codeSousMatiere": "",
+                          "discipline": "SP PHYSIQUE-CHIMIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1309,
+                          "codeMatiere": "SPMAT",
+                          "codeSousMatiere": "",
+                          "discipline": "SP MATHS",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1899,
+                          "codeMatiere": "MATEX",
+                          "codeSousMatiere": "",
+                          "discipline": "MATHS EXPERTES",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1823,
+                          "codeMatiere": "120",
+                          "codeSousMatiere": "",
+                          "discipline": "TENNIS DE TABLE",
+                          "coef": 0,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 220,
+                                  "nom": "M. STELEA R."
+                              },
+                              {
+                                  "id": 293,
+                                  "nom": "Mme LASNIER M."
+                              }
+                          ],
+                          "appreciations": []
+                      }
+                  ],
+                  "disciplinesSimulation": []
+              }
+          },
+          {
+              "idPeriode": "A999Z",
+              "codePeriode": "A999Z",
+              "periode": "Année",
+              "annuel": true,
+              "dateDebut": "2023-09-04",
+              "dateFin": "2024-05-30",
+              "examenBlanc": false,
+              "cloture": false,
+              "moyNbreJoursApresConseil": -1,
+              "ensembleMatieres": {
+                  "dateCalcul": "",
+                  "nomPP": "M. DELORT A.¤M. SCHIAVON  .",
+                  "appreciationPP": "",
+                  "nomCE": "",
+                  "decisionDuConseil": "",
+                  "disciplines": [
+                      {
+                          "id": 1306,
+                          "codeMatiere": "PHILO",
+                          "codeSousMatiere": "",
+                          "discipline": "PHILOSOPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 361,
+                                  "nom": "M. DELORT A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1303,
+                          "codeMatiere": "HI-GE",
+                          "codeSousMatiere": "",
+                          "discipline": "HISTOIRE-GEOGRAPHIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1299,
+                          "codeMatiere": "EMC",
+                          "codeSousMatiere": "",
+                          "discipline": "ENS. MORAL & CIVIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 45,
+                                  "nom": "Mme PUTET."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2185,
+                          "codeMatiere": "AGL1",
+                          "codeSousMatiere": "",
+                          "discipline": "ANGLAIS LVA",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 39,
+                                  "nom": "Mme BONJEAN A."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 2196,
+                          "codeMatiere": "ALL2",
+                          "codeSousMatiere": "",
+                          "discipline": "ALLEMAND LVB",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 35,
+                                  "nom": "Mme SAINT MARTIN M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1302,
+                          "codeMatiere": "G-SCI",
+                          "codeSousMatiere": "",
+                          "discipline": "ENSEIGN.SCIENTIFIQUE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              },
+                              {
+                                  "id": 282,
+                                  "nom": "Mme FLAMAND J."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1310,
+                          "codeMatiere": "SPPC",
+                          "codeSousMatiere": "",
+                          "discipline": "SP PHYSIQUE-CHIMIE",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 104,
+                                  "nom": "M. VILLET M."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1309,
+                          "codeMatiere": "SPMAT",
+                          "codeSousMatiere": "",
+                          "discipline": "SP MATHS",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1899,
+                          "codeMatiere": "MATEX",
+                          "codeSousMatiere": "",
+                          "discipline": "MATHS EXPERTES",
+                          "coef": 1,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 8,
+                                  "nom": "M. SCHIAVON."
+                              }
+                          ],
+                          "appreciations": []
+                      },
+                      {
+                          "id": 1823,
+                          "codeMatiere": "120",
+                          "codeSousMatiere": "",
+                          "discipline": "TENNIS DE TABLE",
+                          "coef": 0,
+                          "effectif": 0,
+                          "rang": 0,
+                          "groupeMatiere": false,
+                          "idGroupeMatiere": 0,
+                          "option": 0,
+                          "sousMatiere": false,
+                          "saisieAppreciationSSMat": false,
+                          "professeurs": [
+                              {
+                                  "id": 220,
+                                  "nom": "M. STELEA R."
+                              },
+                              {
+                                  "id": 293,
+                                  "nom": "Mme LASNIER M."
+                              }
+                          ],
+                          "appreciations": []
+                      }
+                  ],
+                  "disciplinesSimulation": []
+              }
+          }
+      ],
+      "notes": [
+          {
+              "id": 6291459,
+              "devoir": "IE1 chap 1",
+              "codePeriode": "A001",
+              "codeMatiere": "SPPC",
+              "libelleMatiere": "SP PHYSIQUE-CHIMIE",
+              "codeSousMatiere": "",
+              "typeDevoir": "Interrogation écrite",
+              "enLettre": false,
+              "commentaire": "",
+              "uncSujet": "",
+              "uncCorrige": "",
+              "coef": "0.15",
+              "noteSur": "8",
+              "valeur": "8",
+              "nonSignificatif": false,
+              "date": "2023-09-11",
+              "dateSaisie": "2023-09-11",
+              "valeurisee": true,
+              "moyenneClasse": "6.92",
+              "minClasse": "5.50",
+              "maxClasse": "8.00",
+              "elementsProgramme": []
+          },
+          {
+              "id": 6291494,
+              "devoir": "IE1 chap 2",
+              "codePeriode": "A001",
+              "codeMatiere": "SPPC",
+              "libelleMatiere": "SP PHYSIQUE-CHIMIE",
+              "codeSousMatiere": "",
+              "typeDevoir": "Interrogation écrite",
+              "enLettre": false,
+              "commentaire": "",
+              "uncSujet": "",
+              "uncCorrige": "",
+              "coef": "0.2",
+              "noteSur": "10",
+              "valeur": "9,5",
+              "nonSignificatif": false,
+              "date": "2023-09-18",
+              "dateSaisie": "2023-09-18",
+              "valeurisee": true,
+              "moyenneClasse": "8.77",
+              "minClasse": "7.50",
+              "maxClasse": "9.50",
+              "elementsProgramme": []
+          },
+          {
+              "id": 6291483,
+              "devoir": "IE2 chap 1",
+              "codePeriode": "A001",
+              "codeMatiere": "SPPC",
+              "libelleMatiere": "SP PHYSIQUE-CHIMIE",
+              "codeSousMatiere": "",
+              "typeDevoir": "Interrogation écrite",
+              "enLettre": false,
+              "commentaire": "",
+              "uncSujet": "",
+              "uncCorrige": "",
+              "coef": "0.1",
+              "noteSur": "4",
+              "valeur": "3,5",
+              "nonSignificatif": false,
+              "date": "2023-09-18",
+              "dateSaisie": "2023-09-18",
+              "valeurisee": true,
+              "moyenneClasse": "3.77",
+              "minClasse": "3.00",
+              "maxClasse": "4.00",
+              "elementsProgramme": []
+          },
+          {
+              "id": 6291513,
+              "devoir": "IE2 chap 2",
+              "codePeriode": "A001",
+              "codeMatiere": "SPPC",
+              "libelleMatiere": "SP PHYSIQUE-CHIMIE",
+              "codeSousMatiere": "",
+              "typeDevoir": "Interrogation écrite",
+              "enLettre": false,
+              "commentaire": "",
+              "uncSujet": "",
+              "uncCorrige": "",
+              "coef": "0.15",
+              "noteSur": "10",
+              "valeur": "10",
+              "nonSignificatif": false,
+              "date": "2023-09-21",
+              "dateSaisie": "2023-09-21",
+              "valeurisee": true,
+              "moyenneClasse": "7.42",
+              "minClasse": "4.00",
+              "maxClasse": "10.00",
+              "elementsProgramme": []
+          }
+      ],
+      "parametrage": {
+          "couleurEval1": "#FF0000",
+          "couleurEval2": "#FFC000",
+          "couleurEval3": "#0070C0",
+          "couleurEval4": "#00B050",
+          "libelleEval1": "Tm9uIGF0dGVpbnRz",
+          "libelleEval2": "UGFydGllbGxlbWVudCBhdHRlaW50cw==",
+          "libelleEval3": "QXR0ZWludHM=",
+          "libelleEval4": "RMOpcGFzc8Opcw==",
+          "affichageMoyenne": false,
+          "affichageMoyenneDevoir": true,
+          "affichagePositionMatiere": false,
+          "affichageNote": true,
+          "affichageCompetence": false,
+          "affichageEvaluationsComposantes": false,
+          "affichageGraphiquesComposantes": true,
+          "modeCalculGraphiquesComposantes": "eval",
+          "affichageCompNum": false,
+          "libelleEvalCompNum1": "Tm9uIGF0dGVpbnQ=",
+          "libelleEvalCompNum2": "UGFydGllbGxlbWVudCBhdHRlaW50",
+          "libelleEvalCompNum3": "QXR0ZWludA==",
+          "affichageAppreciation": false,
+          "coefficientNote": true,
+          "colonneCoefficientMatiere": true,
+          "noteGrasSousMoyenne": false,
+          "noteGrasAudessusMoyenne": true,
+          "libelleDevoir": true,
+          "dateDevoir": true,
+          "typeDevoir": true,
+          "noteUniquementPeriodeCloture": false,
+          "notePeriodeReleve": false,
+          "notePeriodeAnnuelle": false,
+          "notePeriodeHorsP": false,
+          "libellesAppreciations": [
+              "Appréciations"
+          ],
+          "appreciationsParametrage": [
+              {
+                  "code": "APP1",
+                  "id": 1,
+                  "nbMaxCaractere": 200,
+                  "libelle": "Appréciations"
+              }
+          ]
+      }
+  }
+}
