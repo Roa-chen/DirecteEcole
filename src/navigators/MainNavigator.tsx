@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import Auth from '../screens/Auth';
 import Home from '../screens/Home';
 import { PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
-import { getUser } from '../services/User';
+import { clearUser, getUser } from '../services/User';
+import { Colors } from '../GlobalStyles';
 
 const Stack = createStackNavigator();
 
@@ -16,8 +17,6 @@ interface Props {
 const MainNavigator: React.FC<Props> = ({ }) => {
 
   const [connectionState, setConnectionState] = useState(0);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
 
@@ -30,14 +29,14 @@ const MainNavigator: React.FC<Props> = ({ }) => {
             password => {
               console.log('password: ', password)
               if (password) {
-                setPassword(password)
-
-                getUser().connect(username, password).then((sucess) => {
-                  if (sucess) {
+                getUser().connect(JSON.parse(username), JSON.parse(password)).then((response) => {
+                  if (response.success) {
                     setConnectionState(2)
+                  } else {
+                    Alert.alert('Erreur:', response.message)
+                    setConnectionState(1)
                   }
                 })
-
               } else {
                 setConnectionState(1)
               }
@@ -49,9 +48,6 @@ const MainNavigator: React.FC<Props> = ({ }) => {
         }
       }
     )
-
-
-
   }, [])
 
 
@@ -61,14 +57,12 @@ const MainNavigator: React.FC<Props> = ({ }) => {
 
     const connectionResponse = await getUser().connect(username, password)
 
-    if (connectionResponse.sucess) {
+    if (connectionResponse.success) {
       AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.username))
       AsyncStorage.setItem(PASSWORD_KEY, JSON.stringify(connectionResponse.password))
       setConnectionState(2)
-      return true;
-    } else {
-      return false;
     }
+    return connectionResponse;
   }
 
   const unregister = () => {
@@ -76,6 +70,8 @@ const MainNavigator: React.FC<Props> = ({ }) => {
     AsyncStorage.removeItem(PASSWORD_KEY)
 
     setConnectionState(1)
+
+    clearUser();
 
     console.log('unregistered')
   }
@@ -86,7 +82,8 @@ const MainNavigator: React.FC<Props> = ({ }) => {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <Text>Loading</Text>
+      <ActivityIndicator color={Colors.transparentCallToAction} size={'large'} />
+
     </View>
   )
 

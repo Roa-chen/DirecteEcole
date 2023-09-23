@@ -14,7 +14,7 @@ class User {
   public lastName: string | undefined
 
   public periods: Period[]
-  public grades: {[id: string]: Grade}
+  public grades: { [id: string]: Grade }
 
   private subscriptions: (() => void)[]
 
@@ -28,15 +28,16 @@ class User {
 
   public async connect(username: string, password: string) {
     if (!(username && password)) return <ConnectionResponse>{
-      sucess: false,
+      success: false,
       username,
       password,
+      message: 'Identifiant ou mot de passe non renseigné.'
     };
 
     try {
       const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
         method: 'POST',
-        body: "data={\"identifiant\": \"arsene.chardon\",\"motdepasse\": \"larsenaldu26\",\"isReLogin\": false,\"uuid\": \"\"}",
+        body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
         headers: {
           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
         }
@@ -45,39 +46,38 @@ class User {
       const userinfo = await response.json()
 
       if (userinfo.code !== 200) return <ConnectionResponse>{
-        sucess: false,
+        success: false,
         username,
         password,
+        message: 'Identifiant et/ou mot de passe invalide.'
       };
 
       this.token = userinfo.token;
 
-      console.log(this.token)
-
-      
       const account = userinfo.data.accounts[0]
-      
+
       this.id = account.id
       this.schoolName = account.nomEtablissement
       this.firstName = account.prenom
       this.lastName = account.nom
-      
+
       console.log('registered as :', this.firstName, this.lastName)
-      
+
       this.username = username;
       this.password = password;
 
       return <ConnectionResponse>{
-        sucess: true,
+        success: true,
         username,
         password,
       };
     } catch (err) {
       console.log('error while connecting: ', err)
       return <ConnectionResponse>{
-        sucess: false,
+        success: false,
         username,
         password,
+        message: 'Vérifiez votre connection et réessayer.'
       };
     }
   }
@@ -89,13 +89,13 @@ class User {
       method: 'POST',
       body: "data={}",
       headers: {
-        "X-Token": this.token??'',
+        "X-Token": this.token ?? '',
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
       },
     }
     try {
       const response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${this.id}/notes.awp?verbe=get&v=4.39.1`, options)
-      
+
       const gradesInfo = await response.json()
 
       if (gradesInfo.code !== 200) {
@@ -109,12 +109,12 @@ class User {
       this.periods = [];
       this.grades = {};
 
-      for (let i=0; i<numberOfPeriod; i++) {
+      for (let i = 0; i < numberOfPeriod; i++) {
 
         const period = gradesInfo.data.periodes[i];
         const periodGradeIds = [];
 
-        for (let j=0; j<numberOfGrade; j++) {
+        for (let j = 0; j < numberOfGrade; j++) {
           const grade = gradesInfo.data.notes[j];
           if (grade.codePeriode !== period.codePeriode) continue;
 
@@ -191,25 +191,27 @@ class User {
     let total = 0;
     let coef = 0;
 
-    let disciplines: {[name: string]: {
-      total: number,
-      coef: number,
-    }} = {}
+    let disciplines: {
+      [name: string]: {
+        total: number,
+        coef: number,
+      }
+    } = {}
 
-    for (let i=0; i<gradeIds.length; i++) {
+    for (let i = 0; i < gradeIds.length; i++) {
       const grade = this.grades[gradeIds[i]];
 
       if (grade.significant) {
 
         if (disciplines[grade.codeDiscipline]) {
           disciplines[grade.codeDiscipline] = {
-            total: disciplines[grade.codeDiscipline]?.total+((grade.value / grade.denominator)*20)*grade.coef,
-            coef: disciplines[grade.codeDiscipline]?.coef+grade.coef,
+            total: disciplines[grade.codeDiscipline]?.total + ((grade.value / grade.denominator) * 20) * grade.coef,
+            coef: disciplines[grade.codeDiscipline]?.coef + grade.coef,
           }
 
         } else {
           disciplines[grade.codeDiscipline] = {
-            total: ((grade.value / grade.denominator)*20)*grade.coef,
+            total: ((grade.value / grade.denominator) * 20) * grade.coef,
             coef: grade.coef,
           }
         }
@@ -224,13 +226,13 @@ class User {
   }
 
   public refreshAverage() {
-    for (let periodIndex=0; periodIndex<this.periods.length; periodIndex++) {
+    for (let periodIndex = 0; periodIndex < this.periods.length; periodIndex++) {
       const period = this.periods[periodIndex]
       const grades = period.gradeIds;
 
       period.averageCalculated = this.calculateAverage(grades);
 
-      for (let disciplineIndex=0; disciplineIndex<period.disciplines.length; disciplineIndex++) {
+      for (let disciplineIndex = 0; disciplineIndex < period.disciplines.length; disciplineIndex++) {
         const discipline = period.disciplines[disciplineIndex];
         discipline.averageCalculated = this.calculateAverage(discipline.gradeIds);
       }
@@ -260,3 +262,7 @@ export function getUser() {
   }
   return instance;
 }
+
+export function clearUser() {
+  instance = null;
+} 

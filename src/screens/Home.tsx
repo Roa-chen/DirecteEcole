@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Button, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { getUser } from '../services/User';
 import DisciplineComponent from '../components/DisciplineComponent';
-import { Colors, FontFamily, FontSize, Spaces, SubTitleText} from '../GlobalStyles';
+import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 
 interface Props {
   unregister: () => void,
 }
 
 const Home: React.FC<Props> = ({ unregister }) => {
+  
+  const periodIndex = 0;
 
   const user = getUser()
   const [average, setAverage] = useState<number>();
@@ -16,13 +18,13 @@ const Home: React.FC<Props> = ({ unregister }) => {
 
   useEffect(() => {
     updateGrades(true);
-    user.subscribe(() => setAverage(user.periods[0].averageCalculated))
+    user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
   }, [])
 
   const updateGrades = (hideRefresh = false) => {
     !hideRefresh && setRefreshing(true)
     user.getGrades().then(() => {
-      setAverage(user.periods[0].averageCalculated)
+      setAverage(user.periods[periodIndex].averageCalculated)
     }).finally(() => {
       !hideRefresh && setRefreshing(false)
     })
@@ -46,15 +48,12 @@ const Home: React.FC<Props> = ({ unregister }) => {
           </TouchableOpacity>
         </View>
 
+        {average !== undefined && <Text style={styles.averageText}>{average}</Text>}
+        {average === undefined && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
 
-        <Text style={styles.averageText}>{average}</Text>
-
-        {user.periods[0]?.disciplines.map(discipline => {
-
-          return (
-            <DisciplineComponent key={'discipline' + discipline.codeDiscipline} discipline={discipline} />
-          )
-        })}
+        {user.periods[periodIndex]?.disciplines.map(discipline => (
+          <DisciplineComponent key={'discipline' + discipline.codeDiscipline} discipline={discipline} />
+        ))}
       </ScrollView>
 
 
