@@ -10,9 +10,11 @@ interface Props {
   onDismiss: () => void,
   periodIndex: number,
   setPeriodIndex: Dispatch<SetStateAction<number>>,
+  childIndex: number,
+  setChildIndex: Dispatch<SetStateAction<number>>,
 }
 
-const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPeriodIndex }) => {
+const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPeriodIndex, childIndex, setChildIndex }) => {
 
   const user = getUser();
 
@@ -37,17 +39,16 @@ const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPer
         }} />
 
         <View style={styles.contentContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
 
             <Text style={styles.lineTitle}>Période :</Text>
-
             <View style={styles.periodsContainer}>
               {Array(user.numberOfPeriod).fill(0).map((_, index) => {
                 return (
-                  <View key={'periodSelectorButton-' + index} style={{width: `${100/(user.numberOfPeriod??3)}%`}}>
+                  <View key={'periodSelectorButton-' + index} style={{ width: `${100 / (user.numberOfPeriod ?? 3)}%` }}>
                     <TouchableWithoutFeedback onPress={() => setPeriodIndex(index)}>
-                      <View style={[styles.periodButton, periodIndex === index && {opacity: 1}]}>
-                        <Text style={styles.periodText}>{index + 1}</Text>
+                      <View style={[styles.button, periodIndex === index && { opacity: 1 }]}>
+                        <Text style={styles.text}>{index + 1}</Text>
                       </View>
                     </TouchableWithoutFeedback>
                   </View>
@@ -57,6 +58,22 @@ const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPer
 
             <LimitBar />
 
+            {user.childs.length > 1 &&
+              <>
+                <Text style={styles.lineTitle}>Enfants :</Text>
+                <View style={styles.childsContainer}>
+                  {user.childs.map((child, index) => {
+                    return (
+                      <TouchableWithoutFeedback key={'child-' + child.firstName + '-' + index} onPress={() => setChildIndex(index)} style={{ marginBottom: Spaces.extra_small }}>
+                        <View style={[styles.button, { marginBottom: Spaces.extra_small }, childIndex === index && { opacity: 1 }]}>
+                          <Text style={styles.text}>{child.firstName} {child.lastName}</Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    )
+                  })}
+                </View>
+              </>
+            }
 
           </ScrollView>
         </View>
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
   },
-  periodButton: {
+  button: {
     marginHorizontal: Spaces.extra_small,
     backgroundColor: Colors.lightBackground,
     borderWidth: 2,
@@ -109,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     opacity: .3
   },
-  periodText: {
+  text: {
     ...SubTitleText,
     fontWeight: 'bold',
     marginVertical: Spaces.extra_small
@@ -118,6 +135,9 @@ const styles = StyleSheet.create({
     ...SubTitleText,
     fontWeight: 'bold',
     marginVertical: Spaces.small,
+  },
+  childsContainer: {
+    width: '100%',
   },
 })
 

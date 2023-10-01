@@ -15,13 +15,13 @@ class User {
   public firstName: string | undefined
   public lastName: string | undefined
   public typeAccount: string | undefined
-  
+
   public childs: {
-    id: string;
+    id: number;
     firstName: string | undefined;
     lastName: string | undefined;
   }[]
-  private selectedChild = 0;
+  public selectedChild = 0;
 
   public numberOfPeriod: number | undefined;
   public periods: Period[]
@@ -34,7 +34,8 @@ class User {
     this.periods = [];
     this.grades = {};
     this.subscriptions = [];
-    this.childs = [];
+    this.childs = [{ "firstName": "Arsène", "id": 1594, "lastName": "CHARDON" }, { "firstName": "Arsène", "id": 1594, "lastName": "CHARDON" }];
+    // this.childs = [];
     this.connected = false;
   }
 
@@ -75,7 +76,7 @@ class User {
       this.typeAccount = account.typeCompte;
 
       if (this.typeAccount === "1") {
-        for (let i=0; i < account.profile.eleves.length; i++) {
+        for (let i = 0; i < account.profile.eleves.length; i++) {
           const child = account.profile.eleves[i]
 
           this.childs.push({
@@ -84,6 +85,8 @@ class User {
             id: child.id,
           })
         }
+
+        console.log(this.childs)
       }
 
       console.log('registered as :', this.firstName, this.lastName)
@@ -111,7 +114,7 @@ class User {
   public async getGrades() {
 
     if (!this.token) {
-      const response = await this.connect(this.username??'', this.password??'');
+      const response = await this.connect(this.username ?? '', this.password ?? '');
 
       if (!response.success) {
         Alert.alert('Erreur:', response.message)
@@ -305,13 +308,32 @@ class User {
 
   public getCurrentPeriod() {
     const now = Date.now();
-    for (let i=0; i<(this.numberOfPeriod??0); i++) {
+    for (let i = 0; i < (this.numberOfPeriod ?? 0); i++) {
       const period = this.periods[i];
       if (period.beginDate <= now && now <= period.endDate) return i;
     }
     return -1;
   }
 
+  public changeChild(index: number) {
+    if (this.typeAccount === '1' && index >= 0 && index < this.childs.length) {
+      if (this.selectedChild !== index) {
+        this.selectedChild = index
+
+        this.numberOfPeriod = undefined
+        this.periods = [];
+        this.grades = {};
+
+        this.notify();
+
+        this.getGrades().then((success) => {
+          if (success) {
+            this.notify()
+          }
+        })
+      }
+    }
+  }
 }
 
 export function getUser() {

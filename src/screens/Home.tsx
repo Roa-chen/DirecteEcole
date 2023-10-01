@@ -12,6 +12,7 @@ interface Props {
 const Home: React.FC<Props> = ({ unregister }) => {
 
   const [periodIndex, setPeriodIndex] = useState(0);
+  const [childIndex, setChildIndex] = useState(0);
 
   const user = getUser()
   const [average, setAverage] = useState<number>();
@@ -21,13 +22,11 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
-
     if (!user.connected) {
       getUser().connect(user.username ?? '', user.password ?? '').then((response) => {
-
         if (response.success) {
           updateGrades(true);
-          user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
+          user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
         } else {
           Alert.alert('Erreur:', response.message)
           setIsBlocked(true);
@@ -36,14 +35,17 @@ const Home: React.FC<Props> = ({ unregister }) => {
       })
     } else {
       updateGrades(true);
-      user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
+      user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
     }
-
   }, [])
 
   useEffect(() => {
     setAverage(user.periods[periodIndex]?.averageCalculated)
   }, [periodIndex])
+
+  useEffect(() => {
+    user.changeChild(childIndex)
+  }, [childIndex])
 
   const updateGrades = (hideRefresh = false) => {
     setIsBlocked(false)
@@ -70,6 +72,8 @@ const Home: React.FC<Props> = ({ unregister }) => {
         onDismiss={() => setModalVisible(false)}
         periodIndex={periodIndex}
         setPeriodIndex={setPeriodIndex}
+        childIndex={childIndex}
+        setChildIndex={setChildIndex}
       />
 
       <ScrollView
@@ -97,7 +101,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
           </TouchableOpacity>
         )}
 
-        {user.periods[periodIndex]?.disciplines.map(discipline => (
+        { user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
           <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
         ))}
       </ScrollView>
@@ -113,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexGrow: 1,
+    width: '100%',
   },
   disciplineContainer: {
     width: '100%',
