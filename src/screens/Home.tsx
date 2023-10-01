@@ -1,24 +1,41 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { getUser } from '../services/User';
 import DisciplineComponent from '../components/DisciplineComponent';
 import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
+import ProfileModal from '../components/ProfileModal';
 
 interface Props {
   unregister: () => void,
 }
 
 const Home: React.FC<Props> = ({ unregister }) => {
-  
+
   const periodIndex = 0;
 
   const user = getUser()
   const [average, setAverage] = useState<number>();
   const [refreshing, setRefreshing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    updateGrades(true);
-    user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
+
+    if (!user.connected) {
+      getUser().connect(user.username ?? '', user.password ?? '').then((response) => {
+
+        if (response.success) {
+          updateGrades(true);
+          user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
+        } else {
+          Alert.alert('Erreur:', response.message)
+        }
+
+      })
+    } else {
+      updateGrades(true);
+      user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
+    }
+
   }, [])
 
   const updateGrades = (hideRefresh = false) => {
@@ -33,6 +50,8 @@ const Home: React.FC<Props> = ({ unregister }) => {
   return (
     <View style={styles.container}>
 
+      <ProfileModal visible={modalVisible} onDismiss={() => setModalVisible(false)} />
+
       <ScrollView
         style={{ width: '100%' }}
         contentContainerStyle={styles.disciplineContainer}
@@ -41,7 +60,9 @@ const Home: React.FC<Props> = ({ unregister }) => {
       >
 
         <View style={styles.headerContainer}>
-          <Text style={styles.nameText}>{user.firstName + ' ' + user.lastName}</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)} >
+            <Text style={styles.nameText}>{(user.firstName ?? '') + ' ' + (user.lastName ?? '')}</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={() => unregister()} >
             <Text style={styles.buttonText}>Se déconnecter</Text>
@@ -92,12 +113,12 @@ const styles = StyleSheet.create({
   nameText: {
     ...SubTitleText,
     color: Colors.lightText,
+    marginVertical: Spaces.extra_small,
+    marginRight: Spaces.small,
   },
   buttonText: {
     ...SubTitleText,
     color: Colors.callToAction,
-    marginVertical: Spaces.extra_small,
-    marginLeft: Spaces.small,
   },
 })
 

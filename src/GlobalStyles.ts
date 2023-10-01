@@ -19,6 +19,7 @@ export const FontSize = {
 export const Colors = {
   background: '#1A1821',
   lightBackground: '#2F2B3A',
+  transparentBackground: '#1A1821C0',
   callToAction: '#8F6BFF',
   selectionColor: '#8F6BFF55',
   transparentCallToAction: '#8F6BFF80',

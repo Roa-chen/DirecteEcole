@@ -29,14 +29,10 @@ const MainNavigator: React.FC<Props> = ({ }) => {
             password => {
               console.log('password: ', password)
               if (password) {
-                getUser().connect(JSON.parse(username), JSON.parse(password)).then((response) => {
-                  if (response.success) {
-                    setConnectionState(2)
-                  } else {
-                    // Alert.alert('Erreur:', response.message)
-                    setConnectionState(1)
-                  }
-                })
+
+                getUser().setCredentials(JSON.parse(username), JSON.parse(password));
+
+                setConnectionState(2)
               } else {
                 setConnectionState(1)
               }

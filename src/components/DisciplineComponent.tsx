@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     width: '100%',
-    marginBottom: Spaces.extra_small,
+    paddingVertical: Spaces.extra_small,
   },
   gradeContainer: {
     width: '100%',

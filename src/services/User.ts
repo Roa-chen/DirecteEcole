@@ -5,8 +5,9 @@ let instance: User | null = null;
 
 class User {
 
-  private username: string | undefined
-  private password: string | undefined
+  public connected: boolean | undefined
+  public username: string | undefined
+  public password: string | undefined
   private token: string | undefined
   private id: string | undefined
   public schoolName: string | undefined
@@ -86,6 +87,7 @@ class User {
 
       this.username = username;
       this.password = password;
+      this.connected = true;
 
       return <ConnectionResponse>{
         success: true,
@@ -104,7 +106,7 @@ class User {
   }
 
   public async getGrades() {
-    console.log("getting grades. token: ", this.token)
+    console.log("getting grades: token: ", this.token)
 
     const options = {
       method: 'POST',
@@ -278,12 +280,15 @@ class User {
   }
 
   private getId() {
-
     if (this.typeAccount === "1") {
       return this.childs[this.selectedChild].id
     }
-
     return this.id;
+  }
+
+  public setCredentials(username: string, password: string) {
+    this.username = username;
+    this.password = password;
   }
 
 }
