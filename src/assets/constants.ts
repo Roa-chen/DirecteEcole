@@ -44,8 +44,8 @@ export type Discipline = {
 export type Period = {
   codePeriod: string,
   namePeriod: string,
-  beginDate: string,
-  endDate: string,
+  beginDate: number,
+  endDate: number,
   averageOfficial: number,
   averageCalculated: number,
   averageClass: number,

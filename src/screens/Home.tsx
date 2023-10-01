@@ -11,12 +11,14 @@ interface Props {
 
 const Home: React.FC<Props> = ({ unregister }) => {
 
-  const periodIndex = 0;
+  const [periodIndex, setPeriodIndex] = useState(0);
 
   const user = getUser()
   const [average, setAverage] = useState<number>();
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
 
@@ -28,6 +30,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
           user.subscribe(() => setAverage(user.periods[periodIndex].averageCalculated))
         } else {
           Alert.alert('Erreur:', response.message)
+          setIsBlocked(true);
         }
 
       })
@@ -38,10 +41,22 @@ const Home: React.FC<Props> = ({ unregister }) => {
 
   }, [])
 
+  useEffect(() => {
+    setAverage(user.periods[periodIndex]?.averageCalculated)
+  }, [periodIndex])
+
   const updateGrades = (hideRefresh = false) => {
+    setIsBlocked(false)
     !hideRefresh && setRefreshing(true)
-    user.getGrades().then(() => {
-      setAverage(user.periods[periodIndex].averageCalculated)
+    user.getGrades().then((success) => {
+      if (success) {
+        const currentPeriod = user.getCurrentPeriod();
+        setPeriodIndex(currentPeriod);
+        setAverage(user.periods[currentPeriod].averageCalculated);
+        setIsBlocked(false)
+      } else {
+        setIsBlocked(true)
+      }
     }).finally(() => {
       !hideRefresh && setRefreshing(false)
     })
@@ -50,7 +65,12 @@ const Home: React.FC<Props> = ({ unregister }) => {
   return (
     <View style={styles.container}>
 
-      <ProfileModal visible={modalVisible} onDismiss={() => setModalVisible(false)} />
+      <ProfileModal
+        visible={modalVisible}
+        onDismiss={() => setModalVisible(false)}
+        periodIndex={periodIndex}
+        setPeriodIndex={setPeriodIndex}
+      />
 
       <ScrollView
         style={{ width: '100%' }}
@@ -69,11 +89,16 @@ const Home: React.FC<Props> = ({ unregister }) => {
           </TouchableOpacity>
         </View>
 
-        {average !== undefined && <Text style={styles.averageText}>{average}</Text>}
-        {average === undefined && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+        {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : 'Pas de note'}</Text>}
+        {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+        {(average === undefined && isBlocked) && (
+          <TouchableOpacity onPress={() => updateGrades(true)} >
+            <Text style={styles.errorText}>Recharger</Text>
+          </TouchableOpacity>
+        )}
 
         {user.periods[periodIndex]?.disciplines.map(discipline => (
-          <DisciplineComponent key={'discipline' + discipline.codeDiscipline} discipline={discipline} />
+          <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
         ))}
       </ScrollView>
 
@@ -119,6 +144,13 @@ const styles = StyleSheet.create({
   buttonText: {
     ...SubTitleText,
     color: Colors.callToAction,
+  },
+  errorText: {
+    ...SubTitleText,
+    color: Colors.callToAction,
+    fontSize: FontSize.medium,
+    marginTop: Spaces.large,
+    fontWeight: 'bold',
   },
 })
 

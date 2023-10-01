@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { ConnectionResponse, Discipline, Grade, Period } from "../assets/constants";
 import { roundGrade } from "../assets/utils";
 
@@ -5,7 +6,7 @@ let instance: User | null = null;
 
 class User {
 
-  public connected: boolean | undefined
+  public connected: boolean
   public username: string | undefined
   public password: string | undefined
   private token: string | undefined
@@ -22,6 +23,7 @@ class User {
   }[]
   private selectedChild = 0;
 
+  public numberOfPeriod: number | undefined;
   public periods: Period[]
   public grades: { [id: string]: Grade }
 
@@ -33,6 +35,7 @@ class User {
     this.grades = {};
     this.subscriptions = [];
     this.childs = [];
+    this.connected = false;
   }
 
   public async connect(username: string, password: string) {
@@ -100,12 +103,22 @@ class User {
         success: false,
         username,
         password,
-        message: 'Vérifiez votre connection et réessayer.'
+        message: 'Vérifiez votre connection et réessayez.'
       };
     }
   }
 
   public async getGrades() {
+
+    if (!this.token) {
+      const response = await this.connect(this.username??'', this.password??'');
+
+      if (!response.success) {
+        Alert.alert('Erreur:', response.message)
+        return false
+      }
+    }
+
     console.log("getting grades: token: ", this.token)
 
     const options = {
@@ -126,13 +139,13 @@ class User {
         return false
       }
 
-      const numberOfPeriod = gradesInfo.data.periodes.length - 1;
+      this.numberOfPeriod = gradesInfo.data.periodes.length - 1;
       const numberOfGrade = gradesInfo.data.notes.length;
 
       this.periods = [];
       this.grades = {};
 
-      for (let i = 0; i < numberOfPeriod; i++) {
+      for (let i = 0; i < this.numberOfPeriod; i++) {
 
         const period = gradesInfo.data.periodes[i];
         const periodGradeIds = [];
@@ -168,15 +181,15 @@ class User {
           averageCalculated: this.calculateAverage(periodGradeIds),
           averageClass: User.formatStringNumber(period.ensembleMatieres.moyenneClasse),
           averageOfficial: User.formatStringNumber(period.ensembleMatieres.moyenneGenerale),
-          beginDate: period.dateDebut,
-          endDate: period.dateFin,
+          beginDate: Date.parse(period.dateDebut),
+          endDate: Date.parse(period.dateFin),
           codePeriod: period.codePeriode,
           maxAverageClass: User.formatStringNumber(period.moyenneMax),
           minAverageClass: User.formatStringNumber(period.moyenneMin),
           namePeriod: period.periode,
           disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
-            const disciplineGradeIds = Object.values(this.grades).filter(grade => grade.codeDiscipline === discipline.codeMatiere).map(grade => grade.id)
+            const disciplineGradeIds = Object.values(this.grades).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode).map(grade => grade.id)
 
             return <Discipline>{
               averageCalculated: this.calculateAverage(disciplineGradeIds),
@@ -193,7 +206,6 @@ class User {
           gradeIds: periodGradeIds,
         })
       }
-
 
       return true
     } catch (error) {
@@ -289,6 +301,15 @@ class User {
   public setCredentials(username: string, password: string) {
     this.username = username;
     this.password = password;
+  }
+
+  public getCurrentPeriod() {
+    const now = Date.now();
+    for (let i=0; i<(this.numberOfPeriod??0); i++) {
+      const period = this.periods[i];
+      if (period.beginDate <= now && now <= period.endDate) return i;
+    }
+    return -1;
   }
 
 }

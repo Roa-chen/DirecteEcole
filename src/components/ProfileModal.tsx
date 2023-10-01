@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch, ScrollView, } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { roundGrade } from '../assets/utils';
@@ -8,10 +8,14 @@ import LinearGradient from 'react-native-linear-gradient';
 interface Props {
   visible: boolean,
   onDismiss: () => void,
-  // grade: Grade,
+  periodIndex: number,
+  setPeriodIndex: Dispatch<SetStateAction<number>>,
 }
 
-const ProfileModal: React.FC<Props> = ({ visible, onDismiss }) => {
+const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPeriodIndex }) => {
+
+  const user = getUser();
+
   return (
     <Modal
       visible={visible}
@@ -19,22 +23,40 @@ const ProfileModal: React.FC<Props> = ({ visible, onDismiss }) => {
       transparent={true}
       animationType='slide'
     >
-      <LinearGradient style={styles.overlay} colors={[Colors.background, 'transparent']} start={{x: 0, y: .8}} end={{x: 0, y: 0}} >
+      <LinearGradient style={styles.overlay} colors={[Colors.background, 'transparent']} start={{ x: 0, y: .8 }} end={{ x: 0, y: 0 }} >
         <TouchableWithoutFeedback onPress={(evt) => { evt.target == evt.currentTarget && onDismiss() }}>
           <View style={{ flex: 1, width: '100%' }} />
         </TouchableWithoutFeedback>
 
         <View style={{
-        width: '35%',
-        height: 5,
-        backgroundColor: Colors.lightBackground,
-        marginBottom: Spaces.extra_small,
-        borderRadius: BorderRadius.infinite,
-        
-      }} />
+          width: '35%',
+          height: 5,
+          backgroundColor: Colors.lightBackground,
+          marginBottom: Spaces.extra_small,
+          borderRadius: BorderRadius.infinite,
+        }} />
 
         <View style={styles.contentContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
+
+            <Text style={styles.lineTitle}>Période :</Text>
+
+            <View style={styles.periodsContainer}>
+              {Array(user.numberOfPeriod).fill(0).map((_, index) => {
+                return (
+                  <View key={'periodSelectorButton-' + index} style={{width: `${100/(user.numberOfPeriod??3)}%`}}>
+                    <TouchableWithoutFeedback onPress={() => setPeriodIndex(index)}>
+                      <View style={[styles.periodButton, periodIndex === index && {opacity: 1}]}>
+                        <Text style={styles.periodText}>{index + 1}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
+                )
+              })}
+            </View>
+
+            <LimitBar />
+
 
           </ScrollView>
         </View>
@@ -43,57 +65,14 @@ const ProfileModal: React.FC<Props> = ({ visible, onDismiss }) => {
   );
 }
 
-const Line: React.FC<{
-  name: string,
-  value: string
-}> = ({ name, value }) => {
-  return (
-    <View style={styles.lineContainer}>
-      <Text style={styles.lineText}>{name}:</Text>
-      <Text style={styles.lineText}>{value}</Text>
-    </View>
-  )
-}
-
-const LineSwitch: React.FC<{
-  name: string,
-  value: boolean,
-  onPress: () => void,
-}> = ({ name, value, onPress }) => {
-  return (
-    <View style={styles.lineContainer}>
-      <Text style={styles.lineText}>{name}:</Text>
-      <Switch
-        value={value}
-        thumbColor={Colors.callToAction}
-        trackColor={{
-          true: Colors.transparentCallToAction
-        }}
-        onTouchEnd={onPress}
-      />
-    </View>
-  )
-}
-
-const LineGrade: React.FC<{
-  name: string,
-  value: number,
-  denominator: number,
-  template?: boolean,
-}> = ({ name, value, denominator, template = false }) => {
-  return (
-    <View style={[styles.lineContainer, template && { marginBottom: Spaces.small }]}>
-      <Text style={styles.lineText}>{name}{template ? "" : ":"}</Text>
-      <View style={styles.lineGradeContainer}>
-        <View style={styles.gradeContainer}>
-          {<Text style={styles.lineText}>{template ? '/' : ''}{value.toString()}</Text>}
-        </View>
-        <View style={styles.gradeContainer}>
-          {denominator !== 20 && <Text style={styles.lineText}>{template ? '/' : ''}{roundGrade((value / denominator) * 20).toString()}</Text>}
-        </View>
-      </View>
-    </View>
-  )
+const LimitBar = () => {
+  return (<View style={{
+    width: '80%',
+    height: 1,
+    backgroundColor: Colors.lightBackground,
+    marginVertical: Spaces.medium,
+    alignSelf: 'center',
+  }} />)
 }
 
 
@@ -105,51 +84,40 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    // marginTop: 20,
   },
   contentContainer: {
     elevation: 20,
     borderTopLeftRadius: BorderRadius.medium,
     borderTopRightRadius: BorderRadius.medium,
     width: '100%',
-    minHeight: '60%',
+    minHeight: '40%',
     backgroundColor: Colors.background,
     padding: Spaces.medium,
     alignItems: 'center',
   },
-  lineContainer: {
+  periodsContainer: {
+    width: '100%',
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    marginBottom: Spaces.extra_small,
   },
-  lineText: {
-    ...SubTitleText,
-    color: Colors.lightText,
-    fontSize: FontSize.small,
-    fontWeight: 'bold',
-  },
-  separationLine: {
-    height: 1,
-    width: '100%',
+  periodButton: {
+    marginHorizontal: Spaces.extra_small,
     backgroundColor: Colors.lightBackground,
-    marginVertical: Spaces.small,
+    borderWidth: 2,
+    borderColor: Colors.callToAction,
+    borderRadius: BorderRadius.small,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: .3
   },
-  titleText: {
+  periodText: {
     ...SubTitleText,
-    color: Colors.lightText,
-    fontSize: FontSize.medium,
     fontWeight: 'bold',
-    marginBottom: Spaces.medium,
+    marginVertical: Spaces.extra_small
   },
-  lineGradeContainer: {
-    width: '35%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  gradeContainer: {
-    width: '50%',
-    alignContent: "flex-end",
+  lineTitle: {
+    ...SubTitleText,
+    fontWeight: 'bold',
+    marginVertical: Spaces.small,
   },
 })
 

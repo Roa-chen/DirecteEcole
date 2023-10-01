@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   SubTitleText: {
-    color: Colors.text,
+    color: Colors.lightText,
     fontSize: FontSize.small,
     // lineHeight: 26,
     fontFamily: FontFamily.regular,
