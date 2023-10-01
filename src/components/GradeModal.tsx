@@ -90,13 +90,13 @@ const LineGrade: React.FC<{
   return (
     <View style={[styles.lineContainer, template && { marginBottom: Spaces.small }]}>
       <Text style={styles.lineText}>{name}{template ? "" : ":"}</Text>
-      <View style={{
-        width: '35%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-        {<Text style={styles.lineText}>{template ? '/' : ''}{value.toString()}</Text>}
-        {denominator !== 20 && <Text style={styles.lineText}>{template ? '/' : ''}{roundGrade((value / denominator) * 20).toString()}</Text>}
+      <View style={styles.lineGradeContainer}>
+        <View style={styles.gradeContainer}>
+          {<Text style={styles.lineText}>{template ? '/' : ''}{value.toString()}</Text>}
+        </View>
+        <View style={styles.gradeContainer}>
+          {denominator !== 20 && <Text style={styles.lineText}>{template ? '/' : ''}{roundGrade((value / denominator) * 20).toString()}</Text>}
+        </View>
       </View>
     </View>
   )
@@ -142,6 +142,15 @@ const styles = StyleSheet.create({
     fontSize: FontSize.medium,
     fontWeight: 'bold',
     marginBottom: Spaces.medium,
+  },
+  lineGradeContainer: {
+    width: '35%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  gradeContainer: {
+    width: '50%',
+    alignContent: "flex-end",
   },
 })
 

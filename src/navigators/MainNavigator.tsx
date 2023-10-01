@@ -33,7 +33,7 @@ const MainNavigator: React.FC<Props> = ({ }) => {
                   if (response.success) {
                     setConnectionState(2)
                   } else {
-                    Alert.alert('Erreur:', response.message)
+                    // Alert.alert('Erreur:', response.message)
                     setConnectionState(1)
                   }
                 })

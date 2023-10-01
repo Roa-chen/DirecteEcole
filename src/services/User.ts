@@ -12,6 +12,14 @@ class User {
   public schoolName: string | undefined
   public firstName: string | undefined
   public lastName: string | undefined
+  public typeAccount: string | undefined
+  
+  public childs: {
+    id: string;
+    firstName: string | undefined;
+    lastName: string | undefined;
+  }[]
+  private selectedChild = 0;
 
   public periods: Period[]
   public grades: { [id: string]: Grade }
@@ -19,11 +27,11 @@ class User {
   private subscriptions: (() => void)[]
 
 
-
   constructor() {
     this.periods = [];
     this.grades = {};
     this.subscriptions = [];
+    this.childs = [];
   }
 
   public async connect(username: string, password: string) {
@@ -54,12 +62,25 @@ class User {
 
       this.token = userinfo.token;
 
-      const account = userinfo.data.accounts[0]
+      const account = userinfo.data.accounts[0];
 
-      this.id = account.id
-      this.schoolName = account.nomEtablissement
-      this.firstName = account.prenom
-      this.lastName = account.nom
+      this.id = account.id;
+      this.schoolName = account.nomEtablissement;
+      this.firstName = account.prenom;
+      this.lastName = account.nom;
+      this.typeAccount = account.typeCompte;
+
+      if (this.typeAccount === "1") {
+        for (let i=0; i < account.profile.eleves.length; i++) {
+          const child = account.profile.eleves[i]
+
+          this.childs.push({
+            firstName: child.prenom,
+            lastName: child.nom,
+            id: child.id,
+          })
+        }
+      }
 
       console.log('registered as :', this.firstName, this.lastName)
 
@@ -94,7 +115,7 @@ class User {
       },
     }
     try {
-      const response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${this.id}/notes.awp?verbe=get&v=4.39.1`, options)
+      const response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${this.getId()}/notes.awp?verbe=get&v=4.39.1`, options)
 
       const gradesInfo = await response.json()
 
@@ -143,13 +164,13 @@ class User {
 
         this.periods.push({
           averageCalculated: this.calculateAverage(periodGradeIds),
-          averageClass: Number(period.ensembleMatieres.moyenneClasse),
-          averageOfficial: Number(period.ensembleMatieres.moyenneGenerale),
+          averageClass: User.formatStringNumber(period.ensembleMatieres.moyenneClasse),
+          averageOfficial: User.formatStringNumber(period.ensembleMatieres.moyenneGenerale),
           beginDate: period.dateDebut,
           endDate: period.dateFin,
           codePeriod: period.codePeriode,
-          maxAverageClass: Number(period.moyenneMax),
-          minAverageClass: Number(period.moyenneMin),
+          maxAverageClass: User.formatStringNumber(period.moyenneMax),
+          minAverageClass: User.formatStringNumber(period.moyenneMin),
           namePeriod: period.periode,
           disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
@@ -157,12 +178,12 @@ class User {
 
             return <Discipline>{
               averageCalculated: this.calculateAverage(disciplineGradeIds),
-              averageClass: Number(discipline.moyenneClasse),
-              averageOfficial: Number(discipline.moyenne),
+              averageClass: User.formatStringNumber(discipline.moyenneClasse),
+              averageOfficial: User.formatStringNumber(discipline.moyenne),
               codeDiscipline: discipline.codeMatiere,
-              coef: Number(discipline.coef),
-              maxAverageClass: Number(discipline.moyenneMax),
-              minAverageClass: Number(discipline.moyenneMin),
+              coef: User.formatStringNumber(discipline.coef),
+              maxAverageClass: User.formatStringNumber(discipline.moyenneMax),
+              minAverageClass: User.formatStringNumber(discipline.moyenneMin),
               nameDiscipline: discipline.discipline,
               gradeIds: disciplineGradeIds,
             }
@@ -184,6 +205,8 @@ class User {
   }
 
   private static formatStringNumber(string: string) {
+    if (!string) return Number(string)
+    if (typeof string === "number") return string
     return Number(string.replaceAll(',', '.'))
   }
 
@@ -252,6 +275,15 @@ class User {
 
   private notify() {
     this.subscriptions.forEach(onChange => onChange())
+  }
+
+  private getId() {
+
+    if (this.typeAccount === "1") {
+      return this.childs[this.selectedChild].id
+    }
+
+    return this.id;
   }
 
 }

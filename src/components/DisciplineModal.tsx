@@ -29,11 +29,11 @@ const DisciplineModal: React.FC<Props> = ({ visible, onDismiss, discipline }) =>
 
             <View style={styles.separationLine} />
 
-            <LineGrade name={"Moyenne Calculée"} value={roundGrade(discipline.averageCalculated)} />
-            <LineGrade name={"Moyenne Officielle"} value={roundGrade(discipline.averageOfficial)} />
-            <LineGrade name={"Moyenne de classe"} value={discipline.averageClass} />
-            <LineGrade name={"Moyenne maximum"} value={discipline.maxAverageClass} />
-            <LineGrade name={"Moyenne minimum"} value={discipline.minAverageClass} />
+            { !Number.isNaN(roundGrade(discipline.averageCalculated)) && <LineGrade name={"Moyenne Calculée"} value={roundGrade(discipline.averageCalculated)} />}
+            { !Number.isNaN(roundGrade(discipline.averageOfficial)) && <LineGrade name={"Moyenne Officielle"} value={roundGrade(discipline.averageOfficial)} />}
+            { !Number.isNaN(discipline.averageClass) && <LineGrade name={"Moyenne de classe"} value={discipline.averageClass} />}
+            { !Number.isNaN(discipline.maxAverageClass) && <LineGrade name={"Moyenne maximum"} value={discipline.maxAverageClass} />}
+            { !Number.isNaN(discipline.minAverageClass) && <LineGrade name={"Moyenne minimum"} value={discipline.minAverageClass} />}
 
           </View>
         </View>

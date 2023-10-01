@@ -9,8 +9,8 @@ interface Props {
 
 const Auth: React.FC<Props> = ({ connect }) => {
 
-  const [usernameText, setUsernameText] = useState('arsene.chardon');
-  const [passwordText, setPasswordText] = useState('larsenaldu26');
+  const [usernameText, setUsernameText] = useState('');
+  const [passwordText, setPasswordText] = useState('');
 
   const [fetching, setFetching] = useState(false);
 
