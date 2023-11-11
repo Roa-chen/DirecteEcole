@@ -6,6 +6,8 @@ import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalSty
 import ProfileModal from '../components/ProfileModal';
 import { SvgXml } from 'react-native-svg';
 import { settings_icon } from '../assets/svgs';
+import { windowWidth } from '../assets/constants';
+import GradeList from '../components/GradeList';
 
 interface Props {
   unregister: () => void,
@@ -52,7 +54,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const updateGrades = (hideRefresh = false) => {
     setIsBlocked(false)
     !hideRefresh && setRefreshing(true)
-    user.getGrades().then((success) => {
+    user.fetchGrades().then((success) => {
       if (success) {
         const currentPeriod = user.getCurrentPeriod();
         setPeriodIndex(currentPeriod);
@@ -79,41 +81,49 @@ const Home: React.FC<Props> = ({ unregister }) => {
         unregister={unregister}
       />
 
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => setModalVisible(true)} >
+          <Text style={styles.nameText}>{(user.firstName ?? '') + ' ' + (user.lastName ?? '')}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setModalVisible(true)} >
+          <View style={styles.settingsButton}>
+            <SvgXml xml={settings_icon} width={FontSize.medium} height={FontSize.medium} />
+          </View>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
-        style={{ width: '100%' }}
-        contentContainerStyle={styles.disciplineContainer}
-        showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
+        horizontal
+        style={{ width: windowWidth }}
+        pagingEnabled
       >
 
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => setModalVisible(true)} >
-            <Text style={styles.nameText}>{(user.firstName ?? '') + ' ' + (user.lastName ?? '')}</Text>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity onPress={() => setModalVisible(true)} >
-            {/* <Text style={styles.buttonText}>Se déconnecter</Text> */}
-            <View style={styles.settinfgsButton}>
-              <SvgXml xml={settings_icon} width={FontSize.medium} height={FontSize.medium} />
-            </View>
-          </TouchableOpacity>
+        <View style={{ width: windowWidth }}>
+          <ScrollView
+            style={{ width: '100%' }}
+            contentContainerStyle={styles.disciplineContainer}
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
+          >
+            {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : 'Pas de note'}</Text>}
+            {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+            {(average === undefined && isBlocked) && (
+              <TouchableOpacity onPress={() => updateGrades(true)} >
+                <Text style={styles.errorText}>Recharger</Text>
+              </TouchableOpacity>
+            )}
+            {user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
+              <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
+            ))}
+          </ScrollView>
         </View>
 
-        {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : 'Pas de note'}</Text>}
-        {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
-        {(average === undefined && isBlocked) && (
-          <TouchableOpacity onPress={() => updateGrades(true)} >
-            <Text style={styles.errorText}>Recharger</Text>
-          </TouchableOpacity>
-        )}
+        <View style={{ width: windowWidth }}>
+          <GradeList />
+        </View>
 
-        { user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
-          <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
-        ))}
       </ScrollView>
-
-
     </View>
   );
 }
@@ -129,7 +139,6 @@ const styles = StyleSheet.create({
   disciplineContainer: {
     width: '100%',
     paddingHorizontal: Spaces.small,
-    paddingTop: Spaces.small,
     flexGrow: 1,
     alignItems: 'center',
   },
@@ -145,17 +154,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingHorisontal: Spaces.small,
+    paddingHorizontal: Spaces.small,
+    paddingTop: Spaces.small,
   },
   nameText: {
     ...SubTitleText,
     color: Colors.lightText,
     marginVertical: Spaces.extra_small,
     marginRight: Spaces.small,
-  },
-  buttonText: {
-    ...SubTitleText,
-    color: Colors.callToAction,
   },
   errorText: {
     ...SubTitleText,
@@ -164,8 +170,8 @@ const styles = StyleSheet.create({
     marginTop: Spaces.large,
     fontWeight: 'bold',
   },
-  settinfgsButton: {
-    marginHorizontal: Spaces.small,
+  settingsButton: {
+    marginLeft: Spaces.small,
     alignItems: 'center',
     justifyContent: 'center',
     padding: Spaces.extra_small,

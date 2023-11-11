@@ -1,5 +1,9 @@
+import { Dimensions } from 'react-native';
+
 export const USERNAME_KEY = 'username'
 export const PASSWORD_KEY = 'password'
+
+export const windowWidth = Dimensions.get('window').width;
 
 export type UserInfo = any;
 export type ConnectionResponse = {
@@ -22,6 +26,7 @@ export type Grade = {
   denominator: number,
   significant: boolean,
   date: string,
+  displayDate: string,
   isPositive: boolean,
   averageClass: number,
   minClass: number,

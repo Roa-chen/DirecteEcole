@@ -110,7 +110,7 @@ class User {
     }
   }
 
-  public async getGrades() {
+  public async fetchGrades() {
 
     if (!this.token) {
       const response = await this.connect(this.username ?? '', this.password ?? '');
@@ -163,6 +163,7 @@ class User {
             coef: Number(grade.coef),
             comment: grade.commentaire,
             date: grade.date,
+            displayDate: grade.dateSaisie,
             denominator: Number(grade.noteSur),
             id: grade.id.toString(),
             isPositive: grade.valeurisee,
@@ -258,7 +259,7 @@ class User {
     }
 
     for (let key of Object.keys(disciplines)) {
-      total += ( disciplines[key].total / disciplines[key].coef )
+      total += (disciplines[key].total / disciplines[key].coef)
       coef += 1
     }
     return roundGrade(total / coef);
@@ -325,13 +326,18 @@ class User {
 
         this.notify();
 
-        this.getGrades().then((success) => {
+        this.fetchGrades().then((success) => {
           if (success) {
             this.notify()
           }
         })
       }
     }
+  }
+
+  public getGrades() {
+
+    return this.grades;
   }
 }
 

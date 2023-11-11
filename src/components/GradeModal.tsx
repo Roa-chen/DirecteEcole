@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     ...SubTitleText,
     color: Colors.lightText,
     fontSize: FontSize.small,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   separationLine: {
     height: 1,
