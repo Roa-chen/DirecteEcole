@@ -94,6 +94,8 @@ class User {
       this.password = password;
       this.connected = true;
 
+      this.notify()
+
       return <ConnectionResponse>{
         success: true,
         username,
@@ -291,6 +293,7 @@ class User {
   }
 
   private notify() {
+    console.log('notify')
     this.subscriptions.forEach(onChange => onChange())
   }
 

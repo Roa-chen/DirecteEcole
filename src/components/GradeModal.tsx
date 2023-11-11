@@ -8,10 +8,11 @@ import { getUser } from '../services/User';
 interface Props {
   visible: boolean,
   onDismiss: () => void,
-  grade: Grade,
+  grade: Grade | undefined,
 }
 
 const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
+  if(!grade) return
   return (
     <Modal
       visible={visible}

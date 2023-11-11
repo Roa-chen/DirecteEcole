@@ -1,21 +1,34 @@
-import React, { } from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, Spaces, SubTitleText } from '../GlobalStyles';
 import { getUser } from '../services/User';
+import GradeModal from './GradeModal';
+import { Grade } from '../assets/constants';
 
 interface Props {
-
+  
 }
 
 const GradeList: React.FC<Props> = ({ }) => {
 
-  const user = getUser()
+  const sort = (grades: { [id: string]: Grade; }) => (Object.values(grades).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))) 
 
-  const grades = Object.values(user.getGrades()).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))
+  const user = getUser()
+  const [grades, setGrades] = useState<Grade[]>([]);
+
+  useEffect(() => {
+    user.subscribe(() => {
+      setGrades(sort(user.getGrades()))
+    })
+  }, [])
+
+  const [gradeModalVisible, setGradeModalVisible] = useState<Grade | undefined>();
 
 
   return (
     <View style={styles.container}>
+
+      <GradeModal visible={gradeModalVisible !== null} onDismiss={() => setGradeModalVisible(undefined)} grade={gradeModalVisible} />
 
       <FlatList
         data={grades.reverse()}
@@ -23,29 +36,34 @@ const GradeList: React.FC<Props> = ({ }) => {
 
 
 
-        renderItem={({ item: grade }) => {
+        renderItem={({ item: grade, index }) => {
+
           return (
-            <View style={styles.gradeContainer}>
-              <View style={styles.gradeSubcontainer}>
-                <Text style={styles.textBold}>{grade.nameDiscipline}</Text>
-                <Text style={styles.textBold}>{grade.value}/{grade.denominator}</Text>
-              </View>
+            <TouchableOpacity onPress={() => setGradeModalVisible(grade)}>
 
+              <View style={[styles.gradeContainer, !grade.significant && {opacity: .4}]}>
 
-              <View style={styles.gradeSubcontainer}>
-                <View>
-                  <Text style={styles.text}>maximum: {grade.maxClass}</Text>
-                  <Text style={styles.text}>minimum: {grade.minClass}</Text>
-                  <Text style={styles.text}>moyenne: {grade.averageClass}</Text>
+                <View style={styles.gradeSubcontainer}>
+                  <Text style={styles.textBold}>{grade.nameDiscipline}</Text>
+                  <Text style={styles.textBold}>{grade.value}/{grade.denominator}</Text>
                 </View>
-                <View style={{alignItems: 'flex-end'}}>
-                  <Text style={styles.text}>({grade.coef})</Text>
-                  <Text style={styles.text}>+0.85</Text>
-                  <Text style={styles.text}>+0.12</Text>
 
+
+                <View style={styles.gradeSubcontainer}>
+                  <View>
+                    <Text style={styles.text}>maximum: {grade.maxClass}</Text>
+                    <Text style={styles.text}>minimum: {grade.minClass}</Text>
+                    <Text style={styles.text}>moyenne: {grade.averageClass}</Text>
+                  </View>
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={styles.text}>({grade.coef})</Text>
+                    <Text style={styles.text}>+0.85</Text>
+                    <Text style={styles.text}>+0.12</Text>
+
+                  </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )
         }}
       />
