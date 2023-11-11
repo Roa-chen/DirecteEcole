@@ -2,6 +2,7 @@
 import React from 'react';
 import {
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   View,
 } from 'react-native';
@@ -12,6 +13,11 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor={Colors.background}
+        barStyle={'light-content'}
+      />
       <MainNavigator />
     </SafeAreaView>
   );

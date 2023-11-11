@@ -34,8 +34,7 @@ class User {
     this.periods = [];
     this.grades = {};
     this.subscriptions = [];
-    this.childs = [{ "firstName": "Arsène", "id": 1594, "lastName": "CHARDON" }, { "firstName": "Arsène", "id": 1594, "lastName": "CHARDON" }];
-    // this.childs = [];
+    this.childs = [];
     this.connected = false;
   }
 
@@ -241,7 +240,7 @@ class User {
     for (let i = 0; i < gradeIds.length; i++) {
       const grade = this.grades[gradeIds[i]];
 
-      if (grade.significant) {
+      if (grade.significant && !isNaN(Number(grade.value))) {
 
         if (disciplines[grade.codeDiscipline]) {
           disciplines[grade.codeDiscipline] = {
@@ -259,8 +258,8 @@ class User {
     }
 
     for (let key of Object.keys(disciplines)) {
-      total += disciplines[key].total
-      coef += disciplines[key].coef
+      total += ( disciplines[key].total / disciplines[key].coef )
+      coef += 1
     }
     return roundGrade(total / coef);
   }

@@ -4,6 +4,8 @@ import { getUser } from '../services/User';
 import DisciplineComponent from '../components/DisciplineComponent';
 import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import ProfileModal from '../components/ProfileModal';
+import { SvgXml } from 'react-native-svg';
+import { settings_icon } from '../assets/svgs';
 
 interface Props {
   unregister: () => void,
@@ -74,7 +76,8 @@ const Home: React.FC<Props> = ({ unregister }) => {
         setPeriodIndex={setPeriodIndex}
         childIndex={childIndex}
         setChildIndex={setChildIndex}
-      />
+        unregister={unregister}
+        />
 
       <ScrollView
         style={{ width: '100%' }}
@@ -88,8 +91,12 @@ const Home: React.FC<Props> = ({ unregister }) => {
             <Text style={styles.nameText}>{(user.firstName ?? '') + ' ' + (user.lastName ?? '')}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => unregister()} >
-            <Text style={styles.buttonText}>Se déconnecter</Text>
+
+          <TouchableOpacity onPress={() => setModalVisible(true)} >
+            {/* <Text style={styles.buttonText}>Se déconnecter</Text> */}
+            <View style={styles.settinfgsButton}>
+              <SvgXml xml={settings_icon} width={FontSize.medium} height={FontSize.medium} />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -156,6 +163,12 @@ const styles = StyleSheet.create({
     fontSize: FontSize.medium,
     marginTop: Spaces.large,
     fontWeight: 'bold',
+  },
+  settinfgsButton: {
+    marginHorizontal: Spaces.small,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: Spaces.extra_small,
   },
 })
 
