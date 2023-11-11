@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Grade } from '../assets/constants';
-import { Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
+import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeModal from './GradeModal';
 
 interface Props {
@@ -16,11 +16,18 @@ const GradeComponent: React.FC<Props> = ({ grade }) => {
   const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;
   const displayGrade = hasValue ? grade.value : grade.codeValue;
 
+  let indicatorColor = '';
+
+  if (grade.value === grade.maxClass) {indicatorColor = '#06A77D'}
+  else if (grade.value >= grade.averageClass) {indicatorColor = '#FDCC21'}
+  else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
+
   return (
-    <View>
+    <View style={styles.container}>
       <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} grade={grade} />
+      <View style={[styles.indicator, {backgroundColor: indicatorColor}]} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <View style={styles.container}>
+        <View style={styles.gradeContainer}>
           <Text style={[styles.valueText, !grade.significant && {opacity: .6}]}>{displayGrade}</Text>
           <View style={styles.extraContainer}>
             {(coef !== 1 || true) && <Text style={[styles.coefText, !grade.significant && {opacity: .6}]}>{coef !== 1 ? `(${coef})` : ' '}</Text>}
@@ -36,8 +43,11 @@ const GradeComponent: React.FC<Props> = ({ grade }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
     padding: Spaces.extra_small,
+  },
+  gradeContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   valueText: {
     ...SubTitleText,
@@ -61,6 +71,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: Spaces.extra_small / 2,
     alignSelf: 'flex-start',
+  },
+  indicator: {
+    height: FontSize.medium,
+    width: 4,
+    alignSelf: 'center',
+    borderRadius: BorderRadius.infinite,
+    marginRight: Spaces.extra_small / 2,
   },
 })
 

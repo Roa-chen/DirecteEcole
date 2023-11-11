@@ -77,7 +77,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
         childIndex={childIndex}
         setChildIndex={setChildIndex}
         unregister={unregister}
-        />
+      />
 
       <ScrollView
         style={{ width: '100%' }}
