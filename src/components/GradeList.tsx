@@ -6,14 +6,14 @@ import { Grade } from '../assets/constants';
 import { useAppSelector } from '../assets/utils';
 
 interface Props {
-  
+  periodIndex: number
 }
 
-const GradeList: React.FC<Props> = ({ }) => {
+const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
   const user = useAppSelector(state => state.user)
 
-  const sortedGrades = (Object.values(user.grades).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
+  const sortedGrades = (Object.values(user.grades).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
 
   // const [grades, setGrades] = useState<Grade[]>([]);
 

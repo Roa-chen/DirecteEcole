@@ -61,33 +61,14 @@ const Home: React.FC<Props> = ({ unregister }) => {
   }, [])
 
   useEffect(() => {
-    // setAverage(user.periods[periodIndex]?.averageCalculated)
-  }, [periodIndex])
-
-  useEffect(() => {
     // user.changeChild(childIndex)
   }, [childIndex])
 
-  const updateGrades = (hideRefresh = false) => {
-
-    console.log(user)
-
-    // fetchGrades()
-
-    // setIsBlocked(false)
-    // !hideRefresh && setRefreshing(true)
-    // user.fetchGrades().then((success) => {
-    //   if (success) {
-    //     const currentPeriod = user.getCurrentPeriod();
-    //     setPeriodIndex(currentPeriod);
-    //     setAverage(user.periods[currentPeriod].averageCalculated);
-    //     setIsBlocked(false)
-    //   } else {
-    //     setIsBlocked(true)
-    //   }
-    // }).finally(() => {
-    //   !hideRefresh && setRefreshing(false)
-    // })
+  const updateGrades = () => {
+    setRefreshing(true);
+    fetchGrades().then(() => {
+      setRefreshing(false)
+    })
   }
 
   return (
@@ -131,7 +112,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
             {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : 'Pas de note'}</Text>}
             {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
             {(average === undefined && isBlocked) && (
-              <TouchableOpacity onPress={() => updateGrades(true)} >
+              <TouchableOpacity onPress={() => updateGrades()} >
                 <Text style={styles.errorText}>Recharger</Text>
               </TouchableOpacity>
             )}
@@ -142,7 +123,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
         </View>
 
         <View style={{ width: windowWidth }}>
-          <GradeList />
+          <GradeList periodIndex={periodIndex} />
         </View>
 
       </ScrollView>

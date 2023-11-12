@@ -167,9 +167,6 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
 
           const disciplineGrades = Object.values(user.grades ?? {}).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode)
           
-          console.log('disciplineGrades:', disciplineGrades);
-          
-
           const newDiscipline: Discipline = {
             averageCalculated: calculateAverage(disciplineGrades),
             averageClass: formatStringNumber(discipline.moyenneClasse),

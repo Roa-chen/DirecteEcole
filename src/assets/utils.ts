@@ -26,8 +26,6 @@ export const calculateAverage = (grades: Grade[]) => {
   for (let i = 0; i < grades.length; i++) {
     const grade = grades[i];
 
-    console.log(grade)
-
     if (grade.significant && !isNaN(Number(grade.value))) {
 
       if (disciplines[grade.codeDiscipline]) {
