@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import { Discipline } from '../assets/constants';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeComponent from './GradeComponent';
-import { getUser } from '../services/User';
 import DisciplineModal from './DisciplineModal';
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 
 const DisciplineComponent: React.FC<Props> = ({ discipline }) => {
 
-  const user = getUser()
   const averageCalculated = Number.isNaN(discipline.averageCalculated) ? undefined : discipline.averageCalculated;
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,16 +26,15 @@ const DisciplineComponent: React.FC<Props> = ({ discipline }) => {
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.gradeContainer}>
-        {discipline.gradeIds.map(gradeId => {
+        {discipline.grades.map(grade => {
           return (
-            <GradeComponent key={'grade' + gradeId} grade={user.grades[gradeId]} />
+            <GradeComponent key={'grade' + grade.id} grade={grade} />
           )
         })}
       </View>
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

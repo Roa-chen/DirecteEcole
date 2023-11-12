@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, Alert, Switch, Keyboard } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText, TitleText } from '../GlobalStyles';
-import { ConnectionResponse } from '../assets/constants';
+import { FetchingResponse } from '../assets/constants';
 
 interface Props {
-  connect: (username: string, password: string) => Promise<ConnectionResponse>
+  connect: (username: string, password: string) => Promise<FetchingResponse>
 }
 
 const Auth: React.FC<Props> = ({ connect }) => {
 
-  const [usernameText, setUsernameText] = useState('');
-  const [passwordText, setPasswordText] = useState('');
+  const [usernameText, setUsernameText] = useState(__DEV__ ? 'arsene.chardon' : '');
+  const [passwordText, setPasswordText] = useState(__DEV__ ? 'larsenaldu26' : ''); //FIXME remove blank password
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   title: {
     ...TitleText,
     fontSize: FontSize.large * 2,
-    
+
   },
   textInput: {
     backgroundColor: Colors.lightBackground,

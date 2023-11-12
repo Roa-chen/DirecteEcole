@@ -1,10 +1,10 @@
 import React from "react";
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./User";
+import userReducer from "./UserSlice";
 
 const store = configureStore({
   reducer: {
-    BlocEditor: userReducer,
+    user: userReducer,
   }
 })
 

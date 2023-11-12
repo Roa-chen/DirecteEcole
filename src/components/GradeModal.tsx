@@ -3,7 +3,6 @@ import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { Grade } from '../assets/constants';
 import { roundGrade } from '../assets/utils';
-import { getUser } from '../services/User';
 
 interface Props {
   visible: boolean,
@@ -41,7 +40,7 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
 
             <View style={styles.separationLine} />
 
-            <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => getUser().setSignificant(grade.id, !grade.significant)} />
+            {/* <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => getUser().setSignificant(grade.id, !grade.significant)} /> //FIXME */} 
 
           </View>
         </View>

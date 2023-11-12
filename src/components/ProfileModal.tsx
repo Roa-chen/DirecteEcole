@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch, ScrollView, TouchableOpacity, } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
-import { roundGrade } from '../assets/utils';
-import { getUser } from '../services/User';
+import { roundGrade, useAppSelector } from '../assets/utils';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 
 const ProfileModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, setPeriodIndex, childIndex, setChildIndex, unregister }) => {
 
-  const user = getUser();
+  const user = useAppSelector(state => state.user)
 
   return (
     <Modal

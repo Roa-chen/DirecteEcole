@@ -3,7 +3,6 @@ import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { Discipline, Grade } from '../assets/constants';
 import { roundGrade } from '../assets/utils';
-import { getUser } from '../services/User';
 
 interface Props {
   visible: boolean,

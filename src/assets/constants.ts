@@ -5,12 +5,30 @@ export const PASSWORD_KEY = 'password'
 
 export const windowWidth = Dimensions.get('window').width;
 
-export type UserInfo = any;
-export type ConnectionResponse = {
+export type UserInfo = {
+  connected?: boolean,
+  id?: string | undefined,
+  token?: string | undefined,
+  username?: string | undefined,
+  password?: string | undefined,
+  schoolName?: string | undefined,
+  firstName?: string | undefined,
+  lastName?: string | undefined,
+  typeAccount?: string | undefined,
+  childs?: {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+  }[],
+  numberOfPeriod?: number | undefined,
+  periods?: Period[],
+  grades?: { [id: string]: Grade },
+};
+
+export type FetchingResponse = {
   success: boolean,
-  username: string,
-  password: string,
-  message: string,
+  message?: string,
+  data?: UserInfo,
 }
 
 export type Grade = {
@@ -43,7 +61,7 @@ export type Discipline = {
   averageClass: number,
   minAverageClass: number,
   maxAverageClass: number,
-  gradeIds: string[],
+  grades: Grade[],
 }
 
 export type Period = {
@@ -57,5 +75,5 @@ export type Period = {
   minAverageClass: number,
   maxAverageClass: number,
   disciplines: Discipline[],
-  gradeIds: string[],
+  grades: Grade[],
 }

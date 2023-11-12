@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import MainNavigator from './src/navigators/MainNavigator';
 import { Colors } from './src/GlobalStyles';
+import { Provider } from 'react-redux';
+import store from './src/reducers';
 
 const App = () => {
 
@@ -18,7 +20,9 @@ const App = () => {
         backgroundColor={Colors.background}
         barStyle={'light-content'}
       />
-      <MainNavigator />
+      <Provider store={store}>
+        <MainNavigator />
+      </Provider>
     </SafeAreaView>
   );
 }

@@ -5,10 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Auth from '../screens/Auth';
 import Home from '../screens/Home';
 import { PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
-import { clearUser, getUser } from '../services/User';
 import { Colors } from '../GlobalStyles';
-
-const Stack = createStackNavigator();
+import { useAppDispatch } from '../assets/utils';
+import { logIn_ } from '../services';
+import { setUserData } from '../reducers/UserSlice';
 
 interface Props {
 
@@ -18,21 +18,19 @@ const MainNavigator: React.FC<Props> = ({ }) => {
 
   const [connectionState, setConnectionState] = useState(0);
 
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
 
     AsyncStorage.getItem(USERNAME_KEY).then(
       username => {
-        console.log('username: ', username)
-
+        // console.log('username: ', username)
         if (username) {
           AsyncStorage.getItem(PASSWORD_KEY).then(
             password => {
-              console.log('password: ', password)
+              // console.log('password: ', password)
               if (password) {
-
-                getUser().setCredentials(JSON.parse(username), JSON.parse(password));
-
-                setConnectionState(2)
+                logIn(JSON.parse(username), JSON.parse(password))
               } else {
                 setConnectionState(1)
               }
@@ -46,16 +44,16 @@ const MainNavigator: React.FC<Props> = ({ }) => {
     )
   }, [])
 
+  async function logIn(username: string, password: string) {
 
-
-
-  async function connect(username: string, password: string) {
-
-    const connectionResponse = await getUser().connect(username, password)
+    const connectionResponse = await logIn_(username, password)
 
     if (connectionResponse.success) {
-      AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.username))
-      AsyncStorage.setItem(PASSWORD_KEY, JSON.stringify(connectionResponse.password))
+      AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.data?.username))
+      AsyncStorage.setItem(PASSWORD_KEY, JSON.stringify(connectionResponse.data?.password))
+
+      dispatch(setUserData({userInfo: connectionResponse.data}))
+
       setConnectionState(2)
     }
     return connectionResponse;
@@ -67,7 +65,7 @@ const MainNavigator: React.FC<Props> = ({ }) => {
 
     setConnectionState(1)
 
-    clearUser();
+    // clearUser(); // FIXME create function
 
     console.log('unregistered')
   }
@@ -84,7 +82,7 @@ const MainNavigator: React.FC<Props> = ({ }) => {
   )
 
   if (connectionState === 1) return (
-    <Auth connect={connect} />
+    <Auth connect={logIn} />
   )
 
   if (connectionState === 2) return (

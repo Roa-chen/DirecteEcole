@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, Spaces, SubTitleText } from '../GlobalStyles';
-import { getUser } from '../services/User';
 import GradeModal from './GradeModal';
 import { Grade } from '../assets/constants';
+import { useAppSelector } from '../assets/utils';
 
 interface Props {
   
@@ -11,16 +11,17 @@ interface Props {
 
 const GradeList: React.FC<Props> = ({ }) => {
 
-  const sort = (grades: { [id: string]: Grade; }) => (Object.values(grades).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))) 
+  const user = useAppSelector(state => state.user)
 
-  const user = getUser()
-  const [grades, setGrades] = useState<Grade[]>([]);
+  const sortedGrades = (Object.values(user.grades).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
 
-  useEffect(() => {
-    user.subscribe(() => {
-      setGrades(sort(user.getGrades()))
-    })
-  }, [])
+  // const [grades, setGrades] = useState<Grade[]>([]);
+
+  // useEffect(() => {
+  //   user.subscribe(() => {
+  //     setGrades(sort(user.getGrades()))
+  //   })
+  // }, [])
 
   const [gradeModalVisible, setGradeModalVisible] = useState<Grade | undefined>();
 
@@ -31,7 +32,7 @@ const GradeList: React.FC<Props> = ({ }) => {
       <GradeModal visible={gradeModalVisible !== null} onDismiss={() => setGradeModalVisible(undefined)} grade={gradeModalVisible} />
 
       <FlatList
-        data={grades.reverse()}
+        data={sortedGrades}
         showsVerticalScrollIndicator={false}
 
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { getUser } from '../services/User';
 import DisciplineComponent from '../components/DisciplineComponent';
 import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import ProfileModal from '../components/ProfileModal';
@@ -8,6 +7,9 @@ import { SvgXml } from 'react-native-svg';
 import { settings_icon } from '../assets/svgs';
 import { windowWidth } from '../assets/constants';
 import GradeList from '../components/GradeList';
+import { useAppDispatch, useAppSelector } from '../assets/utils';
+import { fetchGrades_ } from '../services';
+import { setUserData } from '../reducers/UserSlice';
 
 interface Props {
   unregister: () => void,
@@ -15,57 +17,77 @@ interface Props {
 
 const Home: React.FC<Props> = ({ unregister }) => {
 
+  const user = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
+
   const [periodIndex, setPeriodIndex] = useState(0);
   const [childIndex, setChildIndex] = useState(0);
 
-  const user = getUser()
-  const [average, setAverage] = useState<number>();
+  const average = user.periods[periodIndex]?.averageCalculated
+  
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isBlocked, setIsBlocked] = useState(false);
 
-  useEffect(() => {
-    if (!user.connected) {
-      getUser().connect(user.username ?? '', user.password ?? '').then((response) => {
-        if (response.success) {
-          updateGrades(true);
-          user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
-        } else {
-          Alert.alert('Erreur:', response.message)
-          setIsBlocked(true);
-        }
+  async function fetchGrades() {
 
-      })
+    const gradeResponse = await fetchGrades_(user.token??'', user.id??'');
+
+    if (gradeResponse.success && gradeResponse.data) {
+      dispatch(setUserData({userInfo: gradeResponse.data}))
     } else {
-      updateGrades(true);
-      user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
+      Alert.alert('Error', gradeResponse.message)
+    }
+
+  }
+
+  useEffect(() => {
+
+    if (!user.connected) {
+      //FIXME: unregister
+      // getUser().connect(user.username ?? '', user.password ?? '').then((response) => {
+      //   if (response.success) {
+      //     updateGrades(true);
+      //     user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
+      //   } else {
+      //     Alert.alert('Erreur:', response.message)
+      //     setIsBlocked(true);
+      //   }
+      // })
+    } else {
+      fetchGrades()
     }
   }, [])
 
   useEffect(() => {
-    setAverage(user.periods[periodIndex]?.averageCalculated)
+    // setAverage(user.periods[periodIndex]?.averageCalculated)
   }, [periodIndex])
 
   useEffect(() => {
-    user.changeChild(childIndex)
+    // user.changeChild(childIndex)
   }, [childIndex])
 
   const updateGrades = (hideRefresh = false) => {
-    setIsBlocked(false)
-    !hideRefresh && setRefreshing(true)
-    user.fetchGrades().then((success) => {
-      if (success) {
-        const currentPeriod = user.getCurrentPeriod();
-        setPeriodIndex(currentPeriod);
-        setAverage(user.periods[currentPeriod].averageCalculated);
-        setIsBlocked(false)
-      } else {
-        setIsBlocked(true)
-      }
-    }).finally(() => {
-      !hideRefresh && setRefreshing(false)
-    })
+
+    console.log(user)
+
+    // fetchGrades()
+
+    // setIsBlocked(false)
+    // !hideRefresh && setRefreshing(true)
+    // user.fetchGrades().then((success) => {
+    //   if (success) {
+    //     const currentPeriod = user.getCurrentPeriod();
+    //     setPeriodIndex(currentPeriod);
+    //     setAverage(user.periods[currentPeriod].averageCalculated);
+    //     setIsBlocked(false)
+    //   } else {
+    //     setIsBlocked(true)
+    //   }
+    // }).finally(() => {
+    //   !hideRefresh && setRefreshing(false)
+    // })
   }
 
   return (
