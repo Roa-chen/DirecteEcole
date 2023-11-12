@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import DisciplineComponent from '../components/DisciplineComponent';
-import { Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
+import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import ProfileModal from '../components/ProfileModal';
 import { SvgXml } from 'react-native-svg';
 import { settings_icon } from '../assets/svgs';
@@ -26,6 +26,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const average = user.periods[periodIndex]?.averageCalculated
   
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [isBlocked, setIsBlocked] = useState(false);
@@ -36,8 +37,10 @@ const Home: React.FC<Props> = ({ unregister }) => {
 
     if (gradeResponse.success && gradeResponse.data) {
       dispatch(setUserData({userInfo: gradeResponse.data}))
+      setLoading(0)
     } else {
-      Alert.alert('Error', gradeResponse.message)
+      Alert.alert('Erreur:', gradeResponse.message)
+      setLoading(2)
     }
 
   }
@@ -96,37 +99,56 @@ const Home: React.FC<Props> = ({ unregister }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView
-        horizontal
-        style={{ width: windowWidth }}
-        pagingEnabled
-      >
-
-        <View style={{ width: windowWidth }}>
-          <ScrollView
-            style={{ width: '100%' }}
-            contentContainerStyle={styles.disciplineContainer}
-            showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
-          >
-            {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : 'Pas de note'}</Text>}
-            {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
-            {(average === undefined && isBlocked) && (
-              <TouchableOpacity onPress={() => updateGrades()} >
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          {loading === 1 && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+          {loading === 2 && 
+            <TouchableOpacity onPress={() => {
+              setLoading(1)
+              fetchGrades()
+            }}>
+              <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Recharger</Text>
-              </TouchableOpacity>
-            )}
-            {user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
-              <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
-            ))}
-          </ScrollView>
+              </View>
+            </TouchableOpacity>
+          }
+          
+          
         </View>
+      ) : (
+        <ScrollView
+          horizontal
+          style={{ width: windowWidth }}
+          pagingEnabled
+        >
 
-        <View style={{ width: windowWidth }}>
-          <GradeList periodIndex={periodIndex} />
-        </View>
+          <View style={{ width: windowWidth }}>
+            <ScrollView
+              style={{ width: '100%' }}
+              contentContainerStyle={styles.disciplineContainer}
+              showsVerticalScrollIndicator={false}
+              refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
+            >
+              {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : '-'}</Text>}{/* Pas de note */}
+              {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+              {(average === undefined && isBlocked) && (
+                <TouchableOpacity onPress={() => updateGrades()} >
+                  <Text style={styles.errorText}>Recharger</Text>
+                </TouchableOpacity>
+              )}
+              {user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
+                <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
+              ))}
+            </ScrollView>
+          </View>
 
-      </ScrollView>
+          <View style={{ width: windowWidth }}>
+            <GradeList periodIndex={periodIndex} />
+          </View>
+
+        </ScrollView>
+      )}
+
     </View>
   );
 }
@@ -170,8 +192,16 @@ const styles = StyleSheet.create({
     ...SubTitleText,
     color: Colors.callToAction,
     fontSize: FontSize.medium,
-    marginTop: Spaces.large,
     fontWeight: 'bold',
+  },
+  errorContainer: {
+    paddingHorizontal: Spaces.medium,
+    paddingVertical: Spaces.small,
+    borderRadius: BorderRadius.small,
+    borderWidth: 2,
+    borderColor: Colors.callToAction,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   settingsButton: {
     marginLeft: Spaces.small,

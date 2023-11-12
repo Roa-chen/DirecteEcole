@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, Alert, Switch, Keyboard } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, Alert, Switch, Keyboard, BackHandler } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText, TitleText } from '../GlobalStyles';
 import { FetchingResponse } from '../assets/constants';
 
 interface Props {
-  connect: (username: string, password: string) => Promise<FetchingResponse>
+  logIn: (username: string, password: string) => Promise<FetchingResponse>
 }
 
-const Auth: React.FC<Props> = ({ connect }) => {
+const Auth: React.FC<Props> = ({ logIn }) => {
 
   const [usernameText, setUsernameText] = useState(__DEV__ ? 'arsene.chardon' : '');
   const [passwordText, setPasswordText] = useState(__DEV__ ? 'larsenaldu26' : ''); //FIXME remove blank password
@@ -54,10 +54,10 @@ const Auth: React.FC<Props> = ({ connect }) => {
         <TouchableOpacity
           onPress={() => {
             setFetching(true)
-            connect(usernameText, passwordText).then((response) => {
+            logIn(usernameText, passwordText).then((connectionResponse) => {
               setFetching(false)
-              if (!response.success) {
-                Alert.alert('Erreur:', response.message)
+              if (!connectionResponse.success) {
+                Alert.alert('Erreur:', connectionResponse.message)
               }
               Keyboard.dismiss()
             })

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator, Alert, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import Auth from '../screens/Auth';
@@ -30,7 +30,24 @@ const MainNavigator: React.FC<Props> = ({ }) => {
             password => {
               // console.log('password: ', password)
               if (password) {
-                logIn(JSON.parse(username), JSON.parse(password))
+                logIn(JSON.parse(username), JSON.parse(password)).then(connectionResponse => {
+                  if (!connectionResponse.success) {
+                    Alert.alert('Erreur:', connectionResponse.message, [
+                      {
+                        text: 'Réesayer',
+                        onPress: () => {
+                          logIn(username, password)
+                        }
+                      }
+                    ],
+                      {
+                        cancelable: true,
+                        onDismiss: () => {
+                          BackHandler.exitApp()
+                        }
+                      })
+                  }
+                })
               } else {
                 setConnectionState(1)
               }
@@ -51,11 +68,10 @@ const MainNavigator: React.FC<Props> = ({ }) => {
     if (connectionResponse.success) {
       AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.data?.username))
       AsyncStorage.setItem(PASSWORD_KEY, JSON.stringify(connectionResponse.data?.password))
-
-      dispatch(setUserData({userInfo: connectionResponse.data}))
-
+      dispatch(setUserData({ userInfo: connectionResponse.data }))
       setConnectionState(2)
-    }
+    } 
+
     return connectionResponse;
   }
 
@@ -82,7 +98,7 @@ const MainNavigator: React.FC<Props> = ({ }) => {
   )
 
   if (connectionState === 1) return (
-    <Auth connect={logIn} />
+    <Auth logIn={logIn} />
   )
 
   if (connectionState === 2) return (

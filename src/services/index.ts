@@ -111,7 +111,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
 
     if (gradesInfo.code !== 200) {
       console.log('error in getting grades response: ', gradesInfo)
-      return <FetchingResponse>{success: false}
+      throw new Error('response code isn\'t 200')
     }
 
     user.numberOfPeriod = gradesInfo.data.periodes.length - 1;
@@ -194,6 +194,12 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     return promise
   } catch (error) {
     console.log("error while getting grades: ", error)
-    return <FetchingResponse>{success: false}
+
+    const promise: FetchingResponse = {
+      success: false,
+      message: 'Vérifiez votre connection et réessayez.',
+    }
+
+    return promise;
   }
 }
