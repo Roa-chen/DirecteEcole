@@ -15,6 +15,7 @@ const GradeComponent: React.FC<Props> = ({ grade }) => {
   const coef = grade.coef;
   const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;
   const displayGrade = hasValue ? grade.value : grade.codeValue;
+  const isNew = Date.now() - Date.parse(grade.displayDate) < 172800000;
 
   let indicatorColor = '';
 
@@ -23,7 +24,7 @@ const GradeComponent: React.FC<Props> = ({ grade }) => {
   else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isNew && styles.newGrade]}>
       <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} grade={grade} />
       <View style={[styles.indicator, {backgroundColor: indicatorColor}]} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -44,6 +45,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: Spaces.extra_small,
+  },
+  newGrade: {
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.callToAction,
+    borderRadius: BorderRadius.small,
   },
   gradeContainer: {
     flexDirection: 'row',

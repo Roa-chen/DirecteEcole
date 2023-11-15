@@ -46,25 +46,11 @@ const Home: React.FC<Props> = ({ unregister }) => {
   }
 
   useEffect(() => {
-
-    if (!user.connected) {
-      //FIXME: unregister
-      // getUser().connect(user.username ?? '', user.password ?? '').then((response) => {
-      //   if (response.success) {
-      //     updateGrades(true);
-      //     user.subscribe(() => setAverage(user.periods[periodIndex]?.averageCalculated))
-      //   } else {
-      //     Alert.alert('Erreur:', response.message)
-      //     setIsBlocked(true);
-      //   }
-      // })
-    } else {
-      fetchGrades()
-    }
+    fetchGrades()
   }, [])
 
   useEffect(() => {
-    // user.changeChild(childIndex)
+    // user.changeChild(childIndex) //TODO
   }, [childIndex])
 
   const updateGrades = () => {
