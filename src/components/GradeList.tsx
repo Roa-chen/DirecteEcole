@@ -15,13 +15,13 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
   const sortedGrades = (Object.values(user.grades??[]).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
 
-  const [gradeModalVisible, setGradeModalVisible] = useState<Grade | undefined>();
+  const [gradeModalId, setGradeModalId] = useState<string | undefined>();
 
 
   return (
     <View style={styles.container}>
 
-      <GradeModal visible={gradeModalVisible !== null} onDismiss={() => setGradeModalVisible(undefined)} grade={gradeModalVisible} />
+      <GradeModal visible={gradeModalId !== null} onDismiss={() => setGradeModalId(undefined)} gradeId={gradeModalId} />
 
       <FlatList
         data={sortedGrades}
@@ -32,7 +32,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
         renderItem={({ item: grade, index }) => {
 
           return (
-            <TouchableOpacity onPress={() => setGradeModalVisible(grade)}>
+            <TouchableOpacity key={'grade-' + grade.id} onPress={() => setGradeModalId(grade.id)}>
 
               <View style={[styles.gradeContainer, !grade.significant && {opacity: .4}]}>
 

@@ -60,16 +60,7 @@ const UserSlice = createSlice({
       const disciplinePeriodGradeIds = discipline?.gradeIds
       if (!discipline) return;
       discipline.averageCalculated = calculateAverage(state.grades, disciplinePeriodGradeIds??[])
-
-      console.log(period.averageCalculated)
-
       period.averageCalculated = calculateAverage(state.grades, period.gradeIds);
-
-      console.log(period.averageCalculated)
-
-      //TODO update average
-
-
     },
   }
 });
@@ -78,18 +69,3 @@ export const { setUserData, setSignificant } = UserSlice.actions;
 
 const userReducer = UserSlice.reducer
 export default userReducer;
-
-
-// export const fetchGrades =
-//   (): ThunkAction<Promise<FetchingResponse>, RootState, unknown, Action> =>
-//   async (dispatch, getState) => {
-//     const {token, id} = getState().user
-//     const response = await fetchGrades_(token??'', id??'');
-//     if (response.success && response.data) {
-//       dispatch(
-//         setUserData({userInfo: response.data})
-//       )
-//     }
-
-//     return response;
-//   }

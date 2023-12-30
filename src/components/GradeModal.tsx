@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { Grade } from '../assets/constants';
-import { roundGrade, useAppDispatch } from '../assets/utils';
+import { roundGrade, useAppDispatch, useAppSelector } from '../assets/utils';
 import { setSignificant } from '../reducers/UserSlice';
 
 interface Props {
   visible: boolean,
   onDismiss: () => void,
-  grade: Grade | undefined,
+  gradeId: string | undefined,
 }
 
-const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
-  if(!grade) return
+const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
+
+  if (!gradeId) return;
+
+
+
+
+  const user = useAppSelector(state => state.user);
+
+  const grade = user.grades?.[gradeId];
+  if (!grade) return;
 
   const dispatch = useAppDispatch();
-  
+
   return (
     <Modal
       visible={visible}
@@ -44,7 +53,10 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
 
             <View style={styles.separationLine} />
 
-            <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => dispatch(setSignificant({gradeId: grade.id, significant: !grade.significant}))} />
+            <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => {
+              dispatch(setSignificant({ gradeId: grade.id, significant: !grade.significant }))
+
+            }} />
 
           </View>
         </View>

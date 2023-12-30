@@ -30,7 +30,7 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
 
   return (
     <View style={[styles.container, isNew && styles.newGrade]}>
-      <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} grade={grade} />
+      <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} gradeId={grade.id} />
       <View style={[styles.indicator, {backgroundColor: indicatorColor}]} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.gradeContainer}>
