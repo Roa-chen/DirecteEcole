@@ -97,7 +97,9 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
 
   console.log("getting grades with token: ", token)
 
-  const user: UserInfo = {}
+  const user: UserInfo = {
+    settings: {}
+  }
 
   const options = {
     method: 'POST',
@@ -130,6 +132,12 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
       }
     };
 
+    if (user.settings) {
+      user.settings.showGeneralAverage = gradesInfo.data.parametrage.moyenneGenerale;
+      user.settings.showClassAverage = gradesInfo.data.parametrage.moyenneClasse;
+      user.settings.showMaxAverage = gradesInfo.data.parametrage.moyenneMax;
+      user.settings.showMinAverage = gradesInfo.data.parametrage.moyenneMin;
+    }
     user.numberOfPeriod = gradesInfo.data.periodes.length - 1;
     const numberOfGrade = gradesInfo.data.notes.length;
 

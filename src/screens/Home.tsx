@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import DisciplineComponent from '../components/DisciplineComponent';
-import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
+import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText, TitleText } from '../GlobalStyles';
 import ProfileModal from '../components/ProfileModal';
 import { SvgXml } from 'react-native-svg';
 import { settings_icon } from '../assets/svgs';
@@ -10,10 +10,19 @@ import GradeList from '../components/GradeList';
 import { getCurrentPeriod, useAppDispatch, useAppSelector } from '../assets/utils';
 import { fetchGrades_ } from '../services';
 import { setUserData } from '../reducers/UserSlice';
+import Modal from '../components/Modal/Modal';
+import TitleLine from '../components/Modal/TitleLine';
+import GradeLine from '../components/Modal/GradeLine';
 
 interface Props {
   unregister: () => void,
 }
+
+//TODO annual average
+//TODO add rank to average and grades
+//TODO add setSignificant to disciplines
+//TODO create add grade feature
+
 
 const Home: React.FC<Props> = ({ unregister }) => {
 
@@ -23,18 +32,19 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const [periodIndex, setPeriodIndex] = useState(-2);
   const [childIndex, setChildIndex] = useState(0);
 
-  const average = user.periods?.[periodIndex]?.averageCalculated
-  
+  const period = user.periods?.[periodIndex];
+  const average = period?.averageCalculated
+
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
 
   async function fetchGrades() {
 
-    const gradeResponse = await fetchGrades_(user.token, user.id, user.username??'', user.password??'');
+    const gradeResponse = await fetchGrades_(user.token, user.id, user.username ?? '', user.password ?? '');
 
     if (gradeResponse.success && gradeResponse.data) {
-      dispatch(setUserData({userInfo: gradeResponse.data}))
+      dispatch(setUserData({ userInfo: gradeResponse.data }))
       if (periodIndex === -2) setPeriodIndex(getCurrentPeriod(gradeResponse.data));
       setLoading(0)
     } else {
@@ -59,8 +69,23 @@ const Home: React.FC<Props> = ({ unregister }) => {
     })
   }
 
+  const [modalVisibility, setModalVisibility] = useState(false);
+
   return (
     <View style={styles.container}>
+
+      <Modal visible={modalVisibility} onDismiss={() => setModalVisibility(false)}>
+        <TitleLine text={"Moyenne Générale"} />
+        <GradeLine name='Moyenne calculée' value={average ?? NaN} isAverage />
+        {user.settings?.showGeneralAverage && (
+          <>
+            <GradeLine name='Moyenne officielle' value={period?.averageOfficial ?? NaN} isAverage />
+            {user.settings?.showClassAverage && <GradeLine name='Moyenne de classe' value={period?.averageClass ?? NaN} isAverage />}
+            {user.settings?.showMaxAverage && <GradeLine name='Moyenne maximale' value={period?.maxAverageClass ?? NaN} isAverage />}
+            {user.settings?.showMinAverage && <GradeLine name='Moyenne minimale' value={period?.minAverageClass ?? NaN} isAverage />}
+          </>
+        )}
+      </Modal>
 
       <ProfileModal
         visible={modalVisible}
@@ -85,9 +110,9 @@ const Home: React.FC<Props> = ({ unregister }) => {
       </View>
 
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           {loading === 1 && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
-          {loading === 2 && 
+          {loading === 2 &&
             <TouchableOpacity onPress={() => {
               setLoading(1)
               fetchGrades()
@@ -97,8 +122,6 @@ const Home: React.FC<Props> = ({ unregister }) => {
               </View>
             </TouchableOpacity>
           }
-          
-          
         </View>
       ) : (
         <ScrollView
@@ -115,7 +138,11 @@ const Home: React.FC<Props> = ({ unregister }) => {
               showsVerticalScrollIndicator={false}
               refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
             >
-              {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : '-'}</Text>}{/* Pas de note */}
+              {average !== undefined && (
+                <TouchableOpacity onPress={() => setModalVisibility(true)} >
+                  <Text style={styles.averageText}>{!Number.isNaN(average) ? average : '-'}</Text>
+                </TouchableOpacity>
+              )}
               {average === undefined && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
               {average === undefined && (
                 <TouchableOpacity onPress={() => updateGrades()} >

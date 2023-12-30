@@ -24,6 +24,13 @@ export type UserInfo = {
   numberOfPeriod?: number | undefined,
   periods?: Period[],
   grades?: { [id: string]: Grade },
+  settings?: {
+    showGeneralAverage?: boolean,
+    showClassAverage?: boolean,
+    showMinAverage?: boolean,
+    showMaxAverage?: boolean,
+  }
+  
 };
 
 export type FetchingResponse = {
