@@ -115,6 +115,8 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
 
       if (gradesInfo.code === 520 || gradesInfo.code === 525) {
 
+        console.log('Error with token, getting another');
+
         const connectionResponse = await logIn_(username, password);
         const token = connectionResponse.data?.token
 
@@ -177,6 +179,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
         maxAverageClass: formatStringNumber(period.moyenneMax),
         minAverageClass: formatStringNumber(period.moyenneMin),
         namePeriod: period.periode,
+        isEnded: period.cloture,
         disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
           const disciplineGradeIds = Object.values(user.grades ?? {}).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode).map(grade => grade.id)

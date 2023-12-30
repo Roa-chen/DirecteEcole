@@ -54,12 +54,20 @@ export const calculateAverage = (grades: { [id: string]: Grade; }, gradeIds: str
 export const getCurrentPeriod = (user: UserInfo) => {
   if (!(user.numberOfPeriod && user.periods)) return -1
 
-  const now = Date.now();
-  for (let i = 0; i < (user.numberOfPeriod); i++) {
-    const period = user.periods[i];
-    if (period.beginDate <= now && now <= period.endDate) return i;
+  for (let i=0; i<user.periods.length; i++) {
+    if(user.periods[i].isEnded === false) {
+      return i;
+    }
   }
+
   return -1;
+
+  // const now = Date.now();
+  // for (let i = 0; i < (user.numberOfPeriod); i++) {
+  //   const period = user.periods[i];
+  //   if (period.beginDate <= now && now <= period.endDate) return i;
+  // }
+  // return -1;
 }
 
 type DispatchFunc = () => AppDispatch

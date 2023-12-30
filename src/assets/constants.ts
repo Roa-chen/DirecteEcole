@@ -77,4 +77,5 @@ export type Period = {
   maxAverageClass: number,
   disciplines: Discipline[],
   gradeIds: string[],
+  isEnded: boolean,
 }

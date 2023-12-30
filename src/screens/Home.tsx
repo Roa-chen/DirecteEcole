@@ -7,7 +7,7 @@ import { SvgXml } from 'react-native-svg';
 import { settings_icon } from '../assets/svgs';
 import { windowWidth } from '../assets/constants';
 import GradeList from '../components/GradeList';
-import { useAppDispatch, useAppSelector } from '../assets/utils';
+import { getCurrentPeriod, useAppDispatch, useAppSelector } from '../assets/utils';
 import { fetchGrades_ } from '../services';
 import { setUserData } from '../reducers/UserSlice';
 
@@ -20,7 +20,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
 
-  const [periodIndex, setPeriodIndex] = useState(0); //TODO set index to current period
+  const [periodIndex, setPeriodIndex] = useState(-2);
   const [childIndex, setChildIndex] = useState(0);
 
   const average = user.periods?.[periodIndex]?.averageCalculated
@@ -35,6 +35,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
 
     if (gradeResponse.success && gradeResponse.data) {
       dispatch(setUserData({userInfo: gradeResponse.data}))
+      if (periodIndex === -2) setPeriodIndex(getCurrentPeriod(gradeResponse.data));
       setLoading(0)
     } else {
       Alert.alert('Erreur:', gradeResponse.message)
@@ -44,7 +45,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
   }
 
   useEffect(() => {
-    fetchGrades()
+    fetchGrades();
   }, [])
 
   useEffect(() => {
