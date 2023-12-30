@@ -1,8 +1,5 @@
-import { Action } from 'redux'
-import { PayloadAction, ThunkAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '.';
-import { FetchingResponse, Grade, Period, UserInfo } from '../assets/constants';
-import { fetchGrades_ } from '../services';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Grade, Period, UserInfo } from '../assets/constants';
 import { calculateAverage } from '../assets/utils';
 
 interface UserState {
@@ -62,10 +59,13 @@ const UserSlice = createSlice({
       discipline.averageCalculated = calculateAverage(state.grades, disciplinePeriodGradeIds??[])
       period.averageCalculated = calculateAverage(state.grades, period.gradeIds);
     },
+    clearUser: (state) => {
+      Object.assign(state, {})
+    },
   }
 });
 
-export const { setUserData, setSignificant } = UserSlice.actions;
+export const { setUserData, setSignificant, clearUser } = UserSlice.actions;
 
 const userReducer = UserSlice.reducer
 export default userReducer;

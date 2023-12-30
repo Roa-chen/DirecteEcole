@@ -1,5 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FetchingResponse, Discipline, Grade, UserInfo } from "../assets/constants";
-import { calculateAverage, formatStringNumber } from "../assets/utils";
+import { calculateAverage, formatStringNumber, useAppDispatch } from "../assets/utils";
+import { Alert, BackHandler } from "react-native";
+import { clearUser } from "../reducers/UserSlice";
 
 export const logIn_ = async (username: string, password: string) => {
 
@@ -82,10 +85,10 @@ export const logIn_ = async (username: string, password: string) => {
   }
 }
 
-export const fetchGrades_ = async (token: string | undefined, id: string | undefined) => {
+export const fetchGrades_ = async (token: string | undefined, id: string | undefined, username: string, password: string,) => {
 
   if (!token || !id) {
-    console.log('Need a token and an id') //FIXME
+    console.log('Need a token and an id');
     return <FetchingResponse>{
       success: false,
       message: 'Error while getting grades, token or id were not gave.' ,
@@ -105,14 +108,25 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     },
   }
   try {
-    const response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
-
-    const gradesInfo = await response.json()
+    let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+    let gradesInfo = await response.json()
 
     if (gradesInfo.code !== 200) {
-      console.log('error in getting grades response: ', gradesInfo)
-      throw new Error('response code isn\'t 200')
-    }
+
+      if (gradesInfo.code === 520 || gradesInfo.code === 525) {
+
+        const connectionResponse = await logIn_(username, password);
+        const token = connectionResponse.data?.token
+
+        options.headers["X-Token"] = token ?? '',
+
+        response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+        gradesInfo = await response.json();
+      } else {
+        console.log('error in getting grades response - gradessInfo :', gradesInfo)
+        throw new Error('response code isn\'t 200')
+      }
+    };
 
     user.numberOfPeriod = gradesInfo.data.periodes.length - 1;
     const numberOfGrade = gradesInfo.data.notes.length;

@@ -8,7 +8,7 @@ import { PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
 import { Colors } from '../GlobalStyles';
 import { useAppDispatch } from '../assets/utils';
 import { logIn_ } from '../services';
-import { setUserData } from '../reducers/UserSlice';
+import { clearUser, setUserData } from '../reducers/UserSlice';
 
 interface Props {
 
@@ -81,7 +81,7 @@ const MainNavigator: React.FC<Props> = ({ }) => {
 
     setConnectionState(1)
 
-    // clearUser(); // FIXME create function
+    dispatch(clearUser());
 
     console.log('unregistered')
   }

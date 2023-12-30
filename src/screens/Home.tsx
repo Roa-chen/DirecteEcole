@@ -29,11 +29,9 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const [loading, setLoading] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [isBlocked, setIsBlocked] = useState(false);
-
   async function fetchGrades() {
 
-    const gradeResponse = await fetchGrades_(user.token??'', user.id??'');
+    const gradeResponse = await fetchGrades_(user.token, user.id, user.username??'', user.password??'');
 
     if (gradeResponse.success && gradeResponse.data) {
       dispatch(setUserData({userInfo: gradeResponse.data}))
@@ -117,8 +115,8 @@ const Home: React.FC<Props> = ({ unregister }) => {
               refreshControl={<RefreshControl onRefresh={updateGrades} refreshing={refreshing} colors={[Colors.lightBackground]} />}
             >
               {average !== undefined && <Text style={styles.averageText}>{!Number.isNaN(average) ? average : '-'}</Text>}{/* Pas de note */}
-              {(average === undefined && !isBlocked) && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
-              {(average === undefined && isBlocked) && (
+              {average === undefined && <ActivityIndicator style={styles.averageText} color={Colors.transparentCallToAction} size={'large'} />}
+              {average === undefined && (
                 <TouchableOpacity onPress={() => updateGrades()} >
                   <Text style={styles.errorText}>Recharger</Text>
                 </TouchableOpacity>
