@@ -4,6 +4,7 @@ export const USERNAME_KEY = 'username'
 export const PASSWORD_KEY = 'password'
 
 export const windowWidth = Dimensions.get('window').width;
+export const windowHeight = Dimensions.get('window').height;
 
 export type UserInfo = {
   connected?: boolean,

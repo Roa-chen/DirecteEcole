@@ -106,6 +106,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
           horizontal
           style={{ width: windowWidth }}
           pagingEnabled
+          showsHorizontalScrollIndicator={false}
         >
 
           <View style={{ width: windowWidth }}>
