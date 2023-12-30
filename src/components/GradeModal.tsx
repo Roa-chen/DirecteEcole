@@ -25,6 +25,13 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
 
   const dispatch = useAppDispatch();
 
+  let indicatorColor = '';
+  let text = '';
+
+  if (grade.value === grade.maxClass) {indicatorColor = '#06A77D'; text = 'Meilleur note'}
+  else if (grade.value >= grade.averageClass) {indicatorColor = '#FDCC21'; text = 'Au dessus de la moyenne'}
+  else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'; text = 'En dessous de la moyenne'}
+
   return (
     <Modal
       visible={visible}
@@ -50,6 +57,17 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
             <LineGrade name={"Moyenne de classe"} value={grade.averageClass} denominator={grade.denominator} />
             <LineGrade name={"Note maximum"} value={grade.maxClass} denominator={grade.denominator} />
             <LineGrade name={"Note minimum"} value={grade.minClass} denominator={grade.denominator} />
+
+            <View style={styles.rankIndicatorContainer}>
+              <Text style={styles.lineText}>{text}:</Text>
+              <View style={{
+                        backgroundColor: indicatorColor,
+                        width: Spaces.small,
+                        height: Spaces.small,
+                        borderRadius: BorderRadius.infinite,
+                        marginLeft: Spaces.small,
+                      }} />
+            </View>
 
             <View style={styles.separationLine} />
 
@@ -103,6 +121,9 @@ const LineGrade: React.FC<{
   denominator: number,
   template?: boolean,
 }> = ({ name, value, denominator, template = false }) => {
+
+  if (isNaN(value)) return;
+
   return (
     <View style={[styles.lineContainer, template && { marginBottom: Spaces.small }]}>
       <Text style={styles.lineText}>{name}{template ? "" : ":"}</Text>
@@ -167,6 +188,12 @@ const styles = StyleSheet.create({
   gradeContainer: {
     width: '50%',
     alignContent: "flex-end",
+  },
+  rankIndicatorContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 })
 

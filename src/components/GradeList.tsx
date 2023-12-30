@@ -37,6 +37,12 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
         renderItem={({ item: grade, index }) => {
 
+          let indicatorColor = '';
+
+          if (grade.value === grade.maxClass) {indicatorColor = '#06A77D'}
+          else if (grade.value >= grade.averageClass) {indicatorColor = '#FDCC21'}
+          else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
+
           const inputRange = [
             -1,
             0,
@@ -65,7 +71,16 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
                 <View style={[styles.gradeContainer, !grade.significant && { opacity: .4 }]}>
 
                   <View style={styles.gradeSubcontainer}>
-                    <Text style={styles.textBold}>{grade.nameDiscipline}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.textBold}>{grade.nameDiscipline}</Text>
+                      <View style={{
+                        backgroundColor: indicatorColor,
+                        width: Spaces.small,
+                        height: Spaces.small,
+                        borderRadius: BorderRadius.infinite,
+                        marginLeft: Spaces.small,
+                      }} />
+                    </View>
                     <Text style={styles.textBold}>{grade.value}/{grade.denominator}</Text>
                   </View>
 
@@ -98,7 +113,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Spaces.medium,
+    // paddingTop: Spaces.medium,
     paddingHorizontal: Spaces.small,
   },
   gradeContainer: {
