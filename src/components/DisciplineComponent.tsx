@@ -26,9 +26,9 @@ const DisciplineComponent: React.FC<Props> = ({ discipline }) => {
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.gradeContainer}>
-        {discipline.grades.map(grade => {
+        {discipline.gradeIds.map(gradeId => {
           return (
-            <GradeComponent key={'grade' + grade.id} grade={grade} />
+            <GradeComponent key={'grade' + gradeId} gradeId={gradeId} />
           )
         })}
       </View>

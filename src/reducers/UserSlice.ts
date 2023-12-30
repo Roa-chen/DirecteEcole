@@ -3,6 +3,7 @@ import { PayloadAction, ThunkAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '.';
 import { FetchingResponse, Grade, Period, UserInfo } from '../assets/constants';
 import { fetchGrades_ } from '../services';
+import { calculateAverage } from '../assets/utils';
 
 interface UserState {
   connected: boolean;
@@ -22,11 +23,10 @@ interface UserState {
   numberOfPeriod: number | undefined;
   periods: Period[];
   grades: { [id: string]: Grade };
-  subscriptions: (() => void)[];
   // selectedChild = 0;
 }
 
-const initialState: UserState = {
+const initialState: UserInfo = {
   connected: false,
   username: undefined,
   password: undefined,
@@ -40,34 +40,45 @@ const initialState: UserState = {
   numberOfPeriod: undefined,
   periods: [],
   grades: {},
-  subscriptions: [],
 };
 
 const UserSlice = createSlice({
   name: 'UserSlice',
   initialState,
   reducers: {
-
     setUserData: (state, action: PayloadAction<{ userInfo: UserInfo | undefined }>) => {
       const {userInfo} = action.payload;
       Object.assign(state, userInfo)
     },
+    setSignificant: (state, action: PayloadAction<{ gradeId: string, significant: boolean }>) => {
+      const {gradeId, significant} = action.payload;
+      if (!(state.grades && state.periods)) return
+      state.grades[gradeId].significant = significant;
+
+      const period = state.periods[Number(state.grades[gradeId].codePeriod.slice(1))-1]
+      const discipline = period.disciplines.find(discipline => discipline.codeDiscipline === state.grades?.[gradeId].codeDiscipline)
+      const disciplinePeriodGradeIds = discipline?.gradeIds
+      if (!discipline) return;
+      discipline.averageCalculated = calculateAverage(state.grades, disciplinePeriodGradeIds??[])
+
+      console.log(period.averageCalculated)
+
+      period.averageCalculated = calculateAverage(state.grades, period.gradeIds);
+
+      console.log(period.averageCalculated)
+
+      //TODO update average
+
+
+    },
   }
 });
 
-// export const logIn = 
-//   (username: string, password: string): ThunkAction<Promise<FetchingResponse>, RootState, unknown, Action> =>
-//   async dispatch => {
-//     const response = await logIn_(username, password)
-//     if (response.success && response.data) {
-//       dispatch(
-//         setUserData({userInfo: response.data})
-//       )
-//     }
+export const { setUserData, setSignificant } = UserSlice.actions;
 
-//     return response
+const userReducer = UserSlice.reducer
+export default userReducer;
 
-//   }
 
 // export const fetchGrades =
 //   (): ThunkAction<Promise<FetchingResponse>, RootState, unknown, Action> =>
@@ -82,8 +93,3 @@ const UserSlice = createSlice({
 
 //     return response;
 //   }
-
-export const { setUserData } = UserSlice.actions;
-
-const userReducer = UserSlice.reducer
-export default userReducer;

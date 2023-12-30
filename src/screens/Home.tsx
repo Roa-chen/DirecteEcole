@@ -20,10 +20,10 @@ const Home: React.FC<Props> = ({ unregister }) => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
 
-  const [periodIndex, setPeriodIndex] = useState(0);
+  const [periodIndex, setPeriodIndex] = useState(0); //TODO set index to current period
   const [childIndex, setChildIndex] = useState(0);
 
-  const average = user.periods[periodIndex]?.averageCalculated
+  const average = user.periods?.[periodIndex]?.averageCalculated
   
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(1);
@@ -122,7 +122,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
                   <Text style={styles.errorText}>Recharger</Text>
                 </TouchableOpacity>
               )}
-              {user.periods.length !== 0 && user.periods[periodIndex]?.disciplines.map(discipline => (
+              {user.periods?.length !== 0 && user.periods?.[periodIndex]?.disciplines.map(discipline => (
                 <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
               ))}
             </ScrollView>

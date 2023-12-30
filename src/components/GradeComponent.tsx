@@ -3,14 +3,19 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Grade } from '../assets/constants';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeModal from './GradeModal';
+import { useAppSelector } from '../assets/utils';
 
 interface Props {
-  grade: Grade,
+  gradeId: string,
 }
 
-const GradeComponent: React.FC<Props> = ({ grade }) => {
+const GradeComponent: React.FC<Props> = ({ gradeId }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {grades} = useAppSelector(state => state.user);
+  const grade = grades?.[gradeId];
+  if (!grade) return
 
   const coef = grade.coef;
   const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;

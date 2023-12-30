@@ -12,7 +12,7 @@ export const formatStringNumber = (string: string) => {
   return Number(string.replaceAll(',', '.'))
 }
 
-export const calculateAverage = (grades: Grade[]) => {
+export const calculateAverage = (grades: { [id: string]: Grade; }, gradeIds: string[]) => {
 
   let total = 0;
   let coef = 0;
@@ -23,8 +23,8 @@ export const calculateAverage = (grades: Grade[]) => {
     }
   } = {}
 
-  for (let i = 0; i < grades.length; i++) {
-    const grade = grades[i];
+  for (let i = 0; i < gradeIds.length; i++) {
+    const grade = grades[gradeIds[i]];
 
     if (grade.significant && !isNaN(Number(grade.value))) {
 

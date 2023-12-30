@@ -13,15 +13,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
   const user = useAppSelector(state => state.user)
 
-  const sortedGrades = (Object.values(user.grades).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
-
-  // const [grades, setGrades] = useState<Grade[]>([]);
-
-  // useEffect(() => {
-  //   user.subscribe(() => {
-  //     setGrades(sort(user.getGrades()))
-  //   })
-  // }, [])
+  const sortedGrades = (Object.values(user.grades??[]).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
 
   const [gradeModalVisible, setGradeModalVisible] = useState<Grade | undefined>();
 
@@ -58,8 +50,8 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
                   </View>
                   <View style={{ alignItems: 'flex-end' }}>
                     <Text style={styles.text}>({grade.coef})</Text>
-                    <Text style={styles.text}>+0.85</Text>
-                    <Text style={styles.text}>+0.12</Text>
+                    {/* <Text style={styles.text}>+0.85</Text>
+                    <Text style={styles.text}>+0.12</Text> //TODO */}
 
                   </View>
                 </View>

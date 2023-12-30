@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text, Button, Switch } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { Grade } from '../assets/constants';
-import { roundGrade } from '../assets/utils';
+import { roundGrade, useAppDispatch } from '../assets/utils';
+import { setSignificant } from '../reducers/UserSlice';
 
 interface Props {
   visible: boolean,
@@ -12,6 +13,9 @@ interface Props {
 
 const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
   if(!grade) return
+
+  const dispatch = useAppDispatch();
+  
   return (
     <Modal
       visible={visible}
@@ -40,7 +44,7 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, grade }) => {
 
             <View style={styles.separationLine} />
 
-            {/* <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => getUser().setSignificant(grade.id, !grade.significant)} /> //FIXME */} 
+            <LineSwitch name={"Note significative"} value={grade.significant} onPress={() => dispatch(setSignificant({gradeId: grade.id, significant: !grade.significant}))} />
 
           </View>
         </View>

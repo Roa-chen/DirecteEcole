@@ -123,7 +123,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     for (let i = 0; i < user.numberOfPeriod; i++) {
 
       const period = gradesInfo.data.periodes[i];
-      const periodGrades: Grade[] = [];
+      const periodGradeIds: string[] = [];
 
       for (let j = 0; j < numberOfGrade; j++) {
         const grade = gradesInfo.data.notes[j];
@@ -150,11 +150,11 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
           codeValue: grade.valeur.toString(),
         }
 
-        periodGrades.push(user.grades[grade.id.toString()])
+        periodGradeIds.push(grade.id.toString())
       }
 
       user.periods?.push({
-        averageCalculated: calculateAverage(periodGrades),
+        averageCalculated: calculateAverage(user.grades, periodGradeIds),
         averageClass: formatStringNumber(period.ensembleMatieres.moyenneClasse),
         averageOfficial: formatStringNumber(period.ensembleMatieres.moyenneGenerale),
         beginDate: Date.parse(period.dateDebut),
@@ -165,10 +165,10 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
         namePeriod: period.periode,
         disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
-          const disciplineGrades = Object.values(user.grades ?? {}).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode)
+          const disciplineGradeIds = Object.values(user.grades ?? {}).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode).map(grade => grade.id)
           
           const newDiscipline: Discipline = {
-            averageCalculated: calculateAverage(disciplineGrades),
+            averageCalculated: calculateAverage(user.grades??{}, disciplineGradeIds),
             averageClass: formatStringNumber(discipline.moyenneClasse),
             averageOfficial: formatStringNumber(discipline.moyenne),
             codeDiscipline: discipline.codeMatiere,
@@ -176,12 +176,12 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
             maxAverageClass: formatStringNumber(discipline.moyenneMax),
             minAverageClass: formatStringNumber(discipline.moyenneMin),
             nameDiscipline: discipline.discipline,
-            grades: disciplineGrades,
+            gradeIds: disciplineGradeIds,
           }
 
           return newDiscipline;
         }),
-        grades: periodGrades,
+        gradeIds: periodGradeIds,
 
       })
     }
