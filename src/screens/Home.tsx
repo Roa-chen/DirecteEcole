@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, Text, TextInput, RefreshControl, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TextInput, RefreshControl, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import DisciplineComponent from '../components/DisciplineComponent';
 import { BorderRadius, Colors, FontFamily, FontSize, Spaces, SubTitleText, TitleText } from '../GlobalStyles';
 import ProfileModal from '../components/ProfileModal';
@@ -13,6 +13,7 @@ import { setUserData } from '../reducers/UserSlice';
 import Modal from '../components/Modal/Modal';
 import TitleLine from '../components/Modal/TitleLine';
 import GradeLine from '../components/Modal/GradeLine';
+// import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   unregister: () => void,
@@ -129,6 +130,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
           style={{ width: windowWidth }}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
+          nestedScrollEnabled
         >
 
           <View style={{ width: windowWidth }}>

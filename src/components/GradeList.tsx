@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, StyleSheet, FlatList, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, Animated, ScrollView } from 'react-native';
 import { BorderRadius, Colors, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeModal from './GradeModal';
 import { Grade, windowHeight, windowWidth } from '../assets/constants';
-import { useAppSelector } from '../assets/utils';
+import { sort, useAppSelector } from '../assets/utils';
+// import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   periodIndex: number
@@ -17,11 +18,12 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
   const user = useAppSelector(state => state.user)
 
-  const sortedGrades = (Object.values(user.grades ?? []).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => Date.parse(a.displayDate) - Date.parse(b.displayDate))).reverse()
+  const [sortType, setSortType] = useState(0);
+
+  const sortedGrades = (Object.values(user.grades ?? []).filter(grade => grade.codePeriod === `A00${periodIndex + 1}`).sort((a, b) => sort(a, b, sortType))).reverse()
   const [gradeModalId, setGradeModalId] = useState<string | undefined>();
 
   const scrollY = React.useRef(new Animated.Value(0)).current;
-
 
 
   return (
@@ -29,21 +31,34 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
       <GradeModal visible={gradeModalId !== null} onDismiss={() => setGradeModalId(undefined)} gradeId={gradeModalId} />
 
+      <View style={styles.headerContainer}>
+        <Text style={[styles.text, { marginRight: Spaces.extra_small, fontWeight: 'bold' }]}>Trier par :</Text>
+        {['date', 'note'].map((value, index) => (
+          <TouchableOpacity key={'headerButton-' + index} onPress={() => setSortType(index)}>
+            <View style={[styles.headerButton, sortType === index && styles.headerButtonSelected]}>
+              <Text style={styles.text}>{value}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+
       <Animated.FlatList
         data={sortedGrades}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: true}
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
         )}
+
+        contentContainerStyle={{ paddingBottom: Spaces.large * 1.5, }}
 
         renderItem={({ item: grade, index }) => {
 
           let indicatorColor = '';
 
-          if (grade.value === grade.maxClass) {indicatorColor = '#06A77D'}
-          else if (grade.value >= grade.averageClass) {indicatorColor = '#FDCC21'}
-          else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
+          if (grade.value === grade.maxClass) { indicatorColor = '#06A77D' }
+          else if (grade.value >= grade.averageClass) { indicatorColor = '#FDCC21' }
+          else if (grade.value <= grade.averageClass) { indicatorColor = '#FB8B24' }
 
           const inputRange = [
             -1,
@@ -64,7 +79,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
           return (
             <Animated.View style={{
-              transform: [{scale}],
+              transform: [{ scale }],
               opacity,
             }}>
 
@@ -73,7 +88,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
                 <View style={[styles.gradeContainer, !grade.significant && { opacity: .4 }]}>
 
                   <View style={styles.gradeSubcontainer}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.textBold}>{grade.nameDiscipline}</Text>
                       <View style={{
                         backgroundColor: indicatorColor,
@@ -139,9 +154,28 @@ const styles = StyleSheet.create({
   },
   text: {
     ...SubTitleText,
-
   },
-
+  headerContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    height: Spaces.large,
+    alignItems: 'center',
+    overflow: 'hidden',
+    marginBottom: Spaces.extra_small,
+  },
+  headerButton: {
+    height: '80%',
+    marginRight: Spaces.extra_small,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: BorderRadius.small,
+    backgroundColor: Colors.lightBackground,
+    paddingHorizontal: Spaces.small,
+  },
+  headerButtonSelected: {
+    borderWidth: 1,
+    borderColor: Colors.callToAction,
+  },
 })
 
 export default GradeList;

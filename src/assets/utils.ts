@@ -70,6 +70,21 @@ export const getCurrentPeriod = (user: UserInfo) => {
   // return -1;
 }
 
+export const sort = (a: Grade, b: Grade, sortingType: number) => {
+  let result;
+
+  switch (sortingType) {
+    case 0:
+      return Date.parse(a.displayDate) - Date.parse(b.displayDate)
+    case 1:
+      return (a.value / a.denominator) - (b.value / b.denominator)
+    default:
+      return 1;
+  }
+
+  return result;
+}
+
 type DispatchFunc = () => AppDispatch
 export const useAppDispatch: DispatchFunc = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
