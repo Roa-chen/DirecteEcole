@@ -58,6 +58,7 @@ export type Grade = {
   minClass: number,
   maxClass: number,
   codeValue: string,
+  isNew: boolean,
 }
 
 export type Discipline = {

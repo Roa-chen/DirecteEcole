@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Grade } from '../assets/constants';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import GradeModal from './GradeModal';
 import { useAppSelector } from '../assets/utils';
@@ -20,7 +19,7 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
   const coef = grade.coef;
   const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;
   const displayGrade = hasValue ? grade.value : grade.codeValue;
-  const isNew = Date.now() - Date.parse(grade.displayDate) < 172800000;
+  // const isNew = Date.now() - Date.parse(grade.displayDate) < 172800000;
 
   let indicatorColor = '';
 
@@ -29,7 +28,7 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
   else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
 
   return (
-    <View style={[styles.container, isNew && styles.newGrade]}>
+    <View style={[styles.container, grade.isNew && styles.newGrade]}>
       <GradeModal visible={modalVisible} onDismiss={() => setModalVisible(false)} gradeId={grade.id} />
       <View style={[styles.indicator, {backgroundColor: indicatorColor}]} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>

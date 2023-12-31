@@ -11,6 +11,8 @@ interface Props {
 
 const ItemSize = windowHeight / 7;
 
+//TODO add sorting feature (by date / by value / by discipline / by average value)
+
 const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
   const user = useAppSelector(state => state.user)

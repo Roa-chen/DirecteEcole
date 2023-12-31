@@ -144,6 +144,8 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     user.periods = [];
     user.grades = {};
 
+    const now = Date.now();
+
     for (let i = 0; i < user.numberOfPeriod; i++) {
 
       const period = gradesInfo.data.periodes[i];
@@ -172,6 +174,8 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
           typeTest: grade.typeDevoir,
           value: formatStringNumber(grade.valeur),
           codeValue: grade.valeur.toString(),
+          isNew: now - Date.parse(grade.dateSaisie) < 172800000,
+
         }
 
         periodGradeIds.push(grade.id.toString())
