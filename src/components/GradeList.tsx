@@ -33,7 +33,7 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
       <View style={styles.headerContainer}>
         <Text style={[styles.text, { marginRight: Spaces.extra_small, fontWeight: 'bold' }]}>Trier par :</Text>
-        {['date', 'note'].map((value, index) => (
+        {['date', 'note', 'coefficient'].map((value, index) => (
           <TouchableOpacity key={'headerButton-' + index} onPress={() => setSortType(index)}>
             <View style={[styles.headerButton, sortType === index && styles.headerButtonSelected]}>
               <Text style={styles.text}>{value}</Text>

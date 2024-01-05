@@ -1,0 +1,387 @@
+{
+  "code": 200,
+  "token": "8420bb8b-eb31-4746-9e5d-506fbbe6fa2e",
+  "message": "",
+  "data": {
+    "changementMDP": false,
+    "accounts": [
+      {
+        "idLogin": 4548605,
+        "id": 1594,
+        "uid": "86c65f6e9b7d4b7e93075a15a4dad627",
+        "identifiant": "arsene.chardon",
+        "typeCompte": "E",
+        "codeOgec": "0391003D",
+        "main": true,
+        "lastConnexion": "2024-01-02 21:42",
+        "civilite": "",
+        "prenom": "Arsène",
+        "particule": "",
+        "nom": "CHARDON",
+        "email": "arsenechardon14@gmail.com",
+        "nomEtablissement": "Lycée Sainte Marie",
+        "couleurAgendaEtablissement": "#33cc33",
+        "dicoEnLigneLeRobert": false,
+        "socketToken": "+csbdGb06vGZ3Hx6+6yXsq/dKZsB7Z7kFr69DVobb240B18ckE6e4OjKOl3JouuKnIo9601MmCpVqYmcyrH2P8aVJIt9x5SnEdsLsGl/uP2FWIzbROBBKwedK5ApbC6wNA0ME9kGQO9S9TyoYOjo/H+K1iTF4MDW4mQoSiTgY2JReU3X52av8TNZ9DlAOlTS",
+        "modules": [
+          {
+            "code": "CANTINE_BARCODE",
+            "enable": true,
+            "ordre": 1,
+            "badge": 0,
+            "params": {
+              "numeroBadge": "25941"
+            }
+          },
+          {
+            "code": "VIE_SCOLAIRE",
+            "enable": true,
+            "ordre": 10,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "VIE_DE_LA_CLASSE",
+            "enable": true,
+            "ordre": 20,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "NOTES",
+            "enable": true,
+            "ordre": 30,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "CLOUD",
+            "enable": true,
+            "ordre": 90,
+            "badge": 0,
+            "params": {
+              "nbBadgePostits": "0",
+              "isActifPostitsEspacesTravail": "0",
+              "nbBadgeAgendaEvenements": "0",
+              "isActifAgendaEvenementsEspacesTravail": "0",
+              "padsActif": "1",
+              "visiosActif": "1",
+              "collaboraActif": "1",
+              "collaboraEdit": "1",
+              "collaboraFormat": "openXML",
+              "collaboraFormatChoixLibre": "0",
+              "streamingActif": "0"
+            }
+          },
+          {
+            "code": "MESSAGERIE",
+            "enable": true,
+            "ordre": 40,
+            "badge": 1,
+            "params": {
+              "isActif": "1",
+              "canParentsLireMessagesEnfants": "1",
+              "destAdmin": "1",
+              "destEleve": "0",
+              "destFamille": "0",
+              "destProf": "1",
+              "destEspTravail": "0",
+              "disabledNotification": "0",
+              "notificationEmailEtablissement": "1",
+              "choixMailNotification": "0",
+              "autreMailNotification": "",
+              "mailPro": "",
+              "mailPerso": "",
+              "messagerieApiVersion": "v3",
+              "blackListProfActive": "0",
+              "estEnBlackList": "0",
+              "afficherToutesLesClasses": "0"
+            }
+          },
+          {
+            "code": "EDT",
+            "enable": true,
+            "ordre": 50,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "DOCUMENTS_ELEVE",
+            "enable": true,
+            "ordre": 77,
+            "badge": 0,
+            "params": {
+              "DocumentsNotesActif": "1",
+              "DocumentsVSActif": "1",
+              "DocumentsAdministratifActif": "1",
+              "DocumentsEntrepriseActif": "0",
+              "AnneeArchive": "2016-2017,2017-2018,2018-2019,2019-2020,2020-2021,2021-2022,2022-2023"
+            }
+          },
+          {
+            "code": "CAHIER_DE_TEXTES",
+            "enable": true,
+            "ordre": 60,
+            "badge": 0,
+            "params": {
+              "compteRenduSeance": "1",
+              "compteRenduSeancePrevisionnel": "0",
+              "isCDTPrimaire": "0"
+            }
+          },
+          {
+            "code": "MANUELS_SCOLAIRES",
+            "enable": true,
+            "ordre": 62,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "QCM",
+            "enable": true,
+            "ordre": 65,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "EDFORMS",
+            "enable": true,
+            "ordre": 70,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "RESERVATIONS",
+            "enable": true,
+            "ordre": 80,
+            "badge": 0,
+            "params": {
+              "regime": "Interne",
+              "repasmidi_1": "1",
+              "repassoir_1": "1",
+              "repasmidi_2": "1",
+              "repassoir_2": "1",
+              "repasmidi_3": "1",
+              "repassoir_3": "1",
+              "repasmidi_4": "1",
+              "repassoir_4": "1",
+              "repasmidi_5": "1",
+              "repassoir_5": "0",
+              "repasmidi_6": "0",
+              "repassoir_6": "0",
+              "repasmidi_7": "0",
+              "repassoir_7": "0"
+            }
+          },
+          {
+            "code": "COMMANDE_PASSAGE",
+            "enable": false,
+            "ordre": 81,
+            "badge": 0,
+            "params": {
+              "affichageMenuSeul": "1"
+            }
+          },
+          {
+            "code": "CARNET_CORRESPONDANCE",
+            "enable": true,
+            "ordre": 70,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "ESIDOC",
+            "enable": true,
+            "ordre": 110,
+            "badge": 0,
+            "params": {
+              "tabParams": [
+                {
+                  "libelle": "CDI",
+                  "url": "https%3A%2F%2F0390070p%2Dcas%2Eesidoc%2Efr%2Fcas%2Fdelegate%2FaHR0cHM6Ly8wMzkwMDcwcC5lc2lkb2MuZnIvaG9tZQ"
+                }
+              ]
+            }
+          },
+          {
+            "code": "EDUNAO",
+            "enable": false,
+            "ordre": 100,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "CATER",
+            "enable": false,
+            "ordre": 95,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "ARD",
+            "enable": false,
+            "ordre": 120,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "PEARLTREES",
+            "enable": false,
+            "ordre": 170,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "EDUMALIN",
+            "enable": false,
+            "ordre": 171,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "SUIVI_STAGE",
+            "enable": true,
+            "ordre": 75,
+            "badge": 0,
+            "params": {
+              "Migred": "1",
+              "afficherCompteRenduVisite": "0",
+              "activerRecherche": "0"
+            }
+          },
+          {
+            "code": "CLICKNPLAY",
+            "enable": false,
+            "ordre": 171,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "VOLTAIRE",
+            "enable": false,
+            "ordre": 175,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "ONISEPSERVICES",
+            "enable": true,
+            "ordre": 172,
+            "badge": 0,
+            "params": {
+              "rne": "0390070P",
+              "url": "https%3A%2F%2Fauthentification%2Eonisep%2Efr%2Fclientredirect%3Fclient%5Fname%3DECOLE%5FDIRECTE%26service%3Dhttps%3A%2F%2Fwww%2Eonisep%2Dservices%2Efr"
+            }
+          },
+          {
+            "code": "AVENRIA",
+            "enable": false,
+            "ordre": 173,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "SACOCHE",
+            "enable": false,
+            "ordre": 174,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "ETUDIANT",
+            "enable": false,
+            "ordre": 176,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "IJBOX",
+            "enable": false,
+            "ordre": 177,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "FUTURNESS",
+            "enable": false,
+            "ordre": 178,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "IMPALA",
+            "enable": false,
+            "ordre": 179,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "POPLAB",
+            "enable": false,
+            "ordre": 180,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "EDUMEDIA",
+            "enable": false,
+            "ordre": 181,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "SITUATION_FINANCIERE",
+            "enable": true,
+            "ordre": 92,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "EDIALOG",
+            "enable": false,
+            "ordre": 182,
+            "badge": 0,
+            "params": {}
+          },
+          {
+            "code": "RDVPP",
+            "enable": false,
+            "ordre": 90,
+            "badge": 0,
+            "params": {}
+          }
+        ],
+        "parametresIndividuels": {
+          "lsuPoilDansLaMainBorne1": "",
+          "lsuPoilDansLaMainBorne2": "",
+          "lsuPoilDansLaMainBorne3": "",
+          "modeCalculLSU": "",
+          "isQrcode": false,
+          "accessibiliteVisuelle": false,
+          "checkAuthentificationSecure": false,
+          "typeSaisieNotesDefaut": "",
+          "nbJoursMaxRenduDevoirCDT": "",
+          "typeViewCDTDefaut": "",
+          "blocPMAccueil": false,
+          "blocActuAccueil": false
+        },
+        "profile": {
+          "sexe": "M",
+          "infoEDT": "",
+          "nomEtablissement": "Lycée Sainte Marie",
+          "idEtablissement": "3",
+          "rneEtablissement": "0390070P",
+          "telPortable": "",
+          "idReelEtab": "3",
+          "photo": "//doc1.ecoledirecte.com/PhotoEleves/0391003D_5562673462554c566b7555/70304b637541.jpg",
+          "classe": {
+            "id": 173,
+            "code": "TLE-A",
+            "libelle": "TERMINALE A",
+            "estNote": 1
+          }
+        }
+      }
+    ]
+  }
+}

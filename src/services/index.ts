@@ -20,15 +20,17 @@ export const logIn_ = async (username: string, password: string) => {
   }
 
   try {
-    const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
-      method: 'POST',
-      body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
-      headers: {
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
-      }
-    })
+    // const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
+    //   method: 'POST',
+    //   body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
+    //   headers: {
+    //     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+    //   }
+    // })
 
-    const userinfo = await response.json()
+    // const userinfo = await response.json()
+
+    const userinfo = require('../assets/login.json');
 
     if (userinfo.code !== 200) return <FetchingResponse>{
       success: false,
@@ -110,27 +112,29 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     },
   }
   try {
-    let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
-    let gradesInfo = await response.json()
+    // let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+    // let gradesInfo = await response.json()
 
-    if (gradesInfo.code !== 200) {
+    // if (gradesInfo.code !== 200) {
 
-      if (gradesInfo.code === 520 || gradesInfo.code === 525) {
+    //   if (gradesInfo.code === 520 || gradesInfo.code === 525) {
 
-        console.log('Error with token, getting another');
+    //     console.log('Error with token, getting another');
 
-        const connectionResponse = await logIn_(username, password);
-        const token = connectionResponse.data?.token
+    //     const connectionResponse = await logIn_(username, password);
+    //     const token = connectionResponse.data?.token
 
-        options.headers["X-Token"] = token ?? '',
+    //     options.headers["X-Token"] = token ?? '',
 
-        response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
-        gradesInfo = await response.json();
-      } else {
-        console.log('error in getting grades response - gradessInfo :', gradesInfo)
-        throw new Error('response code isn\'t 200')
-      }
-    };
+    //     response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+    //     gradesInfo = await response.json();
+    //   } else {
+    //     console.log('error in getting grades response - gradessInfo :', gradesInfo)
+    //     throw new Error('response code isn\'t 200')
+    //   }
+    // };
+
+    const gradesInfo = require('../assets/grades.json');
 
     if (user.settings) {
       user.settings.showGeneralAverage = gradesInfo.data.parametrage.moyenneGenerale;

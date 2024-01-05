@@ -78,6 +78,8 @@ export const sort = (a: Grade, b: Grade, sortingType: number) => {
       return Date.parse(a.displayDate) - Date.parse(b.displayDate)
     case 1:
       return (a.value / a.denominator) - (b.value / b.denominator)
+    case 2:
+      return a.coef - b.coef
     default:
       return 1;
   }
