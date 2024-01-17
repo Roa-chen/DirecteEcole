@@ -24,12 +24,14 @@ export type UserInfo = {
   numberOfPeriod?: number | undefined,
   periods?: Period[],
   grades?: { [id: string]: Grade },
+  unofficialGrades?: { [id: string]: Grade },
   settings?: {
     showGeneralAverage?: boolean,
     showClassAverage?: boolean,
     showMinAverage?: boolean,
     showMaxAverage?: boolean,
   }
+  calculateWithUnofficialGrades?: boolean,
   
 };
 
@@ -59,6 +61,7 @@ export type Grade = {
   maxClass: number,
   codeValue: string,
   isNew: boolean,
+  isOfficial: boolean,
 }
 
 export type Discipline = {
@@ -71,6 +74,7 @@ export type Discipline = {
   minAverageClass: number,
   maxAverageClass: number,
   gradeIds: string[],
+  unofficialGradeIds: string[],
 }
 
 export type Period = {
@@ -85,5 +89,6 @@ export type Period = {
   maxAverageClass: number,
   disciplines: Discipline[],
   gradeIds: string[],
+  unofficialGradeIds: string[],
   isEnded: boolean,
 }

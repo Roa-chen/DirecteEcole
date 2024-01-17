@@ -179,7 +179,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
           value: formatStringNumber(grade.valeur),
           codeValue: grade.valeur.toString(),
           isNew: now - Date.parse(grade.dateSaisie) < 172800000,
-
+          isOfficial: true,
         }
 
         periodGradeIds.push(grade.id.toString())
@@ -210,11 +210,13 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
             minAverageClass: formatStringNumber(discipline.moyenneMin),
             nameDiscipline: discipline.discipline,
             gradeIds: disciplineGradeIds,
+            unofficialGradeIds: [], //TODO save entered grades
           }
 
           return newDiscipline;
         }),
         gradeIds: periodGradeIds,
+        unofficialGradeIds: [], //TODO save entered grades
 
       })
     }

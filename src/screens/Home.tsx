@@ -152,7 +152,7 @@ const Home: React.FC<Props> = ({ unregister }) => {
                 </TouchableOpacity>
               )}
               {user.periods?.length !== 0 && user.periods?.[periodIndex]?.disciplines.map(discipline => (
-                <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} />
+                <DisciplineComponent key={'discipline-' + discipline.codeDiscipline + '-period-' + periodIndex} discipline={discipline} periodIndex={periodIndex} />
               ))}
             </ScrollView>
           </View>

@@ -2,27 +2,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Grade, Period, UserInfo } from '../assets/constants';
 import { calculateAverage } from '../assets/utils';
 
-interface UserState {
-  connected: boolean;
-  username: string | undefined;
-  password: string | undefined;
-  token: string | undefined;
-  id: string | undefined;
-  schoolName: string | undefined;
-  firstName: string | undefined;
-  lastName: string | undefined;
-  typeAccount: string | undefined;
-  childs: {
-    id: number;
-    firstName: string | undefined;
-    lastName: string | undefined;
-  }[];
-  numberOfPeriod: number | undefined;
-  periods: Period[];
-  grades: { [id: string]: Grade };
-  // selectedChild = 0;
-}
-
 const initialState: UserInfo = {
   connected: false,
   username: undefined,
@@ -37,6 +16,8 @@ const initialState: UserInfo = {
   numberOfPeriod: undefined,
   periods: [],
   grades: {},
+  unofficialGrades: {},
+  calculateWithUnofficialGrades: true,
 };
 
 const UserSlice = createSlice({
@@ -56,16 +37,67 @@ const UserSlice = createSlice({
       const discipline = period.disciplines.find(discipline => discipline.codeDiscipline === state.grades?.[gradeId].codeDiscipline)
       const disciplinePeriodGradeIds = discipline?.gradeIds
       if (!discipline) return;
-      discipline.averageCalculated = calculateAverage(state.grades, disciplinePeriodGradeIds??[])
-      period.averageCalculated = calculateAverage(state.grades, period.gradeIds);
+
+      discipline.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, [...disciplinePeriodGradeIds??[], ...(state.calculateWithUnofficialGrades ? discipline.unofficialGradeIds??[] : [])])
+      period.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, period.gradeIds);
     },
     clearUser: (state) => {
       Object.assign(state, {})
     },
+    createGrade: (state, action: PayloadAction<{value: number, denominator: number, coef: number, codeDiscipline: string, periodIndex: number }>) => {
+      const { value, denominator, coef, codeDiscipline, periodIndex } = action.payload;
+
+      
+      const period = state.periods?.[periodIndex]
+      const discipline = period?.disciplines.find(discipline => discipline.codeDiscipline === codeDiscipline)
+      const nameDiscipline = discipline?.nameDiscipline;
+      console.log('test')
+      if (!(nameDiscipline && state.unofficialGrades && period && state.grades)) return
+      
+      const unofficialGradeIds = period?.unofficialGradeIds;
+      
+      let id = 1;
+      while (id in Object.keys(state.unofficialGrades)) {
+        id += 1;
+      }
+      
+      unofficialGradeIds?.push(id.toString());
+      
+
+      state.unofficialGrades[id] = {
+        isOfficial: false,
+        id: id.toString(),
+        value,
+        coef,
+        denominator,
+        nameDiscipline,
+        codePeriod: "A00" + (periodIndex + 1),
+        averageClass: NaN,
+        minClass: NaN,
+        maxClass: NaN,
+        comment: "",
+        isPositive: false,
+        date: "",
+        displayDate: "",
+        codeDiscipline,
+        isNew: false,
+        name: "",
+        significant: true,
+        typeTest: "",
+        codeValue: "",
+      }
+
+      const disciplineGrades = [...discipline.gradeIds, ...( state.calculateWithUnofficialGrades ? discipline.unofficialGradeIds : [])];
+      const periodGrades = [...period.gradeIds, ...(state.calculateWithUnofficialGrades ? period.unofficialGradeIds : [])]
+
+      discipline.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, disciplineGrades)
+      period.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, periodGrades);
+
+    },
   }
 });
 
-export const { setUserData, setSignificant, clearUser } = UserSlice.actions;
+export const { setUserData, setSignificant, clearUser, createGrade } = UserSlice.actions;
 
 const userReducer = UserSlice.reducer
 export default userReducer;
