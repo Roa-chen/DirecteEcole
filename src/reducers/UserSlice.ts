@@ -51,23 +51,22 @@ const UserSlice = createSlice({
       const period = state.periods?.[periodIndex]
       const discipline = period?.disciplines.find(discipline => discipline.codeDiscipline === codeDiscipline)
       const nameDiscipline = discipline?.nameDiscipline;
-      console.log('test')
       if (!(nameDiscipline && state.unofficialGrades && period && state.grades)) return
       
-      const unofficialGradeIds = period?.unofficialGradeIds;
-      
       let id = 1;
-      while (id in Object.keys(state.unofficialGrades)) {
+      while (Object.keys(state.unofficialGrades).includes(id.toString())) {
         id += 1;
       }
-      
-      unofficialGradeIds?.push(id.toString());
+
+      period?.unofficialGradeIds?.push(id.toString());
+      discipline.unofficialGradeIds?.push(id.toString());
       
 
       state.unofficialGrades[id] = {
         isOfficial: false,
         id: id.toString(),
         value,
+        codeValue: value.toString(),
         coef,
         denominator,
         nameDiscipline,
@@ -84,7 +83,6 @@ const UserSlice = createSlice({
         name: "",
         significant: true,
         typeTest: "",
-        codeValue: "",
       }
 
       const disciplineGrades = [...discipline.gradeIds, ...( state.calculateWithUnofficialGrades ? discipline.unofficialGradeIds : [])];
@@ -92,7 +90,6 @@ const UserSlice = createSlice({
 
       discipline.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, disciplineGrades)
       period.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, periodGrades);
-
     },
   }
 });

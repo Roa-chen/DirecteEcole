@@ -27,6 +27,10 @@ export const Colors = {
   text: '#88858F',
   black: "#000000",
   red: "#FE6B6B",
+  color1: "#06A7ED",
+  color2: "#06A77D",
+  color3: "#FDCC21",
+  color4: "#FB8B24",
 };
 
 /* Paddings */

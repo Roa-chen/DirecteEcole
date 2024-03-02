@@ -12,20 +12,24 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const {grades} = useAppSelector(state => state.user);
-  const grade = grades?.[gradeId];
-  if (!grade) return
+  const {grades, unofficialGrades} = useAppSelector(state => state.user);
+  const grade = (grades?.[gradeId])??(unofficialGrades?.[gradeId]);
+  if (!grade) return;
+
+  if (!grade.isOfficial) {
+    console.log(grade)
+  }
 
   const coef = grade.coef;
   const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;
   const displayGrade = hasValue ? grade.value : grade.codeValue;
-  // const isNew = Date.now() - Date.parse(grade.displayDate) < 172800000;
 
   let indicatorColor = '';
 
-  if (grade.value === grade.maxClass) {indicatorColor = '#06A77D'}
-  else if (grade.value >= grade.averageClass) {indicatorColor = '#FDCC21'}
-  else if (grade.value <= grade.averageClass) {indicatorColor = '#FB8B24'}
+  if (grade.value === grade.maxClass) {indicatorColor = Colors.color1}
+  else if (grade.value >= grade.averageClass) {indicatorColor = Colors.color2}
+  else if (grade.value <= grade.averageClass) {indicatorColor = Colors.color3}
+  //TODO add color to unofficial grade
 
   return (
     <View style={[styles.container, grade.isNew && styles.newGrade]}>

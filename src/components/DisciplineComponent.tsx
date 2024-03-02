@@ -38,6 +38,11 @@ const DisciplineComponent: React.FC<Props> = ({ discipline, periodIndex }) => {
             <GradeComponent key={'grade' + gradeId} gradeId={gradeId} />
           )
         })}
+        {discipline.unofficialGradeIds.map(gradeId => {
+          return (
+            <GradeComponent key={'grade' + gradeId} gradeId={gradeId} />
+          )
+        })}
       </View>
     </View>
   );
