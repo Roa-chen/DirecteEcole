@@ -19,7 +19,6 @@ const DisciplineComponent: React.FC<Props> = ({ discipline, periodIndex }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-
   return (
     <View style={styles.container}>
       <DisciplineModal visible={modalVisible} onDismiss={() => setModalVisible(false)} discipline={discipline} />

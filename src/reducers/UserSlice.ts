@@ -31,15 +31,18 @@ const UserSlice = createSlice({
     setSignificant: (state, action: PayloadAction<{ gradeId: string, significant: boolean }>) => {
       const {gradeId, significant} = action.payload;
       if (!(state.grades && state.periods)) return
-      state.grades[gradeId].significant = significant;
+      const grade = state.grades[gradeId]??state.unofficialGrades?.[gradeId]
+      grade.significant = significant;
 
-      const period = state.periods[Number(state.grades[gradeId].codePeriod.slice(1))-1]
-      const discipline = period.disciplines.find(discipline => discipline.codeDiscipline === state.grades?.[gradeId].codeDiscipline)
+      console.log(grade)
+
+      const period = state.periods[Number(grade.codePeriod.slice(1))-1]
+      const discipline = period.disciplines.find(discipline => discipline.codeDiscipline === grade.codeDiscipline)
       const disciplinePeriodGradeIds = discipline?.gradeIds
       if (!discipline) return;
 
       discipline.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, [...disciplinePeriodGradeIds??[], ...(state.calculateWithUnofficialGrades ? discipline.unofficialGradeIds??[] : [])])
-      period.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, period.gradeIds);
+      period.averageCalculated = calculateAverage({...state.grades, ...state.unofficialGrades}, [...period.gradeIds, ...(state.calculateWithUnofficialGrades ? period.unofficialGradeIds??[] : [])]);
     },
     clearUser: (state) => {
       Object.assign(state, {})

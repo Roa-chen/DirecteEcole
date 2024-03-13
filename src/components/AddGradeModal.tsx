@@ -41,6 +41,8 @@ const AddGradeModal: React.FC<Props> = ({ visible, onDismiss, periodIndex, disci
             codeDiscipline: discipline.codeDiscipline,
             periodIndex,
           }))
+          visible = false;
+          onDismiss();
         }} />
 
       </View>

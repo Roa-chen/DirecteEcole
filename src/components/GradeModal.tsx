@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Modal, TouchableWithoutFeedback, Text } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText } from '../GlobalStyles';
 import { roundGrade, useAppDispatch, useAppSelector } from '../assets/utils';
@@ -20,7 +20,7 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
 
   const user = useAppSelector(state => state.user);
 
-  const grade = user.grades?.[gradeId];
+  const grade = (user.grades?.[gradeId])??(user.unofficialGrades?.[gradeId]);
   if (!grade) return;
 
   const dispatch = useAppDispatch();
@@ -28,9 +28,9 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
   let indicatorColor = '';
   let text = '';
 
-  if (grade.value === grade.maxClass) { indicatorColor = '#06A77D'; text = 'Meilleure note' }
-  else if (grade.value >= grade.averageClass) { indicatorColor = '#FDCC21'; text = 'Au dessus de la moyenne' }
-  else if (grade.value <= grade.averageClass) { indicatorColor = '#FB8B24'; text = 'En dessous de la moyenne' }
+  if (grade.value === grade.maxClass) { indicatorColor = Colors.color1; text = 'Meilleure note' }
+  else if (grade.value >= grade.averageClass) { indicatorColor = Colors.color2; text = 'Au dessus de la moyenne' }
+  else if (grade.value <= grade.averageClass) { indicatorColor = Colors.color2; text = 'En dessous de la moyenne' }
 
   return (
     <Modal
@@ -43,22 +43,23 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
         <View style={styles.overlay}>
           <View style={styles.contentContainer}>
 
-            <TitleLine text={grade.name} />
+            <TitleLine text={grade.name || "Note virtuelle"} />
 
             <Line name={"Matière"} value={grade.nameDiscipline} />
-            <Line name={"Devoir"} value={grade.typeTest} />
-            <Line name={"date"} value={grade.date} />
+            {grade.typeTest && <Line name={"Devoir"} value={grade.typeTest} />}
+            {grade.date && <Line name={"date"} value={grade.date} />}
+            
             <Line name={"Coefficient"} value={grade.coef.toString()} />
 
             <View style={styles.separationLine} />
 
             <GradeLine name={''} value={grade.denominator} denominator={grade.denominator} isTemplate />
             <GradeLine name={"Note"} value={roundGrade(grade.value)} denominator={grade.denominator} />
-            <GradeLine name={"Moyenne de classe"} value={grade.averageClass} denominator={grade.denominator} />
-            <GradeLine name={"Note maximum"} value={grade.maxClass} denominator={grade.denominator} />
-            <GradeLine name={"Note minimum"} value={grade.minClass} denominator={grade.denominator} />
+            {!!grade.averageClass && <GradeLine name={"Moyenne de classe"} value={grade.averageClass} denominator={grade.denominator} />}
+            {!!grade.maxClass && <GradeLine name={"Note maximum"} value={grade.maxClass} denominator={grade.denominator} />}
+            {!!grade.minClass && <GradeLine name={"Note minimum"} value={grade.minClass} denominator={grade.denominator} />}
 
-            <View style={styles.rankIndicatorContainer}>
+            {indicatorColor && <View style={styles.rankIndicatorContainer}>
               <Text style={styles.lineText}>{text}:</Text>
               <View style={{
                 backgroundColor: indicatorColor,
@@ -67,7 +68,7 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
                 borderRadius: BorderRadius.infinite,
                 marginLeft: Spaces.small,
               }} />
-            </View>
+            </View>}
 
             <View style={styles.separationLine} />
 

@@ -23,8 +23,13 @@ export const calculateAverage = (grades: { [id: string]: Grade; }, gradeIds: str
     }
   } = {}
 
+  console.log("gradeIds: ",gradeIds);
+
   for (let i = 0; i < gradeIds.length; i++) {
     const grade = grades[gradeIds[i]];
+    // if (gradeIds[i] == "1") {
+      // console.log("calculate with :", grade)
+    // }
 
     if (grade.significant && !isNaN(Number(grade.value))) {
 
