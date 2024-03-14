@@ -23,26 +23,24 @@ export const calculateAverage = (grades: { [id: string]: Grade; }, gradeIds: str
     }
   } = {}
 
-  console.log("gradeIds: ",gradeIds);
-
   for (let i = 0; i < gradeIds.length; i++) {
     const grade = grades[gradeIds[i]];
-    // if (gradeIds[i] == "1") {
-      // console.log("calculate with :", grade)
-    // }
 
     if (grade.significant && !isNaN(Number(grade.value))) {
+      const value = grade.modifiedValue??grade.value;
+      const denominator = grade.modifiedDenominator??grade.denominator;
+      const coef = grade.modifiedCoef??grade.coef;
 
       if (disciplines[grade.codeDiscipline]) {
         disciplines[grade.codeDiscipline] = {
-          total: disciplines[grade.codeDiscipline]?.total + ((grade.value / grade.denominator) * 20) * grade.coef,
-          coef: disciplines[grade.codeDiscipline]?.coef + grade.coef,
+          total: disciplines[grade.codeDiscipline]?.total + ((value / denominator) * 20) * coef,
+          coef: disciplines[grade.codeDiscipline]?.coef + coef,
         }
 
       } else {
         disciplines[grade.codeDiscipline] = {
-          total: ((grade.value / grade.denominator) * 20) * grade.coef,
-          coef: grade.coef,
+          total: ((value / denominator) * 20) * coef,
+          coef: coef,
         }
       }
     }

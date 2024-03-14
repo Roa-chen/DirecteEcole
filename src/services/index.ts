@@ -4,6 +4,8 @@ import { calculateAverage, formatStringNumber, useAppDispatch } from "../assets/
 import { Alert, BackHandler } from "react-native";
 import { clearUser } from "../reducers/UserSlice";
 
+const useRealData = !__DEV__;
+
 export const logIn_ = async (username: string, password: string) => {
 
   if (!(username && password)) return <FetchingResponse>{
@@ -20,17 +22,25 @@ export const logIn_ = async (username: string, password: string) => {
   }
 
   try {
-    // const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
-    //   method: 'POST',
-    //   body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
-    //   headers: {
-    //     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
-    //   }
-    // })
+    let userinfo;
 
-    // const userinfo = await response.json()
+    if (!useRealData) {
+      userinfo = require('../assets/login.json');
 
-    const userinfo = require('../assets/login.json');
+    } else {
+      const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
+        method: 'POST',
+        body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
+        headers: {
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+        }
+      })
+
+      userinfo = await response.json()
+
+    }
+
+
 
     if (userinfo.code !== 200) return <FetchingResponse>{
       success: false,
@@ -93,7 +103,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     console.log('Need a token and an id');
     return <FetchingResponse>{
       success: false,
-      message: 'Error while getting grades, token or id were not gave.' ,
+      message: 'Error while getting grades, token or id were not gave.',
     }
   }
 
@@ -112,29 +122,36 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
     },
   }
   try {
-    // let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
-    // let gradesInfo = await response.json()
+    let gradesInfo;
 
-    // if (gradesInfo.code !== 200) {
+    if (!useRealData) {
+      gradesInfo = require('../assets/grades.json');
 
-    //   if (gradesInfo.code === 520 || gradesInfo.code === 525) {
+    } else {
 
-    //     console.log('Error with token, getting another');
+      let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+      gradesInfo = await response.json()
 
-    //     const connectionResponse = await logIn_(username, password);
-    //     const token = connectionResponse.data?.token
+      if (gradesInfo.code !== 200) {
 
-    //     options.headers["X-Token"] = token ?? '',
+        if (gradesInfo.code === 520 || gradesInfo.code === 525) {
 
-    //     response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
-    //     gradesInfo = await response.json();
-    //   } else {
-    //     console.log('error in getting grades response - gradessInfo :', gradesInfo)
-    //     throw new Error('response code isn\'t 200')
-    //   }
-    // };
+          console.log('Error with token, getting another');
 
-    const gradesInfo = require('../assets/grades.json');
+          const connectionResponse = await logIn_(username, password);
+          const token = connectionResponse.data?.token
+
+          options.headers["X-Token"] = token ?? '',
+
+          response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+          gradesInfo = await response.json();
+        } else {
+          console.log('error in getting grades response - gradessInfo :', gradesInfo)
+          throw new Error('response code isn\'t 200')
+        }
+      };
+    }
+
 
     if (user.settings) {
       user.settings.showGeneralAverage = gradesInfo.data.parametrage.moyenneGenerale;
@@ -199,9 +216,9 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
         disciplines: period.ensembleMatieres.disciplines.map((discipline: any) => {
 
           const disciplineGradeIds = Object.values(user.grades ?? {}).filter(grade => grade.codeDiscipline === discipline.codeMatiere && grade.codePeriod === period.codePeriode).map(grade => grade.id)
-          
+
           const newDiscipline: Discipline = {
-            averageCalculated: calculateAverage(user.grades??{}, disciplineGradeIds),
+            averageCalculated: calculateAverage(user.grades ?? {}, disciplineGradeIds),
             averageClass: formatStringNumber(discipline.moyenneClasse),
             averageOfficial: formatStringNumber(discipline.moyenne),
             codeDiscipline: discipline.codeMatiere,

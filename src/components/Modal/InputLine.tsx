@@ -7,7 +7,8 @@ const InputLine: React.FC<{
   value: string,
   onChange: (text: string) => void,
   numeric?: boolean,
-}> = ({ name, value, onChange, numeric = false }) => {
+  autoFocus?: boolean,
+}> = ({ name, value, onChange, numeric = false, autoFocus=false }) => {
   return (
     <View style={styles.lineContainer}>
       <Text style={styles.lineText}>{name}:</Text>
@@ -21,6 +22,7 @@ const InputLine: React.FC<{
         style={styles.input}
         textAlign="center"
         textAlignVertical="center"
+        autoFocus = {autoFocus}
       />
     </View>
   )

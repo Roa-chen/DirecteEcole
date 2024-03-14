@@ -16,9 +16,12 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
   const grade = (grades?.[gradeId]) ?? (unofficialGrades?.[gradeId]);
   if (!grade) return;
 
-  const coef = grade.coef;
-  const hasValue = !Number.isNaN(grade.value) && grade.denominator !== 20;
-  const displayGrade = hasValue ? grade.value : grade.codeValue;
+  const coef = grade.modifiedCoef??grade.coef;
+  const denominator = grade.modifiedDenominator??grade.denominator;
+  const hasValue = !Number.isNaN(grade.value) && denominator !== 20;
+  const displayGrade = grade.modifiedValue??(hasValue ? grade.value : grade.codeValue);
+  const modified = grade.modifiedCoef || grade.modifiedDenominator || grade.modifiedValue || !grade.isOfficial;
+
 
   let indicatorColor = '';
 
@@ -35,11 +38,13 @@ const GradeComponent: React.FC<Props> = ({ gradeId }) => {
         setModalVisible(true)
       }>
         <View style={styles.gradeContainer}>
+          {modified && <Text style={styles.valueText}>{grade.isOfficial ? '[':'('}</Text>}
           <Text style={[styles.valueText, !grade.significant && { opacity: .6 }]}>{displayGrade}</Text>
           <View style={styles.extraContainer}>
-            {(coef !== 1 || true) && <Text style={[styles.coefText, !grade.significant && { opacity: .6 }]}>{coef !== 1 ? `(${coef})` : ' '}</Text>}
-            {hasValue && <Text style={[styles.denominatorText, !grade.significant && { opacity: .6 }]}>/ {grade.denominator}</Text>}
+            {(coef !== 1 || denominator !== 20) && <Text style={[styles.coefText, !grade.significant && { opacity: .6 }]}>{coef !== 1 ? `(${coef})` : ' '}</Text>}
+            {hasValue && <Text style={[styles.denominatorText, !grade.significant && { opacity: .6 }]}>/ {denominator}</Text>}
           </View>
+          {modified && <Text style={styles.valueText}>{grade.isOfficial?']':')'}</Text>}
         </View>
       </TouchableOpacity>
     </View>
