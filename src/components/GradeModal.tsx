@@ -35,7 +35,7 @@ const GradeModal: React.FC<Props> = ({ visible, onDismiss, gradeId }) => {
   else if (grade.value >= grade.averageClass) { indicatorColor = Colors.color2; text = 'Au dessus de la moyenne' }
   else if (grade.value <= grade.averageClass) { indicatorColor = Colors.color2; text = 'En dessous de la moyenne' }
 
-  const modified = grade.modifiedCoef || grade.modifiedDenominator || grade.modifiedValue;
+  const modified = grade.modifiedCoef || grade.modifiedDenominator || grade.modifiedValue || !grade.isOfficial;
   const denominator = grade.modifiedDenominator ?? grade.denominator;
 
   const [modalVisible, setModalVisible] = useState(false);

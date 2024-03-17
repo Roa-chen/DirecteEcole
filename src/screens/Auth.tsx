@@ -9,8 +9,8 @@ interface Props {
 
 const Auth: React.FC<Props> = ({ logIn }) => {
 
-  const [usernameText, setUsernameText] = useState(__DEV__ ? 'arsene.chardon' : '');
-  const [passwordText, setPasswordText] = useState(__DEV__ ? 'larsenaldu26' : ''); //FIXME remove blank password
+  const [usernameText, setUsernameText] = useState('');
+  const [passwordText, setPasswordText] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
 
