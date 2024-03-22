@@ -5,6 +5,8 @@ import { Alert, BackHandler } from "react-native";
 import { clearUser } from "../reducers/UserSlice";
 
 const useRealData = !__DEV__;
+const unrealUsername = "developer.developer";
+const unrealPassword = "playConsole";
 
 export const logIn_ = async (username: string, password: string) => {
 
@@ -24,7 +26,7 @@ export const logIn_ = async (username: string, password: string) => {
   try {
     let userinfo;
 
-    if (!useRealData) {
+    if (!useRealData || (username==unrealUsername && password==unrealPassword)) {
       userinfo = require('../assets/login.json');
 
     } else {
@@ -124,7 +126,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
   try {
     let gradesInfo;
 
-    if (!useRealData) {
+    if (!useRealData || (username==unrealUsername && password==unrealPassword)) {
       gradesInfo = require('../assets/grades.json');
 
     } else {

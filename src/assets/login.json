@@ -6,20 +6,19 @@
     "changementMDP": false,
     "accounts": [
       {
-        "idLogin": 4548605,
-        "id": 1594,
+        "idLogin": 1234567,
+        "id": 1234,
         "uid": "86c65f6e9b7d4b7e93075a15a4dad627",
-        "identifiant": "arsene.chardon",
+        "identifiant": "developer.developer",
         "typeCompte": "E",
-        "codeOgec": "0391003D",
         "main": true,
         "lastConnexion": "2024-01-02 21:42",
         "civilite": "",
-        "prenom": "Arsène",
+        "prenom": "firstname",
         "particule": "",
-        "nom": "CHARDON",
-        "email": "arsenechardon14@gmail.com",
-        "nomEtablissement": "Lycée Sainte Marie",
+        "nom": "NAME",
+        "email": "useremail@gmail.com",
+        "nomEtablissement": "User Establishment",
         "couleurAgendaEtablissement": "#33cc33",
         "dicoEnLigneLeRobert": false,
         "socketToken": "+csbdGb06vGZ3Hx6+6yXsq/dKZsB7Z7kFr69DVobb240B18ckE6e4OjKOl3JouuKnIo9601MmCpVqYmcyrH2P8aVJIt9x5SnEdsLsGl/uP2FWIzbROBBKwedK5ApbC6wNA0ME9kGQO9S9TyoYOjo/H+K1iTF4MDW4mQoSiTgY2JReU3X52av8TNZ9DlAOlTS",
@@ -198,7 +197,7 @@
               "tabParams": [
                 {
                   "libelle": "CDI",
-                  "url": "https%3A%2F%2F0390070p%2Dcas%2Eesidoc%2Efr%2Fcas%2Fdelegate%2FaHR0cHM6Ly8wMzkwMDcwcC5lc2lkb2MuZnIvaG9tZQ"
+                  "url": "https://url.com"
                 }
               ]
             }
@@ -270,7 +269,7 @@
             "badge": 0,
             "params": {
               "rne": "0390070P",
-              "url": "https%3A%2F%2Fauthentification%2Eonisep%2Efr%2Fclientredirect%3Fclient%5Fname%3DECOLE%5FDIRECTE%26service%3Dhttps%3A%2F%2Fwww%2Eonisep%2Dservices%2Efr"
+              "url": "https://url.com"
             }
           },
           {
@@ -368,16 +367,15 @@
         "profile": {
           "sexe": "M",
           "infoEDT": "",
-          "nomEtablissement": "Lycée Sainte Marie",
+          "nomEtablissement": "User Establishment",
           "idEtablissement": "3",
-          "rneEtablissement": "0390070P",
           "telPortable": "",
           "idReelEtab": "3",
-          "photo": "//doc1.ecoledirecte.com/PhotoEleves/0391003D_5562673462554c566b7555/70304b637541.jpg",
+          "photo": "photo.jpg",
           "classe": {
             "id": 173,
-            "code": "TLE-A",
-            "libelle": "TERMINALE A",
+            "code": "TLE",
+            "libelle": "TERMINALE",
             "estNote": 1
           }
         }

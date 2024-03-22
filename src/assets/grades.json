@@ -24,8 +24,7 @@
           "moyenneClasse": "10",
           "moyenneMin": "0",
           "moyenneMax": "13",
-          "nomPP": "M. DELORT A.¤M. SCHIAVON  .",
-          "appreciationPP": "Excellent trimestre. L'ensemble est sans fausse note. Félicitations avec mention excellence du conseil de classe.",
+          "nomPP": "M. ABC A.¤M. CDE  .",
           "nomCE": "",
           "decisionDuConseil": "",
           "disciplines": [
@@ -48,8 +47,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 361,
-                  "nom": "M. DELORT A."
+                  "id": 361
                 }
               ],
               "appreciations": [
@@ -75,8 +73,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": [
@@ -102,8 +99,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": [
@@ -129,8 +125,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 39,
-                  "nom": "Mme BONJEAN A."
+                  "id": 39
                 }
               ],
               "appreciations": [
@@ -156,8 +151,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 35,
-                  "nom": "Mme SAINT MARTIN M."
+                  "id": 35
                 }
               ],
               "appreciations": [
@@ -183,12 +177,10 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 104
                 },
                 {
-                  "id": 282,
-                  "nom": "Mme FLAMAND J."
+                  "id": 282
                 }
               ],
               "appreciations": [
@@ -214,8 +206,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 104
                 }
               ],
               "appreciations": [
@@ -241,8 +232,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": [
@@ -268,8 +258,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": [
@@ -295,8 +284,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 365,
-                  "nom": "M. OLBINSKI A."
+                  "id": 365
                 }
               ],
               "appreciations": [
@@ -322,8 +310,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 220,
-                  "nom": "M. STELEA R."
+                  "id": 220
                 }
               ],
               "appreciations": [
@@ -374,8 +361,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 361,
-                  "nom": "M. DELORT A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -399,8 +385,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -424,8 +409,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -449,8 +433,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 39,
-                  "nom": "Mme BONJEAN A."
+                  "id": 39
                 }
               ],
               "appreciations": []
@@ -474,8 +457,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 35,
-                  "nom": "Mme SAINT MARTIN M."
+                  "id": 35
                 }
               ],
               "appreciations": []
@@ -499,12 +481,10 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 104
                 },
                 {
-                  "id": 282,
-                  "nom": "Mme FLAMAND J."
+                  "id": 28
                 }
               ],
               "appreciations": []
@@ -528,8 +508,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 10
                 }
               ],
               "appreciations": []
@@ -553,8 +532,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -578,8 +556,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -603,8 +580,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 365,
-                  "nom": "M. OLBINSKI A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -628,8 +604,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 220,
-                  "nom": "M. STELEA R."
+                  "id": 22
                 }
               ],
               "appreciations": []
@@ -678,8 +653,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 361,
-                  "nom": "M. DELORT A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -703,8 +677,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -728,8 +701,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -753,8 +725,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 39,
-                  "nom": "Mme BONJEAN A."
+                  "id": 39
                 }
               ],
               "appreciations": []
@@ -778,8 +749,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 35,
-                  "nom": "Mme SAINT MARTIN M."
+                  "id": 35
                 }
               ],
               "appreciations": []
@@ -803,12 +773,10 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 104
                 },
                 {
-                  "id": 282,
-                  "nom": "Mme FLAMAND J."
+                  "id": 28
                 }
               ],
               "appreciations": []
@@ -832,8 +800,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 10
                 }
               ],
               "appreciations": []
@@ -857,8 +824,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -882,8 +848,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -907,8 +872,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 365,
-                  "nom": "M. OLBINSKI A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -932,8 +896,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 220,
-                  "nom": "M. STELEA R."
+                  "id": 22
                 }
               ],
               "appreciations": []
@@ -974,8 +937,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 361,
-                  "nom": "M. DELORT A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -995,8 +957,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -1016,8 +977,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 45,
-                  "nom": "Mme PUTET."
+                  "id": 45
                 }
               ],
               "appreciations": []
@@ -1037,8 +997,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 39,
-                  "nom": "Mme BONJEAN A."
+                  "id": 39
                 }
               ],
               "appreciations": []
@@ -1058,8 +1017,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 35,
-                  "nom": "Mme SAINT MARTIN M."
+                  "id": 35
                 }
               ],
               "appreciations": []
@@ -1079,12 +1037,10 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 104
                 },
                 {
-                  "id": 282,
-                  "nom": "Mme FLAMAND J."
+                  "id": 28
                 }
               ],
               "appreciations": []
@@ -1104,8 +1060,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 104,
-                  "nom": "M. VILLET M."
+                  "id": 10
                 }
               ],
               "appreciations": []
@@ -1125,8 +1080,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -1146,8 +1100,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 8,
-                  "nom": "M. SCHIAVON."
+                  "id": 8
                 }
               ],
               "appreciations": []
@@ -1167,8 +1120,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 365,
-                  "nom": "M. OLBINSKI A."
+                  "id": 36
                 }
               ],
               "appreciations": []
@@ -1188,8 +1140,7 @@
               "saisieAppreciationSSMat": false,
               "professeurs": [
                 {
-                  "id": 220,
-                  "nom": "M. STELEA R."
+                  "id": 22
                 }
               ],
               "appreciations": []
