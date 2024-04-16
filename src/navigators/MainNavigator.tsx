@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator, Alert, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createStackNavigator } from '@react-navigation/stack';
 import Auth from '../screens/Auth';
 import Home from '../screens/Home';
-import { CN_KEY, CV_KEY, PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
+import { CN_KEY, CV_KEY, PASSWORD_KEY, USERNAME_KEY, UserInfo } from '../assets/constants';
 import { Colors } from '../GlobalStyles';
 import { useAppDispatch } from '../assets/utils';
-import { logIn_ } from '../services';
+import { logIn_, unrealPassword, unrealUsername } from '../services';
 import { clearUser, setUserData } from '../reducers/UserSlice';
 
 interface Props {
@@ -25,10 +24,10 @@ const MainNavigator: React.FC<Props> = ({ }) => {
 
       console.log(store)
 
-      let username =  store?.find(elem => elem[0] == USERNAME_KEY)?.[1]??'';
-      let password =  store?.find(elem => elem[0] == PASSWORD_KEY)?.[1]??'';
-      let cn =        store?.find(elem => elem[0] == CN_KEY)?.[1]??'';
-      let cv =        store?.find(elem => elem[0] == CV_KEY)?.[1]??'';
+      let username = store?.find(elem => elem[0] == USERNAME_KEY)?.[1] ?? '';
+      let password = store?.find(elem => elem[0] == PASSWORD_KEY)?.[1] ?? '';
+      let cn = store?.find(elem => elem[0] == CN_KEY)?.[1] ?? '';
+      let cv = store?.find(elem => elem[0] == CV_KEY)?.[1] ?? '';
 
       if (username) username = JSON.parse(username);
       if (password) password = JSON.parse(password);
@@ -63,6 +62,14 @@ const MainNavigator: React.FC<Props> = ({ }) => {
   async function logIn(username: string, password: string, response?: string, token?: string, cn?: string, cv?: string) {
 
     const connectionResponse = await logIn_(username, password, response, token, cn, cv)
+
+    if (username === unrealUsername && password === unrealPassword) {
+
+      dispatch(setUserData({ userInfo: connectionResponse.data }))
+      console.log(connectionResponse.data);
+      setConnectionState(2)
+      return connectionResponse;
+    }
 
     if (connectionResponse.success) {
       AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.data?.username))

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, Alert, Switch, Keyboard, BackHandler } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spaces, SubTitleText, TitleText } from '../GlobalStyles';
 import { FetchingResponse } from '../assets/constants';
-import { getQuestions } from '../services';
+import { getQuestions, unrealPassword, unrealUsername } from '../services';
 import { FlatList } from 'react-native-gesture-handler';
 
 interface Props {
-  logIn: (username: string, password: string, response: string, token: string) => Promise<FetchingResponse>
+  logIn: (username: string, password: string, response?: string, token?: string) => Promise<FetchingResponse>
 }
 
 const Auth: React.FC<Props> = ({ logIn }) => {
@@ -65,8 +65,12 @@ const Auth: React.FC<Props> = ({ logIn }) => {
 
           <TouchableOpacity
             onPress={() => {
-              setFetching(true)
+              if (usernameText === unrealUsername && passwordText === unrealPassword) {
+                logIn(usernameText, unrealPassword);
+                return;
+              }
 
+              setFetching(true)
               getQuestions(usernameText, passwordText).then((connectionResponse) => {
                 setFetching(false);
                 if (!connectionResponse.success) {
@@ -103,17 +107,7 @@ const Auth: React.FC<Props> = ({ logIn }) => {
           <Text style={[styles.responseText, { color: Colors.callToAction, marginVertical: 0 }]}>Retour</Text>
         </TouchableOpacity>
 
-        {/* <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-        }}> */}
-
-
-          <Text style={styles.questionText}>{question}</Text>
-
-        {/* </View> */}
+        <Text style={styles.questionText}>{question}</Text>
 
         <FlatList
           data={responses}
@@ -230,9 +224,6 @@ const styles = StyleSheet.create({
   backButton: {
     alignSelf: 'flex-start',
     marginTop: Spaces.small,
-    // position: 'absolute',
-    // top: Spaces.small,
-    // left: Spaces.small,
   }
 })
 

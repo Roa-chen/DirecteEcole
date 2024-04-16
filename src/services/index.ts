@@ -2,9 +2,9 @@ import { FetchingResponse, Discipline, Grade, UserInfo, QuestionsResponse } from
 import { calculateAverage, formatStringNumber, useAppDispatch } from "../assets/utils";
 import { Buffer } from "buffer";
 
-const useRealData = !__DEV__ || true;
-const unrealUsername = "developer.developer";
-const unrealPassword = "playConsole";
+const useRealData = !__DEV__;
+export const unrealUsername = "developer.developer";
+export const unrealPassword = "playConsole";
 
 const apiVersion = "4.54.2"; //4.39.1
 
@@ -18,37 +18,30 @@ export const getQuestions = async (username: string, password: string) => {
   };
 
   try {
-    let tokenInfo;
     let token;
     let doubleAuthData;
 
-    if (!useRealData || (username == unrealUsername && password == unrealPassword)) { // TODO handle developer session
-      tokenInfo = require('../assets/login.json');
-    } else {
+    const longinResponse = await fetch(`https://api.ecoledirecte.com/v3/login.awp?v=${apiVersion}`, {
+      method: 'POST',
+      body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\", \"fa\": []}`,
+      headers: {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+      }
+    })
+    const tokenInfo = await longinResponse.json()
 
+    token = tokenInfo.token;
 
-      const longinResponse = await fetch(`https://api.ecoledirecte.com/v3/login.awp?v=${apiVersion}`, {
-        method: 'POST',
-        body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\", \"fa\": []}`,
-        headers: {
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
-        }
-      })
-      const tokenInfo = await longinResponse.json()
+    const doubleAuthResponse = await fetch("https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=get&v=4.54.2", {
+      "headers": {
+        "x-token": token,
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+      },
+      "body": "data={}",
+      "method": "POST"
+    });
 
-      token = tokenInfo.token;
-
-      const doubleAuthResponse = await fetch("https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=get&v=4.54.2", {
-        "headers": {
-          "x-token": token,
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
-        },
-        "body": "data={}",
-        "method": "POST"
-      });
-
-      doubleAuthData = await doubleAuthResponse.json();
-    }
+    doubleAuthData = await doubleAuthResponse.json();
 
     const promise: QuestionsResponse = {
       success: true,
@@ -56,7 +49,7 @@ export const getQuestions = async (username: string, password: string) => {
       data: {
         question: Buffer.from(doubleAuthData.data.question, 'base64').toString('utf-8'),
         responsesB64: doubleAuthData.data.propositions,
-        responses:doubleAuthData.data.propositions.map((encodedResponse: string) => Buffer.from(encodedResponse, 'base64').toString('utf-8')),
+        responses: doubleAuthData.data.propositions.map((encodedResponse: string) => Buffer.from(encodedResponse, 'base64').toString('utf-8')),
       },
     }
 
@@ -74,20 +67,9 @@ export const getQuestions = async (username: string, password: string) => {
   }
 }
 
-export const reLogIn_ = async (username: string, password: string, cn: string, cv: string) => {
-
-
-
-
-
-}
-
 export const logIn_ = async (username: string, password: string, response?: string, token?: string, cn?: string, cv?: string) => {
 
-  console.log('data : ', username, password, response, token, cn, cv);
-
-
-  if (!(username && password && ((response && token) || (cn && cv)))) return <FetchingResponse>{
+  if (!(username && password && ((response && token) || (cn && cv))) && !(username == unrealUsername && password == unrealPassword)) return <FetchingResponse>{
     success: false,
     username,
     password,
@@ -103,11 +85,9 @@ export const logIn_ = async (username: string, password: string, response?: stri
   try {
     let userinfo;
 
-    if (!useRealData || (username == unrealUsername && password == unrealPassword)) {
-      userinfo = require('../assets/login.json');
-
+    if (!useRealData || (username === unrealUsername && password === unrealPassword)) {
+      userinfo = await require('../assets/login.json');
     } else {
-
 
       if (!(cn && cv) && token) {
 
