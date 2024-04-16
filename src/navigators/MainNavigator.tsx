@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import Auth from '../screens/Auth';
 import Home from '../screens/Home';
-import { PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
+import { CN_KEY, CV_KEY, PASSWORD_KEY, USERNAME_KEY } from '../assets/constants';
 import { Colors } from '../GlobalStyles';
 import { useAppDispatch } from '../assets/utils';
 import { logIn_ } from '../services';
@@ -21,56 +21,57 @@ const MainNavigator: React.FC<Props> = ({ }) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    AsyncStorage.multiGet([USERNAME_KEY, PASSWORD_KEY, CN_KEY, CV_KEY], (err, store) => {
 
-    AsyncStorage.getItem(USERNAME_KEY).then(
-      username => {
-        // console.log('username: ', username)
-        if (username) {
-          AsyncStorage.getItem(PASSWORD_KEY).then(
-            password => {
-              // console.log('password: ', password)
-              if (password) {
-                logIn(JSON.parse(username), JSON.parse(password)).then(connectionResponse => {
-                  if (!connectionResponse.success) {
-                    Alert.alert('Erreur:', connectionResponse.message, [
-                      {
-                        text: 'Réesayer',
-                        onPress: () => {
-                          logIn(username, password)
-                        }
-                      }
-                    ],
-                      {
-                        cancelable: true,
-                        onDismiss: () => {
-                          BackHandler.exitApp()
-                        }
-                      })
-                  }
-                })
-              } else {
-                setConnectionState(1)
+      console.log(store)
+
+      let username =  store?.find(elem => elem[0] == USERNAME_KEY)?.[1]??'';
+      let password =  store?.find(elem => elem[0] == PASSWORD_KEY)?.[1]??'';
+      let cn =        store?.find(elem => elem[0] == CN_KEY)?.[1]??'';
+      let cv =        store?.find(elem => elem[0] == CV_KEY)?.[1]??'';
+
+      if (username) username = JSON.parse(username);
+      if (password) password = JSON.parse(password);
+      if (cn) cn = JSON.parse(cn);
+      if (cv) cv = JSON.parse(cv);
+
+      if (username && password && cn && cv) {
+        logIn(username, password, undefined, undefined, cn, cv).then(connectionResponse => {
+          if (!connectionResponse.success) {
+            Alert.alert('Erreur:', connectionResponse.message, [
+              {
+                text: 'Réesayer',
+                onPress: () => {
+                  logIn(username, password, cn, cv)
+                }
               }
-            }
-          )
-        }
-        else {
-          setConnectionState(1)
-        }
+            ],
+              {
+                cancelable: true,
+                onDismiss: () => {
+                  BackHandler.exitApp()
+                }
+              })
+          }
+        });
+      } else {
+        setConnectionState(1);
       }
-    )
+    });
   }, [])
 
-  async function logIn(username: string, password: string) {
+  async function logIn(username: string, password: string, response?: string, token?: string, cn?: string, cv?: string) {
 
-    const connectionResponse = await logIn_(username, password)
+    const connectionResponse = await logIn_(username, password, response, token, cn, cv)
 
     if (connectionResponse.success) {
       AsyncStorage.setItem(USERNAME_KEY, JSON.stringify(connectionResponse.data?.username))
       AsyncStorage.setItem(PASSWORD_KEY, JSON.stringify(connectionResponse.data?.password))
+      AsyncStorage.setItem(CN_KEY, JSON.stringify(connectionResponse.doubleAuthInfo?.cn))
+      AsyncStorage.setItem(CV_KEY, JSON.stringify(connectionResponse.doubleAuthInfo?.cv))
       dispatch(setUserData({ userInfo: connectionResponse.data }))
       setConnectionState(2)
-    } 
+    }
 
     return connectionResponse;
   }

@@ -1,20 +1,97 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FetchingResponse, Discipline, Grade, UserInfo } from "../assets/constants";
+import { FetchingResponse, Discipline, Grade, UserInfo, QuestionsResponse } from "../assets/constants";
 import { calculateAverage, formatStringNumber, useAppDispatch } from "../assets/utils";
-import { Alert, BackHandler } from "react-native";
-import { clearUser } from "../reducers/UserSlice";
+import { Buffer } from "buffer";
 
-const useRealData = !__DEV__;
+const useRealData = !__DEV__ || true;
 const unrealUsername = "developer.developer";
 const unrealPassword = "playConsole";
 
-export const logIn_ = async (username: string, password: string) => {
+const apiVersion = "4.54.2"; //4.39.1
 
-  if (!(username && password)) return <FetchingResponse>{
+
+export const getQuestions = async (username: string, password: string) => {
+  if (!(username && password)) return <QuestionsResponse>{
     success: false,
     username,
     password,
     message: 'Identifiant ou mot de passe non renseigné.'
+  };
+
+  try {
+    let tokenInfo;
+    let token;
+    let doubleAuthData;
+
+    if (!useRealData || (username == unrealUsername && password == unrealPassword)) { // TODO handle developer session
+      tokenInfo = require('../assets/login.json');
+    } else {
+
+
+      const longinResponse = await fetch(`https://api.ecoledirecte.com/v3/login.awp?v=${apiVersion}`, {
+        method: 'POST',
+        body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\", \"fa\": []}`,
+        headers: {
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+        }
+      })
+      const tokenInfo = await longinResponse.json()
+
+      token = tokenInfo.token;
+
+      const doubleAuthResponse = await fetch("https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=get&v=4.54.2", {
+        "headers": {
+          "x-token": token,
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+        },
+        "body": "data={}",
+        "method": "POST"
+      });
+
+      doubleAuthData = await doubleAuthResponse.json();
+    }
+
+    const promise: QuestionsResponse = {
+      success: true,
+      token,
+      data: {
+        question: Buffer.from(doubleAuthData.data.question, 'base64').toString('utf-8'),
+        responsesB64: doubleAuthData.data.propositions,
+        responses:doubleAuthData.data.propositions.map((encodedResponse: string) => Buffer.from(encodedResponse, 'base64').toString('utf-8')),
+      },
+    }
+
+    return promise;
+
+  } catch (err) {
+    console.log('error while connecting: ', err)
+
+    const promise: QuestionsResponse = {
+      success: false,
+      message: 'Vérifiez votre connection et réessayez.',
+    }
+
+    return promise;
+  }
+}
+
+export const reLogIn_ = async (username: string, password: string, cn: string, cv: string) => {
+
+
+
+
+
+}
+
+export const logIn_ = async (username: string, password: string, response?: string, token?: string, cn?: string, cv?: string) => {
+
+  console.log('data : ', username, password, response, token, cn, cv);
+
+
+  if (!(username && password && ((response && token) || (cn && cv)))) return <FetchingResponse>{
+    success: false,
+    username,
+    password,
+    message: !(username && password) ? 'Identifiant ou mot de passe non renseigné.' : 'Veuillez selectionner une réponse.'
   };
 
   const user: UserInfo = {
@@ -26,20 +103,60 @@ export const logIn_ = async (username: string, password: string) => {
   try {
     let userinfo;
 
-    if (!useRealData || (username==unrealUsername && password==unrealPassword)) {
+    if (!useRealData || (username == unrealUsername && password == unrealPassword)) {
       userinfo = require('../assets/login.json');
 
     } else {
-      const response = await fetch("https://api.ecoledirecte.com/v3/login.awp?v=4.39.1", {
+
+
+      if (!(cn && cv) && token) {
+
+        const doubleAuthResponseWithInfo = await fetch("https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=post&v=4.54.2", {
+          "headers": {
+            "x-token": token,
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
+          },
+          "body": `data={\"choix\": \"${response}\"}`,
+          "method": "POST"
+        });
+
+        const doubleAuthInfo = await doubleAuthResponseWithInfo.json();
+
+        if (doubleAuthInfo.code !== 200) {
+          return <FetchingResponse>{
+            success: false,
+            username,
+            password,
+            message: 'Réponse incorrecte'
+          };
+        }
+
+        cn = doubleAuthInfo.data.cn;
+        cv = doubleAuthInfo.data.cv;
+      }
+
+
+      const finalResponse = await fetch(`https://api.ecoledirecte.com/v3/login.awp?v=${apiVersion}`, {
         method: 'POST',
-        body: `data={\"identifiant\": \"${username}\",\"motdepasse\": \"${password}\",\"isReLogin\": false,\"uuid\": \"\"}`,
+        body: `data={
+            \"identifiant\": \"${username}\",
+            \"motdepasse\": \"${password}\",
+            \"isReLogin\": false,
+            \"uuid\": \"\", 
+            \"cn\": \"${cn}\",
+            \"cv\": \"${cv}\",
+            \"fa\": [
+                {
+                    \"cn\": \"${cn}\",
+                    \"cv\": \"${cv}\",
+                }
+            ]}`,
         headers: {
           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36 RuxitSynthetic/1.0 v6886653584872488035 t8141814394349842256 ath1fb31b7a altpriv cvcv=2 cexpw=1 smf=0"
         }
       })
 
-      userinfo = await response.json()
-
+      userinfo = await finalResponse.json()
     }
 
 
@@ -48,7 +165,7 @@ export const logIn_ = async (username: string, password: string) => {
       success: false,
       username,
       password,
-      message: 'Identifiant et/ou mot de passe invalide.'
+      message: userinfo.message ?? "Une erreur est survenue, merci de réessayer."
     };
 
     user.token = userinfo.token;
@@ -83,6 +200,10 @@ export const logIn_ = async (username: string, password: string) => {
     const promise: FetchingResponse = {
       success: true,
       data: user,
+      doubleAuthInfo: {
+        cn: cn ?? '',
+        cv: cv ?? '',
+      }
     }
 
     return promise;
@@ -126,12 +247,12 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
   try {
     let gradesInfo;
 
-    if (!useRealData || (username==unrealUsername && password==unrealPassword)) {
+    if (!useRealData || (username == unrealUsername && password == unrealPassword)) {
       gradesInfo = require('../assets/grades.json');
 
     } else {
 
-      let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+      let response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=${apiVersion}`, options)
       gradesInfo = await response.json()
 
       if (gradesInfo.code !== 200) {
@@ -145,7 +266,7 @@ export const fetchGrades_ = async (token: string | undefined, id: string | undef
 
           options.headers["X-Token"] = token ?? '',
 
-          response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=4.39.1`, options)
+            response = await fetch(`https://api.ecoledirecte.com/v3/eleves/${id}/notes.awp?verbe=get&v=${apiVersion}`, options)
           gradesInfo = await response.json();
         } else {
           console.log('error in getting grades response - gradessInfo :', gradesInfo)

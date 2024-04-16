@@ -56,9 +56,9 @@ const GradeList: React.FC<Props> = ({ periodIndex }) => {
 
           let indicatorColor = '';
 
-          if (grade.value === grade.maxClass) { indicatorColor = '#06A77D' }
-          else if (grade.value >= grade.averageClass) { indicatorColor = '#FDCC21' }
-          else if (grade.value <= grade.averageClass) { indicatorColor = '#FB8B24' }
+          if (grade.value === grade.maxClass) { indicatorColor = Colors.color1 }
+          else if (grade.value >= grade.averageClass) { indicatorColor = Colors.color2 }
+          else if (grade.value <= grade.averageClass) { indicatorColor = Colors.color3 }
 
           const inputRange = [
             -1,

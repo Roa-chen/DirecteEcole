@@ -2,6 +2,8 @@ import { Dimensions } from 'react-native';
 
 export const USERNAME_KEY = 'username'
 export const PASSWORD_KEY = 'password'
+export const CN_KEY = 'cnED'
+export const CV_KEY = 'cvED'
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -35,10 +37,27 @@ export type UserInfo = {
   
 };
 
+export type Questions = {
+  question: string,
+  responsesB64: [string],
+  responses: [string],
+};
+
 export type FetchingResponse = {
   success: boolean,
   message?: string,
   data?: UserInfo,
+  doubleAuthInfo?: {
+    cn: string,
+    cv: string,
+  },
+}
+
+export type QuestionsResponse = {
+  success: boolean,
+  token?: string,
+  message?: string,
+  data?: Questions,
 }
 
 export type Grade = {
